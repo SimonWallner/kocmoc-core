@@ -6,10 +6,10 @@
 namespace kocmoc {
 	namespace core {
 		
-		void init(void)
-		{
-			std::cout << "init context..." << std::endl;
-		}
+		/**
+		 * create a render context
+		 */
+		void createContext(void);
 	}
 }
 
