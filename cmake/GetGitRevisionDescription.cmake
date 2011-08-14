@@ -40,7 +40,7 @@ set(__get_git_revision_description YES)
 get_filename_component(_gitdescmoddir ${CMAKE_CURRENT_LIST_FILE} PATH)
 
 function(get_git_head_revision _refspecvar _hashvar)
-	set(GIT_DIR "${CMAKE_SOURCE_DIR}/.git")
+	set(GIT_DIR "${PROJECT_SOURCE_DIR}/.git")
 	if(NOT EXISTS "${GIT_DIR}")
 		# not in git
 		set(${_refspecvar} "GITDIR-NOTFOUND" PARENT_SCOPE)
