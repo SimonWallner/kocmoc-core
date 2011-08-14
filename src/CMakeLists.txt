@@ -3,7 +3,8 @@
 
 include_directories(
 	../include
-   ${PROJECT_SOURCE_DIR}/external/glfw/include
+	${PROJECT_SOURCE_DIR}/external/glfw/include
+	${CMAKE_CURRENT_BINARY_DIR}/../include
 )
 
 link_directories(
@@ -24,7 +25,7 @@ list(APPEND INCLUDE_C_HEADER_FILES "${CMAKE_CURRENT_BINARY_DIR}/../include/gitSH
 add_library(kocmoc-core ${SOURCE_FILES} ${HEADER_FILES} ${INCLUDE_C_HEADER_FILES} ${INCLUDE_HEADER_FILES})
 
 set (TARGET_LINK_LIBRARIES kocmoc-core
-    glfw
+#    glfw
 )
 
 target_link_libraries(${TARGET_LINK_LIBRARIES})
