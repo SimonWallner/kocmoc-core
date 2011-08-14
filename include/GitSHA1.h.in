@@ -1,0 +1,10 @@
+#ifndef KOCMOC_CORE_GIT_SHA1_H
+#define KOCMOC_CORE_GIT_SHA1_H
+
+// define git version hash, will be created at compile/configure time
+// by cmake
+
+// AUTO GENERATED, DO NOT EDIT!
+#define KOCMOC_CORE_GIT_SHA1 ${GIT_SHA1}
+
+#endif

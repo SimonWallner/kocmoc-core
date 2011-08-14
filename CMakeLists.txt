@@ -11,5 +11,12 @@ project(kocmoc-core CXX)
 # put the libs back into the source tree.
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)  #static libraries 
 
+# get it revision number (SHA1)
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+include(GetGitRevisionDescription)
+get_git_head_revision(GIT_REFSPEC GIT_SHA1)
+
+message(STATUS "git revision hash is: ${GIT_SHA1}")
+
 
 add_subdirectory(src)
