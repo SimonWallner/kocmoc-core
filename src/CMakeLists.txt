@@ -1,5 +1,8 @@
 # cmake list for kocmoc-core src/
 
+#set compiler flags
+add_definitions(-Wall -Wextra -pedantic -Werror)
+
 include_directories(
 	${PROJECT_SOURCE_DIR}/include
 	${PROJECT_SOURCE_DIR}/external/glfw/include
@@ -24,7 +27,7 @@ list(APPEND INCLUDE_C_HEADER_FILES "${PROJECT_BINARY_DIR}/include/gitSHA1.h")
 add_library(kocmoc-core STATIC ${SOURCE_FILES} ${HEADER_FILES} ${INCLUDE_C_HEADER_FILES} ${INCLUDE_HEADER_FILES})
 
 set (TARGET_LINK_LIBRARIES kocmoc-core
-	glfw
+#	glfw
 )
 
 target_link_libraries(${TARGET_LINK_LIBRARIES})
