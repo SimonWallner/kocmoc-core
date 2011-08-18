@@ -27,10 +27,15 @@ list(APPEND INCLUDE_C_HEADER_FILES "${PROJECT_BINARY_DIR}/include/gitSHA1.h")
 add_library(kocmoc-core STATIC ${SOURCE_FILES} ${HEADER_FILES} ${INCLUDE_C_HEADER_FILES} ${INCLUDE_HEADER_FILES})
 
 set (TARGET_LINK_LIBRARIES kocmoc-core
-#	glfw
+	glfw
 )
 
 target_link_libraries(${TARGET_LINK_LIBRARIES})
+
+
+# now build minimal test program
+add_executable(kocmoc-core-test main.cpp)
+target_link_libraries(kocmoc-core-test kocmoc-core glfw)
 
 
 
