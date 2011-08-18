@@ -18,4 +18,5 @@ get_git_head_revision(GIT_REFSPEC KOCMOC_CORE_GIT_SHA1)
 
 message(STATUS "KOCMOC-CORE revision hash is: ${KOCMOC_CORE_GIT_SHA1}")
 
+add_subdirectory(external/glfw)
 add_subdirectory(src)

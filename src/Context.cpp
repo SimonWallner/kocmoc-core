@@ -3,7 +3,7 @@
 #include <iostream>
 #include <gitSHA1.h>
 
-#include <GL/glfw.h>
+#include <GL/glfw3.h>
 
 void kocmoc::core::createContext(void) 
 {
