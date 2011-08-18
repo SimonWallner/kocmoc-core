@@ -12,11 +12,12 @@ void kocmoc::core::createContext(void)
 	std::cout << KOCMOC_CORE_GIT_SHA1 << std::endl;
 	
 	
+	GLFWwindow window;
 
 	float width = 720;
 	float height = 432;
 	
-	int windowMode = GLFW_WINDOW;
+	int windowMode = GLFW_WINDOWED;
 
 	if (!glfwInit())
 		//throw Exception("FATAL: Failed to initialize glfw!");
@@ -26,12 +27,9 @@ void kocmoc::core::createContext(void)
 	// Set flags so GLFW gives us a forward-compatible context.
 	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 2);
 	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 1);
-	
-	glfwOpenWindow(width, height, 
-					   0, 0, 0, 0, // r, g, b, a
-					   24, 8, // depth, stencil
-				   windowMode);
+
+	glfwOpenWindow(width, height, windowMode, "kocmoc", window);
 		
-	glfwSetWindowPos(200, 20);
-	glfwSetWindowTitle("KOCMOC");
+	glfwSetWindowPos(window, 200, 20);
+	glfwSetWindowTitle(window, "KOCMOC");
 }
