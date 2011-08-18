@@ -12,6 +12,4 @@ int main(void) // int argc, char *argv[]
 	
 	Context context;
 	context.init();
-	char* foo = new char[256];
-	std::cin >> foo;
 }

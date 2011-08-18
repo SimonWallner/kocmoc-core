@@ -34,6 +34,11 @@ void kocmoc::core::Context::init(void)
     }
 }
 
+kocmoc::core::Context::Context(void)
+{
+	std::cout << "Context dfault ctor" << std::endl;
+}
+
 kocmoc::core::Context::~Context(void)
 {
 	std::cout << "terminating context" << std::endl;
