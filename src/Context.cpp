@@ -5,8 +5,9 @@
 
 #include <GL/glfw3.h>
 
-void kocmoc::core::createContext(void) 
+void kocmoc::core::Context::init(void) 
 {
+	
 	std::cout << "creating context now..." << std::endl;
 	std::cout << __DATE__ << std::endl;
 	std::cout << KOCMOC_CORE_GIT_SHA1 << std::endl;
@@ -19,17 +20,22 @@ void kocmoc::core::createContext(void)
 	
 	int windowMode = GLFW_WINDOWED;
 
-	if (!glfwInit())
-		//throw Exception("FATAL: Failed to initialize glfw!");
-	
-	glfwOpenWindowHint(GLFW_WINDOW_NO_RESIZE, GL_TRUE);
-	
-	// Set flags so GLFW gives us a forward-compatible context.
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 2);
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 1);
+    if(!glfwInit())
+    {
+		std::cout << "Failed to initialize GLFW" << std::endl;
+        exit(EXIT_FAILURE);
+    }
 
-	glfwOpenWindow(width, height, windowMode, "kocmoc", window);
-		
-	glfwSetWindowPos(window, 200, 20);
-	glfwSetWindowTitle(window, "KOCMOC");
+    window = glfwOpenWindow(width, height, windowMode, "kocmoc", NULL);
+    if (!window)
+    {
+        std::cout << "Failed to open GLFW window" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+}
+
+kocmoc::core::Context::~Context(void)
+{
+	std::cout << "terminating context" << std::endl;
+	glfwTerminate();
 }

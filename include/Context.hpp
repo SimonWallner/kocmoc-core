@@ -5,9 +5,24 @@ namespace kocmoc {
 	namespace core {
 		
 		/**
-		 * create a render context
+		 * main GL context
 		 */
-		void createContext(void);
+		class Context
+		{
+		public:
+			/**
+			 * Create a new context
+			 */
+			Context(void);
+
+			/**
+			 * initialize, i.e. construct the context
+			 */
+			void init(void);
+
+			~Context(void);
+
+		};
 	}
 }
 

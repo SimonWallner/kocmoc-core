@@ -3,10 +3,15 @@
 
 #include <iostream>
 
-int main(void)
+using kocmoc::core::Context;
+
+int main(void) // int argc, char *argv[]
 {
 	std::cout << "Oh my god, its full of stars!" << std::endl;
 	std::cout << KOCMOC_CORE_GIT_SHA1 << std::endl;
 	
-	kocmoc::core::createContext();
+	Context context;
+	context.init();
+	char* foo = new char[256];
+	std::cin >> foo;
 }
