@@ -45,7 +45,7 @@ target_link_libraries(${TARGET_LINK_LIBRARIES})
 
 
 # now build minimal test program
-add_executable(kocmoc-core-test main.cpp)
+add_executable(kocmoc-core-test MACOSX_BUNDLE main.cpp)
 target_link_libraries(kocmoc-core-test kocmoc-core libglfwStatic ${GLFW_LIBRARIES})
 
 
