@@ -21,6 +21,11 @@ namespace kocmoc {
 			void init(void);
 
 			~Context(void);
+			
+			/**
+			 * Print a bunch of usefull informations
+			 */
+			void getInfo(void);
 
 		};
 	}

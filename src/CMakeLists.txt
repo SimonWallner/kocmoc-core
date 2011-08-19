@@ -21,8 +21,8 @@ file(GLOB_RECURSE SOURCE_FILES *.cpp)
 
 # git revision number magic
 # configure header file and append it to the other header files
-configure_file("${PROJECT_SOURCE_DIR}/include/kocmoc-core/gitSHA1.h.in" "${PROJECT_BINARY_DIR}/include/kocmoc-core/gitSHA1.h")
-list(APPEND INCLUDE_C_HEADER_FILES "${PROJECT_BINARY_DIR}/include/kocmoc-core/gitSHA1.h")
+configure_file("${PROJECT_SOURCE_DIR}/include/kocmoc-core/version.hpp.in" "${PROJECT_BINARY_DIR}/include/kocmoc-core/version.hpp")
+list(APPEND INCLUDE_C_HEADER_FILES "${PROJECT_BINARY_DIR}/include/kocmoc-core/version.hpp")
 
 add_library(kocmoc-core ${SOURCE_FILES} ${HEADER_FILES} ${INCLUDE_C_HEADER_FILES} ${INCLUDE_HEADER_FILES})
 
