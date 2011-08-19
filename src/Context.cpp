@@ -1,7 +1,7 @@
-#include "Context.hpp"
+#include <kocmoc-core/Context.hpp>
 
 #include <iostream>
-#include <gitSHA1.h>
+#include <kocmoc-core/gitSHA1.h>
 
 #include <GL/glfw3.h>
 

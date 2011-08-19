@@ -1,6 +1,6 @@
-#include <gitSHA1.h>
-#include <Context.hpp>
-#include <version.hpp>
+#include <kocmoc-core/gitSHA1.h>
+#include <kocmoc-core/Context.hpp>
+#include <kocmoc-core/version.hpp>
 
 #include <iostream>
 

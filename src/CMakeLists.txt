@@ -14,15 +14,15 @@ link_directories(
 )
 
 # collect the files
-file(GLOB INCLUDE_C_HEADER_FILES ${PROJECT_SOURCE_DIR}/include/*.h)
-file(GLOB INCLUDE_HEADER_FILES ${PROJECT_SOURCE_DIR}/include/*.hpp)
-file(GLOB HEADER_FILES *.hpp)
-file(GLOB SOURCE_FILES *.cpp)
+file(GLOB_RECURSE INCLUDE_C_HEADER_FILES ${PROJECT_SOURCE_DIR}/include/*.h)
+file(GLOB_RECURSE INCLUDE_HEADER_FILES ${PROJECT_SOURCE_DIR}/include/*.hpp)
+file(GLOB_RECURSE HEADER_FILES *.hpp)
+file(GLOB_RECURSE SOURCE_FILES *.cpp)
 
 # git revision number magic
 # configure header file and append it to the other header files
-configure_file("${PROJECT_SOURCE_DIR}/include/gitSHA1.h.in" "${PROJECT_BINARY_DIR}/include/gitSHA1.h")
-list(APPEND INCLUDE_C_HEADER_FILES "${PROJECT_BINARY_DIR}/include/gitSHA1.h")
+configure_file("${PROJECT_SOURCE_DIR}/include/kocmoc-core/gitSHA1.h.in" "${PROJECT_BINARY_DIR}/include/kocmoc-core/gitSHA1.h")
+list(APPEND INCLUDE_C_HEADER_FILES "${PROJECT_BINARY_DIR}/include/kocmoc-core/gitSHA1.h")
 
 add_library(kocmoc-core ${SOURCE_FILES} ${HEADER_FILES} ${INCLUDE_C_HEADER_FILES} ${INCLUDE_HEADER_FILES})
 
