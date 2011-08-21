@@ -1,4 +1,4 @@
-#include <kocmoc-core/Context.hpp>
+#include <kocmoc-core/renderer/Context.hpp>
 #include <kocmoc-core/version.hpp>
 
 #include <iostream>
@@ -14,7 +14,7 @@ int main(void) // int argc, char *argv[]
 	std::cout << "this is version: " << std::endl;
 	std::cout << version::getVersionString() << std::endl;
 	
-	Context context;
+	renderer::Context context;
 	context.init();
 	
 	context.getInfo();
