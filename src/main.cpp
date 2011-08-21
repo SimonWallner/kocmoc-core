@@ -15,7 +15,6 @@ int main(void) // int argc, char *argv[]
 	std::cout << version::getVersionString() << std::endl;
 	
 	renderer::Context context;
-	context.init();
-	
+	// do stuff
 	context.getInfo();
 }

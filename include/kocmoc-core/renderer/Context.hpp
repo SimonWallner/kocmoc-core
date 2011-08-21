@@ -14,14 +14,9 @@ namespace kocmoc {
 			{
 			public:
 				/**
-				 * Create a new context
+				 * Create a new context, RAII
 				 */
 				Context(void);
-
-				/**
-				 * initialize, i.e. construct the context
-				 */
-				void init(void);
 
 				~Context(void);
 

@@ -1,13 +1,8 @@
 #include <kocmoc-core/input/InputManager.hpp>
-#include <GL/glfw3>
+
+#include <GL/glfw3.h>
 
 using namespace kocmoc::core::input;
-
-InputManager& InputManager::GetInstance(void)
-{
-	static InputManager instance;
-	return instance;
-}
 
 
 void InputManager::addKeyboardListener(KeyboardListener *listener)

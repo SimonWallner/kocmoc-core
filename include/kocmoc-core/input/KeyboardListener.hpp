@@ -11,7 +11,7 @@ namespace kocmoc
 			{
 			public:
 				void keyPressed(char* key);
-			}
+			};
 		}
 	}
 }

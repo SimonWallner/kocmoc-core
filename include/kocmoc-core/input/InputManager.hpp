@@ -16,17 +16,12 @@ namespace kocmoc
 			class InputManager
 			{
 			public:
-				static InputManager& GetInstance(void);
-				~InputManager(void);
 				
 				void addKeyboardListener(KeyboardListener* listener);
 				
 				void poll(void);
 				
-			private:
-				InputManager(void);
-				InputManager(const InputManager &cc);
-				
+			private:				
 				KeyboardListenerList keyboardListenerList;
 			};
 		}

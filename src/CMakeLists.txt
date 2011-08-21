@@ -1,6 +1,6 @@
 # cmake list for kocmoc-core src/
 
-#set compiler flags
+# set compiler flags
 add_definitions(-Wall -Wextra -pedantic -Werror)
 
 include_directories(
