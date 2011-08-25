@@ -10,20 +10,26 @@
  */
 namespace kocmoc
 {
-	typedef const char* Symbol;
-	
-	Symbol symbolize(const char* string);
-
-	/**
-	 * a struct to compare two char*s
-	 */
-	struct charComparator
+	namespace core
 	{
-		bool operator() (const char* lhs, const char* rhs) const
+		namespace types
 		{
-			return strcmp(lhs, rhs) < 0;
+			typedef const char* Symbol;
+			
+			Symbol symbolize(const char* string);
+
+			/**
+			 * a struct to compare two char*s
+			 */
+			struct charComparator
+			{
+				bool operator() (const char* lhs, const char* rhs) const
+				{
+					return strcmp(lhs, rhs) < 0;
+				}
+			};
 		}
-	};
+	}
 }
 
 #endif

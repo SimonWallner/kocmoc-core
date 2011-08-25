@@ -2,14 +2,14 @@
 
 #include <set>
 
-using namespace kocmoc;
-using kocmoc::Symbol;
+using namespace kocmoc::core::types;
+using kocmoc::core::types::Symbol;
 
-typedef std::set<const char*, kocmoc::charComparator> SymbolSet;
+typedef std::set<const char*, charComparator> SymbolSet;
 
 static SymbolSet symbols;
 
-Symbol kocmoc::symbolize(const char* string)
+Symbol symbolize(const char* string)
 {
 	if (string == NULL || *string == 0)
 		return NULL;

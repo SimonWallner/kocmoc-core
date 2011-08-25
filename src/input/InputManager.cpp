@@ -1,10 +1,11 @@
 #include <kocmoc-core/input/InputManager.hpp>
 
-#include <kocmoc-core/input/KeyboardListener.hpp>
-
 #include <string>
 
+#include <kocmoc-core/input/ButtonEventListener.hpp>
+
 using namespace kocmoc::core::input;
+using kocmoc::core::types::Symbol;
 
 InputManager::InputManager(GLFWwindow _windowHandle)
 	: windowHandle(_windowHandle)
@@ -12,14 +13,40 @@ InputManager::InputManager(GLFWwindow _windowHandle)
 }
 
 
-void InputManager::addKeyboardListener(KeyboardListener *listener)
+void InputManager::registerButtonEventListener(Symbol name, ButtonEventListener *listener)
 {
-	keyboardListenerList.push_back(listener);
+	buttonEventListenerMultiMap.insert(EventPair(name, listener));
+}
+
+void InputManager::bindButtonEventToKey(Symbol name, char key)
+{
+	buttonEventKeyBindings.insert(keyBindingPair(name, key));
 }
 
 void InputManager::poll(void)
 {
-	;
+	// for each key
+	for (ButtonEventKeyBindings::const_iterator ci = buttonEventKeyBindings.begin();
+		 ci != buttonEventKeyBindings.end();
+		 ci++)
+	{
+		// poll key
+		if (glfwGetKey(windowHandle, (int)ci->second) == GLFW_KEY_DOWN)
+		{
+			// fetch listeners
+			for(ButtonEventListenerMultiMap::const_iterator listeners = buttonEventListenerMultiMap.find(ci->first);
+				listeners != buttonEventListenerMultiMap.end();
+				listeners++)
+			{
+				// fire listener
+				ButtonEvent event;
+				event.isPressed = true;
+				
+				(listeners->second)->buttonEventCallback(ci->first, event);
+			}
+		}
+	}
+
+
+
 }
-
-
