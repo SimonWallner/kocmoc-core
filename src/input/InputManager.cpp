@@ -31,7 +31,7 @@ void InputManager::poll(void)
 		 ci++)
 	{
 		// poll key
-		if (glfwGetKey(windowHandle, (int)ci->second) == GLFW_KEY_DOWN)
+		if (glfwGetKey(windowHandle, (int)ci->second))
 		{
 			// fetch listeners
 			for(ButtonEventListenerMultiMap::const_iterator listeners = buttonEventListenerMultiMap.find(ci->first);
@@ -46,7 +46,4 @@ void InputManager::poll(void)
 			}
 		}
 	}
-
-
-
 }

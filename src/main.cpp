@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include <GL/glfw3.h>
+
 #include <kocmoc-core/renderer/Context.hpp>
 #include <kocmoc-core/version.hpp>
 #include <kocmoc-core/input/InputManager.hpp>
@@ -7,6 +9,7 @@
 
 using namespace kocmoc::core;
 using namespace kocmoc::core::input;
+using namespace kocmoc::core::types;
 
 
 class KeyWatcher : public ButtonEventListener
@@ -19,12 +22,17 @@ class KeyWatcher : public ButtonEventListener
 	
 public:
 	KeyWatcher(void)
-	: running(false)
+	: running(true)
 	{}
 
 	bool running;
 };
 
+void keyCallback(GLFWwindow win, int key, int mode)
+{
+	std::cout << "key: " << key << std::endl;
+	std::cout << win << mode;
+}
 
 
 /**
@@ -37,17 +45,23 @@ int main(void) // int argc, char *argv[]
 	std::cout << version::getVersionString() << std::endl;
 	
 	renderer::Context context;
+	glfwEnable(context.getWindowHandle(), GLFW_STICKY_KEYS);
+	glfwSetKeyCallback(keyCallback);
 	
 	InputManager inputManager(context.getWindowHandle());
 	KeyWatcher kw;
 	
-	inputManager.registerButtonEventListener(types::symbolize("quit"), &kw);
-	inputManager.bindButtonEventToKey(types::symbolize("quit"), 'q');
+	Symbol quit = symbolize("quit");
 	
+	inputManager.registerButtonEventListener(quit, &kw);
+	inputManager.bindButtonEventToKey(quit, 'q');
 	
 	while (kw.running == true)
 	{
 		inputManager.poll();
+		
+		if (glfwGetKey(context.getWindowHandle(), GLFW_KEY_ESC))
+			kw.running = false;
 	}
 
 	context.getInfo();

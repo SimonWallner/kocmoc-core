@@ -22,7 +22,7 @@ namespace kocmoc
 			class ButtonEventListener
 			{
 			public:
-				virtual void buttonEventCallback(types::Symbol name, ButtonEvent event) const = 0;
+				virtual void buttonEventCallback(types::Symbol name, ButtonEvent event) = 0;
 			};
 		}
 	}

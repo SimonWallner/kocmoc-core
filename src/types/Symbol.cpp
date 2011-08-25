@@ -9,7 +9,7 @@ typedef std::set<const char*, charComparator> SymbolSet;
 
 static SymbolSet symbols;
 
-Symbol symbolize(const char* string)
+Symbol kocmoc::core::types::symbolize(const char* string)
 {
 	if (string == NULL || *string == 0)
 		return NULL;
