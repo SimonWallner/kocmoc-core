@@ -56,12 +56,14 @@ int main(void) // int argc, char *argv[]
 	inputManager.registerButtonEventListener(quit, &kw);
 	inputManager.bindButtonEventToKey(quit, 'q');
 	
-	while (kw.running == true)
+	while (kw.running == true && glfwIsWindow(context.getWindowHandle()))
 	{
 		inputManager.poll();
 		
 		if (glfwGetKey(context.getWindowHandle(), GLFW_KEY_ESC))
 			kw.running = false;
+		
+		glfwSwapBuffers();
 	}
 
 	context.getInfo();
