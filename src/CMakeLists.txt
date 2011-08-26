@@ -2,11 +2,28 @@
 
 # set compiler flags
 add_definitions(-Wall -Wextra -pedantic -Werror)
+# later add  -Weffc++
+
+
+# ----------------- find stuff -------------------------
+# find cocoa framework
+find_library(COCOA_FRAMEWORK Cocoa)
+message(STATUS "cocoa fw: ${COCOA_FRAMEWORK}")
+
+# find Opengl
+find_package(OpenGL REQUIRED)
+message(STATUS "Open GL lib: ${OPENGL_gl_LIBRARY}")
+
+# find glew
+find_package(GLEW REQUIRED)
+message(STATUS "glew lib: ${GLEW_LIBRARY}")
+
 
 include_directories(
 	${PROJECT_SOURCE_DIR}/include
 	${PROJECT_SOURCE_DIR}/external/glfw/include
 	${PROJECT_BINARY_DIR}/include
+	${GLEW_INCLUDE_PATH}
 )
 
 link_directories(
@@ -27,18 +44,14 @@ list(APPEND INCLUDE_C_HEADER_FILES "${PROJECT_BINARY_DIR}/include/kocmoc-core/ve
 add_library(kocmoc-core ${SOURCE_FILES} ${HEADER_FILES} ${INCLUDE_C_HEADER_FILES} ${INCLUDE_HEADER_FILES})
 
 
-# find cocoa framework
-find_library(COCOA_FRAMEWORK Cocoa)
-message(STATUS "cocoa fw: ${COCOA_FRAMEWORK}")
 
-# find Opengl
-find_package(OpenGL REQUIRED)
-message(STATUS "Open GL lib: ${OPENGL_gl_LIBRARY}")
+
 
 set (TARGET_LINK_LIBRARIES kocmoc-core
 	libglfwStatic
 	${COCOA_FRAMEWORK}
 	${OPENGL_gl_LIBRARY}
+	${GLEW_LIBRARY}
 )
 
 target_link_libraries(${TARGET_LINK_LIBRARIES})

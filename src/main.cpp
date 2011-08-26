@@ -1,12 +1,11 @@
 #include <iostream>
 
-#include <GL/glfw3.h>
-#include <GL3/gl3w.h>
-
 #include <kocmoc-core/renderer/Context.hpp>
 #include <kocmoc-core/version.hpp>
 #include <kocmoc-core/input/InputManager.hpp>
 #include <kocmoc-core/input/ButtonEventListener.hpp>
+
+#include <GL/glfw3.h>
 
 using namespace kocmoc::core;
 using namespace kocmoc::core::input;
@@ -29,12 +28,6 @@ public:
 	bool running;
 };
 
-void keyCallback(GLFWwindow win, int key, int mode)
-{
-	std::cout << "key: " << key << std::endl;
-	std::cout << win << mode;
-}
-
 
 /**
  * this is a small test program to illustrate the use of the core component
@@ -49,7 +42,6 @@ int main(void) // int argc, char *argv[]
 	context.getInfo();
 	
 	glfwEnable(context.getWindowHandle(), GLFW_STICKY_KEYS);
-	glfwSetKeyCallback(keyCallback);
 	
 	InputManager inputManager(context.getWindowHandle());
 	KeyWatcher kw;
@@ -59,9 +51,6 @@ int main(void) // int argc, char *argv[]
 	inputManager.registerButtonEventListener(quit, &kw);
 	inputManager.bindButtonEventToKey(quit, GLFW_KEY_Q);
 	
-	glClearColor(0.442047, 0.387623, 0.361867, 1.0f); // tinted gray
-//	glEnable();
-	
 	while (kw.running == true && glfwIsWindow(context.getWindowHandle()))
 	{
 		inputManager.poll();
@@ -69,8 +58,7 @@ int main(void) // int argc, char *argv[]
 		if (glfwGetKey(context.getWindowHandle(), GLFW_KEY_ESC))
 			kw.running = false;
 		
-		glfwSwapBuffers();
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		context.swapBuffers();
 		glfwPollEvents();
 	}
 }

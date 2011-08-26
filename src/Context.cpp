@@ -32,6 +32,22 @@ Context::Context(void)
         std::cout << "Failed to open GLFW window" << std::endl;
         exit(EXIT_FAILURE);
     }
+	
+	GLenum err = glewInit();
+	if (err != GLEW_OK)
+	{
+		std::cout << "failed ton initialize GLEW" << std::endl;
+		exit(EXIT_FAILURE);
+	}
+	
+	if (GLEW_EXT_framebuffer_sRGB)
+	{
+		std::cout << "sRGB framebuffer available" << std::endl;
+	}
+	
+	std::cout << "glew version: " << glewGetString(GLEW_VERSION) << std::endl;
+	
+	setGLStates();
 }
 
 Context::~Context(void)
@@ -52,4 +68,52 @@ void Context::getInfo(void)
 GLFWwindow Context::getWindowHandle()
 {
 	return windowHandle;
+}
+
+void Context::setGLStates()
+{
+	glClearColor(0.442047, 0.387623, 0.361867, 1.0f); // tinted gray
+	glEnable(GL_FRAMEBUFFER_SRGB_EXT);
+	getError();
+}
+
+void Context::swapBuffers()
+{
+	glfwSwapBuffers();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+}
+
+void Context::getError()
+{
+	GLenum err = glGetError();
+	switch (err) {
+		case GL_NO_ERROR:
+			std::cout << "no error" << std::endl;
+			break;
+		case GL_INVALID_ENUM:
+			std::cout << "invalid enum" << std::endl;
+			break;
+		case GL_INVALID_VALUE:
+			std::cout << "invalid value" << std::endl;
+			break;
+		case GL_INVALID_OPERATION:
+			std::cout << "invalid operation" << std::endl;
+			break;
+		case GL_STACK_OVERFLOW:
+			std::cout << "stack overflow" << std::endl;
+			break;
+		case GL_STACK_UNDERFLOW:
+			std::cout << "stack underflow" << std::endl;
+			break;
+		case GL_OUT_OF_MEMORY:
+			std::cout << "out of memory" << std::endl;
+			break;
+		case GL_TABLE_TOO_LARGE:
+			std::cout << "table too large" << std::endl;
+			break;
+			
+		default:
+			break;
+	}
 }
