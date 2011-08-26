@@ -6,6 +6,7 @@ add_definitions(-Wall -Wextra -pedantic -Werror)
 include_directories(
 	${PROJECT_SOURCE_DIR}/include
 	${PROJECT_SOURCE_DIR}/external/glfw/include
+	${PROJECT_SOURCE_DIR}/external/gl3w/include
 	${PROJECT_BINARY_DIR}/include
 )
 
@@ -37,6 +38,7 @@ message(STATUS "Open GL lib: ${OPENGL_gl_LIBRARY}")
 
 set (TARGET_LINK_LIBRARIES kocmoc-core
 	libglfwStatic
+	gl3w
 	${COCOA_FRAMEWORK}
 	${OPENGL_gl_LIBRARY}
 )

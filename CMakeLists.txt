@@ -38,4 +38,5 @@ endif(DOXYGEN_FOUND)
 
 
 add_subdirectory(external/glfw)
+add_subdirectory(external/gl3w)
 add_subdirectory(src)
