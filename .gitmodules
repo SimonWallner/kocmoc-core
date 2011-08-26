@@ -1,6 +1,3 @@
 [submodule "external/glfw"]
 	path = external/glfw
 	url = git://glfw.git.sourceforge.net/gitroot/glfw/glfw
-[submodule "external/gl3w"]
-	path = external/gl3w
-	url = git@github.com:SimonWallner/gl3w.git

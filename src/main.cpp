@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include <GL/glfw3.h>
+#include <GL3/gl3w.h>
 
 #include <kocmoc-core/renderer/Context.hpp>
 #include <kocmoc-core/version.hpp>
@@ -59,7 +60,7 @@ int main(void) // int argc, char *argv[]
 	inputManager.bindButtonEventToKey(quit, GLFW_KEY_Q);
 	
 	glClearColor(0.442047, 0.387623, 0.361867, 1.0f); // tinted gray
-//	glEnable(EXT_FRAMEBUFFER_SRGB);
+//	glEnable();
 	
 	while (kw.running == true && glfwIsWindow(context.getWindowHandle()))
 	{
