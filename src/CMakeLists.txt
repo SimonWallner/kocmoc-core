@@ -8,15 +8,11 @@ add_definitions(-Wall -Wextra -pedantic -Werror)
 # ----------------- find stuff -------------------------
 # find cocoa framework
 find_library(COCOA_FRAMEWORK Cocoa)
-message(STATUS "cocoa fw: ${COCOA_FRAMEWORK}")
 
-# find Opengl
 find_package(OpenGL REQUIRED)
-message(STATUS "Open GL lib: ${OPENGL_gl_LIBRARY}")
-
-# find glew
 find_package(GLEW REQUIRED)
-message(STATUS "glew lib: ${GLEW_LIBRARY}")
+find_package(DevIL REQUIRED)
+
 
 
 include_directories(
@@ -24,6 +20,7 @@ include_directories(
 	${PROJECT_SOURCE_DIR}/external/glfw/include
 	${PROJECT_BINARY_DIR}/include
 	${GLEW_INCLUDE_PATH}
+	${IL_INCLUDE_DIR}
 )
 
 link_directories(
@@ -41,17 +38,18 @@ file(GLOB_RECURSE SOURCE_FILES *.cpp)
 configure_file("${PROJECT_SOURCE_DIR}/include/kocmoc-core/version.hpp.in" "${PROJECT_BINARY_DIR}/include/kocmoc-core/version.hpp")
 list(APPEND INCLUDE_C_HEADER_FILES "${PROJECT_BINARY_DIR}/include/kocmoc-core/version.hpp")
 
+
+
 add_library(kocmoc-core ${SOURCE_FILES} ${HEADER_FILES} ${INCLUDE_C_HEADER_FILES} ${INCLUDE_HEADER_FILES})
-
-
-
-
 
 set (TARGET_LINK_LIBRARIES kocmoc-core
 	libglfwStatic
 	${COCOA_FRAMEWORK}
 	${OPENGL_gl_LIBRARY}
 	${GLEW_LIBRARY}
+	${IL_LIBRARIES}
+	${ILU_LIBRARIES}
+	${ILUT_LIBRARIES}
 )
 
 target_link_libraries(${TARGET_LINK_LIBRARIES})
