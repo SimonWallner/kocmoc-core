@@ -58,6 +58,9 @@ int main(void) // int argc, char *argv[]
 	inputManager.registerButtonEventListener(quit, &kw);
 	inputManager.bindButtonEventToKey(quit, GLFW_KEY_Q);
 	
+	glClearColor(0.442047, 0.387623, 0.361867, 1.0f); // tinted gray
+//	glEnable(EXT_FRAMEBUFFER_SRGB);
+	
 	while (kw.running == true && glfwIsWindow(context.getWindowHandle()))
 	{
 		inputManager.poll();
@@ -66,6 +69,7 @@ int main(void) // int argc, char *argv[]
 			kw.running = false;
 		
 		glfwSwapBuffers();
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glfwPollEvents();
 	}
 }
