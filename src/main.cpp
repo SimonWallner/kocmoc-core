@@ -45,6 +45,8 @@ int main(void) // int argc, char *argv[]
 	std::cout << version::getVersionString() << std::endl;
 	
 	renderer::Context context;
+	context.getInfo();
+	
 	glfwEnable(context.getWindowHandle(), GLFW_STICKY_KEYS);
 	glfwSetKeyCallback(keyCallback);
 	
@@ -54,7 +56,7 @@ int main(void) // int argc, char *argv[]
 	Symbol quit = symbolize("quit");
 	
 	inputManager.registerButtonEventListener(quit, &kw);
-	inputManager.bindButtonEventToKey(quit, 'q');
+	inputManager.bindButtonEventToKey(quit, GLFW_KEY_Q);
 	
 	while (kw.running == true && glfwIsWindow(context.getWindowHandle()))
 	{
@@ -64,8 +66,7 @@ int main(void) // int argc, char *argv[]
 			kw.running = false;
 		
 		glfwSwapBuffers();
+		glfwPollEvents();
 	}
-
-	context.getInfo();
 }
 
