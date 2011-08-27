@@ -32,6 +32,11 @@ if(!ASSIMP_FOUND)
 	message(WARNING "Assimp not found!")
 endif(!ASSIMP_FOUND)
 
+find_package(TinyXML REQUIRED)
+if(!TINY_FOUND)
+	message(WARNING "TinyXML not found!")
+endif(!TINY_FOUND)
+
 
 
 include_directories(
