@@ -8,10 +8,29 @@ add_definitions(-Wall -Wextra -pedantic -Werror)
 # ----------------- find stuff -------------------------
 # find cocoa framework
 find_library(COCOA_FRAMEWORK Cocoa)
+if(!COCOA_FRAMEWORK_FOUND)
+	message(WARNING "Cocoa Framework not found!")
+endif(!COCOA_FRAMEWORK_FOUND)
 
 find_package(OpenGL REQUIRED)
+if(!OPENGL_FOUND)
+	message(WARNING "OpenGL not found!")
+endif(!OPENGL_FOUND)
+
 find_package(GLEW REQUIRED)
+if(!GLEW_FOUND)
+	message(WARNING "GLEW not found!")
+endif(!GLEW_FOUND)
+
 find_package(DevIL REQUIRED)
+if(!DEVIL_FOUND)
+	message(WARNING "DevIL not found!")
+endif(!DEVIL_FOUND)
+
+find_package(Assimp REQUIRED)
+if(!ASSIMP_FOUND)
+	message(WARNING "Assimp not found!")
+endif(!ASSIMP_FOUND)
 
 
 
@@ -21,6 +40,7 @@ include_directories(
 	${PROJECT_BINARY_DIR}/include
 	${GLEW_INCLUDE_PATH}
 	${IL_INCLUDE_DIR}
+	${ASSIMP_INCLUDE_DIR}
 )
 
 link_directories(
@@ -50,6 +70,7 @@ set (TARGET_LINK_LIBRARIES kocmoc-core
 	${IL_LIBRARIES}
 	${ILU_LIBRARIES}
 	${ILUT_LIBRARIES}
+	${ASSIMP_LIBRARY}
 )
 
 target_link_libraries(${TARGET_LINK_LIBRARIES})

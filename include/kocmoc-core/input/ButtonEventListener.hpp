@@ -6,6 +6,9 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#ifndef KOCMOC_CORE_INPUT_BUTTON_EVENT_LISTENER_HPP
+#define KOCMOC_CORE_INPUT_BUTTON_EVENT_LISTENER_HPP
+
 #include <kocmoc-core/types/Symbol.hpp>
 
 namespace kocmoc
@@ -27,3 +30,5 @@ namespace kocmoc
 		}
 	}
 }
+
+#endif

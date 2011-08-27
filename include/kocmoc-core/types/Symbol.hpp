@@ -1,5 +1,5 @@
-#ifndef KOCMOC_SYMBOL_HPP_
-#define KOCMOC_SYMBOL_HPP_
+#ifndef KOCMOC_CORE_TYPES_SYMBOL_HPP
+#define KOCMOC_CORE_TYPES_SYMBOL_HPP
 
 #include <cstring>
 
