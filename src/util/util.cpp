@@ -1,9 +1,22 @@
-﻿#include <kocmoc-core/util/util.h>
+﻿#include <kocmoc-core/util/util.hpp>
+
+#include <fstream>
+#include <iostream>
+#include <cstdlib>
+
+#define TIXML_USE_STL 
+#include <tinyxml.h>
+
+#include <kocmoc-core/types/Symbol.hpp>
+#include <kocmoc-core/util/Properties.hpp>
 
 using namespace kocmoc::core;
 
 using std::string;
 using std::vector;
+
+using types::Symbol;
+using types::symbolize;
 
 
 bool util::file_exists(const string &filename)
@@ -40,3 +53,47 @@ void util::tokenize(const string& str, vector<string >& tokens, const string& de
 	}
 }
 
+bool util::parseConfigXMLFileIntoProperties(string path, Properties* props)
+{
+	TiXmlDocument doc(path.c_str());
+	if (!doc.LoadFile())
+	{
+		std::cout << "failed to load xml file: " << path << " - " << doc.ErrorDesc() << std::endl;
+		std::cout << "error row: " << doc.ErrorRow() << " col: " << doc.ErrorCol() << std::endl;
+		return false;
+	}
+	else
+	{
+		TiXmlElement* properties = doc.FirstChildElement("properties");
+		
+		if (properties != NULL)
+		{
+
+			for (TiXmlElement* element = properties->FirstChildElement("string");
+				 element != NULL;
+				 element = element->NextSiblingElement("string"))
+			{
+				props->add(symbolize(element->Attribute("name")), string(element->Attribute("value")));
+			}
+			
+			for (TiXmlElement* element = properties->FirstChildElement("float");
+				 element != NULL;
+				 element = element->NextSiblingElement("float"))
+			{
+				float value = atof(element->Attribute("value"));
+				props->add(symbolize(element->Attribute("name")), value);
+			}
+			
+			for (TiXmlElement* element = properties->FirstChildElement("bool");
+				 element != NULL;
+				 element = element->NextSiblingElement("bool"))
+			{
+				float value = atof(element->Attribute("value"));
+				props->add(symbolize(element->Attribute("name")), (bool)value);
+			}
+		}
+		else
+			return false;
+	}
+	return true;
+}

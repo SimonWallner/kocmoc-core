@@ -33,9 +33,9 @@ if(!ASSIMP_FOUND)
 endif(!ASSIMP_FOUND)
 
 find_package(TinyXML REQUIRED)
-if(!TINY_FOUND)
+if(!TINYXML_FOUND)
 	message(WARNING "TinyXML not found!")
-endif(!TINY_FOUND)
+endif(!TINYXML_FOUND)
 
 
 
@@ -46,6 +46,7 @@ include_directories(
 	${GLEW_INCLUDE_PATH}
 	${IL_INCLUDE_DIR}
 	${ASSIMP_INCLUDE_DIR}
+	${TINYXML_INCLUDE_DIR}
 )
 
 link_directories(
@@ -76,13 +77,14 @@ set (TARGET_LINK_LIBRARIES kocmoc-core
 	${ILU_LIBRARIES}
 	${ILUT_LIBRARIES}
 	${ASSIMP_LIBRARY}
+	${TINYXML_LIBRARIES}
 )
 
 target_link_libraries(${TARGET_LINK_LIBRARIES})
 
 
 # now build minimal test program
-add_executable(kocmoc-core-test MACOSX_BUNDLE main.cpp)
+add_executable(kocmoc-core-test MACOSX_BUNDLE kocmoc-core-test.cpp)
 target_link_libraries(kocmoc-core-test kocmoc-core libglfwStatic ${GLFW_LIBRARIES})
 
 

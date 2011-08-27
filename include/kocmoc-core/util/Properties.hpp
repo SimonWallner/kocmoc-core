@@ -2,6 +2,7 @@
 #define KOCMOC_CORE_UTIL_PROPERTIES_FILE_PARSER_HPP
 
 #include <map>
+#include <string>
 
 #include <kocmoc-core/types/Symbol.hpp>
 
@@ -18,12 +19,19 @@ namespace kocmoc
 			class Properties
 			{
 			public:
+				
+				/**
+				 * Add values to the map
+				 */
+				void add(types::Symbol name, float value);
+				void add(types::Symbol name, bool value);
+				void add(types::Symbol name, std::string);
 
 				/**
 				 * Get a property with the given name.
 				 */
 				float getFloat(types::Symbol name);
-				bool getbool(types::Symbol name);
+				bool getBool(types::Symbol name);
 				std::string getString(types::Symbol name);
 
 				/**
