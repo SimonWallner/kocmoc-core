@@ -1,8 +1,14 @@
-#include <kocmoc-core/renderer/Context.hpp>
-
 #include <iostream>
 
+#include <GL/glew.h>
 #include <GL/glfw3.h>
+/**
+ * this is bullshit!
+ * can't include the header to this file as the first include since glew does
+ * not allow any other gl includes to happen before it.
+ * *sigh* #fail
+ */
+#include <kocmoc-core/renderer/Context.hpp>
 
 #include <kocmoc-core/version.hpp>
 
@@ -81,7 +87,8 @@ void Context::swapBuffers()
 {
 	glfwSwapBuffers();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	
+	glfwPollEvents();
 }
 
 void Context::getError()
@@ -116,4 +123,9 @@ void Context::getError()
 		default:
 			break;
 	}
+}
+
+bool Context::isAlive()
+{
+	return glfwIsWindow(windowHandle);
 }

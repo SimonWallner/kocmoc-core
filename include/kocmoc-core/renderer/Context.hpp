@@ -1,7 +1,6 @@
 #ifndef KOCMOC_CORE_CONTEXT_HPP
 #define KOCMOC_CORE_CONTEXT_HPP
 
-#include <GL/glew.h>
 #include <GL/glfw3.h>
 
 namespace kocmoc {
@@ -29,6 +28,8 @@ namespace kocmoc {
 				GLFWwindow getWindowHandle(void);
 				
 				void swapBuffers(void);
+				
+				bool isAlive(void);
 			
 			private:
 				

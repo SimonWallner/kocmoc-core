@@ -10,6 +10,7 @@ using kocmoc::core::types::Symbol;
 InputManager::InputManager(GLFWwindow _windowHandle)
 	: windowHandle(_windowHandle)
 {
+	glfwEnable(windowHandle, GLFW_STICKY_KEYS);
 }
 
 
@@ -18,7 +19,7 @@ void InputManager::registerButtonEventListener(Symbol name, ButtonEventListener 
 	buttonEventListenerMultiMap.insert(EventPair(name, listener));
 }
 
-void InputManager::bindButtonEventToKey(Symbol name, char key)
+void InputManager::bindButtonEventToKey(Symbol name, int key)
 {
 	buttonEventKeyBindings.insert(keyBindingPair(name, key));
 }

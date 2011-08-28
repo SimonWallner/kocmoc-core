@@ -47,7 +47,7 @@ namespace kocmoc
 				
 				void registerAnalogEventListener(types::Symbol name, AnalogEventListener* listener);
 				
-				void bindButtonEventToKey(types::Symbol name, char key);
+				void bindButtonEventToKey(types::Symbol name, int key);
 				
 //				void bindAnalogEventToMouse(Symbol name, int event);
 				

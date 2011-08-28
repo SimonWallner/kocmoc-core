@@ -68,7 +68,6 @@ configure_file("${PROJECT_SOURCE_DIR}/include/kocmoc-core/version.hpp.in" "${PRO
 list(APPEND INCLUDE_C_HEADER_FILES "${PROJECT_BINARY_DIR}/include/kocmoc-core/version.hpp")
 
 
-
 add_library(kocmoc-core ${SOURCE_FILES} ${HEADER_FILES} ${INCLUDE_C_HEADER_FILES} ${INCLUDE_HEADER_FILES})
 
 set (TARGET_LINK_LIBRARIES kocmoc-core
@@ -84,13 +83,3 @@ set (TARGET_LINK_LIBRARIES kocmoc-core
 )
 
 target_link_libraries(${TARGET_LINK_LIBRARIES})
-
-
-# now build minimal test program
-add_executable(kocmoc-core-test MACOSX_BUNDLE kocmoc-core-test.cpp)
-target_link_libraries(kocmoc-core-test kocmoc-core libglfwStatic ${GLFW_LIBRARIES})
-
-
-
-
-
