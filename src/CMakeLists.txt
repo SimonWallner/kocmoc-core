@@ -8,35 +8,37 @@ add_definitions(-Wall -Wextra -pedantic -Werror)
 # ----------------- find stuff -------------------------
 # find cocoa framework
 find_library(COCOA_FRAMEWORK Cocoa)
-if(!COCOA_FRAMEWORK_FOUND)
-	message(WARNING "Cocoa Framework not found!")
-endif(!COCOA_FRAMEWORK_FOUND)
+
 
 find_package(OpenGL REQUIRED)
-if(!OPENGL_FOUND)
+if(NOT OPENGL_FOUND)
 	message(WARNING "OpenGL not found!")
-endif(!OPENGL_FOUND)
+endif()
 
 find_package(GLEW REQUIRED)
-if(!GLEW_FOUND)
+if(NOT GLEW_FOUND)
 	message(WARNING "GLEW not found!")
-endif(!GLEW_FOUND)
+endif()
 
 find_package(DevIL REQUIRED)
-if(!DEVIL_FOUND)
+if(NOT IL_FOUND)
 	message(WARNING "DevIL not found!")
-endif(!DEVIL_FOUND)
+endif()
 
 find_package(Assimp REQUIRED)
-if(!ASSIMP_FOUND)
-	message(WARNING "Assimp not found!")
-endif(!ASSIMP_FOUND)
+if(NOT ASSIMP_FOUND)
+	message(WARNING "Assimp not found! Install assimp as well as the debug lib.")
+endif()
 
 find_package(TinyXML REQUIRED)
-if(!TINYXML_FOUND)
+if(NOT TINYXML_FOUND)
 	message(WARNING "TinyXML not found!")
-endif(!TINYXML_FOUND)
+endif()
 
+find_package(Boost REQUIRED)
+if(NOT Boost_FOUND)
+	message(WARNING "Boost not found!")
+endif()
 
 
 include_directories(
@@ -47,6 +49,7 @@ include_directories(
 	${IL_INCLUDE_DIR}
 	${ASSIMP_INCLUDE_DIR}
 	${TINYXML_INCLUDE_DIR}
+	${Boost_INCLUDE_DIR}
 )
 
 link_directories(
