@@ -36,6 +36,5 @@ add_custom_target(doc-kocmoc-core
 endif(DOXYGEN_FOUND)
 
 
-
 add_subdirectory(external/glfw)
 add_subdirectory(src)

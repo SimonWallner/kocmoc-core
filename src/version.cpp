@@ -2,6 +2,6 @@
 
 std::string kocmoc::core::version::getVersionString(void)
 {
-	std::string version = std::string("git SHA1 hash: ");
+	std::string version = std::string("KOCMOC-CORE git SHA1 hash: ");
 	return version + gitSHA1;
 }
