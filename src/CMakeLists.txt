@@ -35,10 +35,10 @@ if(NOT TINYXML_FOUND)
 	message(WARNING "TinyXML not found!")
 endif()
 
-find_package(Boost REQUIRED)
-if(NOT Boost_FOUND)
-	message(WARNING "Boost not found!")
-endif()
+# find_package(Boost REQUIRED)
+# if(NOT Boost_FOUND)
+# 	message(WARNING "Boost not found!")
+# endif()
 
 
 include_directories(
@@ -49,7 +49,7 @@ include_directories(
 	${IL_INCLUDE_DIR}
 	${ASSIMP_INCLUDE_DIR}
 	${TINYXML_INCLUDE_DIR}
-	${Boost_INCLUDE_DIR}
+	# ${Boost_INCLUDE_DIR}
 )
 
 link_directories(

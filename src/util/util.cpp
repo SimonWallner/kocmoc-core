@@ -55,6 +55,8 @@ void util::tokenize(const string& str, vector<string >& tokens, const string& de
 
 bool util::parseConfigXMLFileIntoProperties(string path, Properties* props)
 {
+	std::cout << "trying to parse: '" << path << "'" << std::endl;
+	
 	TiXmlDocument doc(path.c_str());
 	if (!doc.LoadFile())
 	{
