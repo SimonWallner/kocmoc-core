@@ -9,7 +9,8 @@
 #ifndef KOCMOC_CORE_SCENE_SCENE_NODE_HPP
 #define KOCMOC_CORE_SCENE_SCENE_NODE_HPP
 
-#include <kocmoc-core/types/Symbol.hpp>
+#include <list>
+#include <string>
 
 namespace kocmoc
 {
@@ -27,23 +28,53 @@ namespace kocmoc
 			 * In order to render it or use it in any other domain, it a view
 			 * has to be derived from the SG. A SG can have an arbitrary number 
 			 * of views
+			 *
+			 * This SG is a directed acyclic graph (DAG)
 			 */
 			class SceneNode
 			{
 			public:
 				
 				/**
-				 * get the 
+				 * Update the node and all its subnodes.
+				 *
+				 * Update this node and propagate the update through all
+				 * subnodes.
 				 */
-				SceneNode* getChild(void);
+				void update(void)
+				
+				/**
+				 * Render this node and all its subnodes.
+				 *
+				 * Render this node and propagate the render call to all its
+				 * subnodes.
+				 */
+				void render(void)
+				
+				/**
+				 * Add a child node to this node.
+				 *
+				 * The child is directly attached to this node.
+				 */
+				void addChild(SceneNode* child)
+
 				
 			private:
+				
+				typedef std::list<SceneNode* node> NodeList;
+				
 				/**
 				 * name of the node
 				 * this is merely a convenience thing, and only to support
 				 * humans debugging the scene graph
 				 */
-				types::Symbol name;
+				std::string name;
+				
+				/** 
+				 * a list of all child nodes
+				 */
+				NodeList children;
+				
 			};
 		}
 	}
