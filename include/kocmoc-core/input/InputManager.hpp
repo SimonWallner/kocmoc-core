@@ -16,15 +16,6 @@ namespace kocmoc
 			class ButtonEventListener;
 			class AnalogEventListener;
 			
-			typedef std::pair<types::Symbol, ButtonEventListener*> EventPair;
-			typedef std::pair<types::Symbol, char> keyBindingPair;
-			
-			typedef std::multimap<types::Symbol, ButtonEventListener*> ButtonEventListenerMultiMap;
-			
-			typedef std::multimap<types::Symbol, char> ButtonEventKeyBindings;
-			
-//			typedef std::vector<AnalogEventListener*> AnalogEventListenerList;
-			
 			/**
 			 * The Input Manager handles input from all devices.
 			 *
@@ -53,7 +44,15 @@ namespace kocmoc
 				
 				void poll(void);
 				
-			private:				
+			private:
+				
+				typedef std::pair<types::Symbol, ButtonEventListener*> EventPair;
+				typedef std::pair<types::Symbol, char> keyBindingPair;
+				typedef std::multimap<types::Symbol, ButtonEventListener*> ButtonEventListenerMultiMap;
+				typedef std::multimap<types::Symbol, char> ButtonEventKeyBindings;
+				
+	//			typedef std::vector<AnalogEventListener*> AnalogEventListenerList;
+				
 				GLFWwindow windowHandle;
 				
 				ButtonEventListenerMultiMap buttonEventListenerMultiMap;

@@ -12,8 +12,6 @@ namespace kocmoc
 	{
 		namespace scene
 		{
-			typedef std::list<std::string> ResourcePathList;
-			
 			class AssetLoader
 			{
 			public:
@@ -22,6 +20,8 @@ namespace kocmoc
 				void addResourcePath(std::string path);
 				
 			private:
+				typedef std::list<std::string> ResourcePathList;
+				
 				ResourcePathList resourcePaths;
 			};
 		}

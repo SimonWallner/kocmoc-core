@@ -12,10 +12,6 @@ namespace kocmoc
 	{
 		namespace util
 		{
-			typedef std::map<types::Symbol, std::string> PropertiesStringCache;
-			typedef std::map<types::Symbol, float> PropertiesFloatCache;
-			typedef std::map<types::Symbol, bool> PropertiesBoolCache;
-
 			class Properties
 			{
 			public:
@@ -40,6 +36,10 @@ namespace kocmoc
 				void dumpCache(void);
 				
 			private:								
+				typedef std::map<types::Symbol, std::string> PropertiesStringCache;
+				typedef std::map<types::Symbol, float> PropertiesFloatCache;
+				typedef std::map<types::Symbol, bool> PropertiesBoolCache;
+				
 				PropertiesStringCache stringCache;
 				PropertiesFloatCache floatCache;
 				PropertiesBoolCache boolCache;
