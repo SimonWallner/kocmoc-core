@@ -4,6 +4,7 @@
 
 using namespace kocmoc::core::componentSystem;
 using std::string;
+using kocmoc::core::types::Symbol;
 
 Object::Object(string _name)
 	: name(_name)
@@ -11,7 +12,8 @@ Object::Object(string _name)
 
 void Object::addComponent(Component *component)
 {
-	components.push_back(component);
+	Symbol name = component->getName();
+	components[name] = component;
 	component->setParent(this);
 }
 

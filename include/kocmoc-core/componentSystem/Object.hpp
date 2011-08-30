@@ -10,7 +10,10 @@
 #define KOCMOC_CORE_COMPONENT_OBJECT_HPP
 
 #include <list>
+#include <map>
 #include <string>
+
+#include <kocmoc-core/types/Symbol.hpp>
 
 namespace kocmoc
 {
@@ -29,6 +32,19 @@ namespace kocmoc
 			class Object
 			{
 			public:
+				
+				/**
+				 * get a component by name and dynamic cast to it.
+				 */
+				template <class T>
+				T* getComponent(types::Symbol name)
+				{
+					ComponentMap::iterator it = components.find(name);
+					if (it != components.end())
+						return dynamic_cast<T>(*it);
+					else
+						return NULL;
+				}
 				
 				/**
 				 * Create a new object with the given name.
@@ -83,12 +99,12 @@ namespace kocmoc
 				std::string name;
 				
 				typedef std::list<Component* > ComponentList;
+				typedef std::map<types::Symbol, Component* > ComponentMap;
 				
-				ComponentList components;
+				ComponentMap components;
 				ComponentList messageReceivers;
 				ComponentList updateReceivers;
 				ComponentList renderReceivers;
-				
 			};
 		}
 	}

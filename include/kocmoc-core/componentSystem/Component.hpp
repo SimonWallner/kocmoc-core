@@ -10,6 +10,7 @@
 #define KOCMOC_CORE_COMPONENT_COMPONENT_HPP
 
 #include <kocmoc-core/componentSystem/Object.hpp>
+#include <kocmoc-core/types/Symbol.hpp>
 
 namespace kocmoc
 {
@@ -33,8 +34,8 @@ namespace kocmoc
 
 			public:
 				virtual void onUpdate(void) {}
-				virtual void onMessage(void) {}
 				virtual void onRender(void) {}
+				virtual types::Symbol getName(void) const = 0;
 				
 			private:
 				void setParent(Object* parent);
