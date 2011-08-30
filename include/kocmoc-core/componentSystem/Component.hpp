@@ -9,13 +9,13 @@
 #ifndef KOCMOC_CORE_COMPONENT_COMPONENT_HPP
 #define KOCMOC_CORE_COMPONENT_COMPONENT_HPP
 
-#include <kocmoc-core/component/Object.hpp>
+#include <kocmoc-core/componentSystem/Object.hpp>
 
 namespace kocmoc
 {
 	namespace core
 	{
-		namespace component
+		namespace componentSystem
 		{
 			/**
 			 * core component class
@@ -25,15 +25,24 @@ namespace kocmoc
 			 */
 			class Component
 			{
+				/**
+				 * The Object is allowed to set itself as parent when it adds
+				 * a component
+				 */
 				friend void Object::addComponent(Component*);
 
 			public:
-				virtual void update(void) {}
-				virtual void sendMessage(void) {}
-				virtual void render(void) {}
+				virtual void onUpdate(void) {}
+				virtual void onMessage(void) {}
+				virtual void onRender(void) {}
 				
 			private:
 				void setParent(Object* parent);
+				
+				/**
+				 * A component can only have a single parent
+				 */
+				Object* parent;
 			
 			};
 		}

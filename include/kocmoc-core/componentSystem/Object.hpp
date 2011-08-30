@@ -16,7 +16,7 @@ namespace kocmoc
 {
 	namespace core
 	{
-		namespace component
+		namespace componentSystem
 		{
 			class Component;
 			

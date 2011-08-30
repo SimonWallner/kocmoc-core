@@ -1,8 +1,8 @@
-#include <kocmoc-core/component/Object.hpp>
+#include <kocmoc-core/componentSystem/Object.hpp>
 
-#include <kocmoc-core/component/Component.hpp>
+#include <kocmoc-core/componentSystem/Component.hpp>
 
-using namespace kocmoc::core::component;
+using namespace kocmoc::core::componentSystem;
 using std::string;
 
 Object::Object(string _name)
@@ -36,6 +36,6 @@ void Object::sendMessage()
 		 it != messageReceivers.end();
 		 it++)
 	{
-		(*it)->sendMessage();
+//		(*it)->sendMessage();
 	}
 }
