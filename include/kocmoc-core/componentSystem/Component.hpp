@@ -33,18 +33,27 @@ namespace kocmoc
 				friend void Object::addComponent(Component*);
 
 			public:
+				types::Symbol getName(void)
+				{
+					return types::symbolize(typeid(*this).name());
+				}
+				
+				/**
+				 * init is callen when all components are constructed.
+				 * This is where you get you pointers to other components.
+				 */
+				virtual void init(void);
+				
 				virtual void onUpdate(void) {}
 				virtual void onRender(void) {}
-				virtual types::Symbol getName(void) const = 0;
-				
-			private:
+								
+			protected:
 				void setParent(Object* parent);
 				
 				/**
 				 * A component can only have a single parent
 				 */
 				Object* parent;
-			
 			};
 		}
 	}

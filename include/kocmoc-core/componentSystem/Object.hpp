@@ -12,6 +12,7 @@
 #include <list>
 #include <map>
 #include <string>
+#include <typeinfo>
 
 #include <kocmoc-core/types/Symbol.hpp>
 
@@ -37,11 +38,14 @@ namespace kocmoc
 				 * get a component by name and dynamic cast to it.
 				 */
 				template <class T>
-				T* getComponent(types::Symbol name)
+				T* getComponent()
 				{
-					ComponentMap::iterator it = components.find(name);
+					ComponentMap::iterator it = components.find(types::symbolize(typeid(T).name()));
 					if (it != components.end())
-						return dynamic_cast<T>(*it);
+					{
+						Component* c = it->second;
+						return dynamic_cast<T*>(c);
+					}
 					else
 						return NULL;
 				}

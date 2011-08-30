@@ -12,8 +12,7 @@ Object::Object(string _name)
 
 void Object::addComponent(Component *component)
 {
-	Symbol name = component->getName();
-	components[name] = component;
+	components[component->getName()] = component;
 	component->setParent(this);
 }
 
@@ -22,22 +21,8 @@ void Object::registerRenderReceiver(Component* receiver)
 	renderReceivers.push_back(receiver);
 }
 
-void Object::registerMessageReceiver(Component* receiver)
-{
-	messageReceivers.push_back(receiver);
-}
-
 void Object::registerUpdateReceiver(Component* receiver)
 {
 	updateReceivers.push_back(receiver);
 }
 
-void Object::sendMessage()
-{
-	for (ComponentList::iterator it = messageReceivers.begin();
-		 it != messageReceivers.end();
-		 it++)
-	{
-//		(*it)->sendMessage();
-	}
-}
