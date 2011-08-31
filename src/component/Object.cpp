@@ -26,3 +26,22 @@ void Object::registerUpdateReceiver(Component* receiver)
 	updateReceivers.push_back(receiver);
 }
 
+void Object::update()
+{
+	for (ComponentList::iterator it = updateReceivers.begin();
+		 it != updateReceivers.end();
+		 it++)
+	{
+		(*it)->onUpdate();
+	}
+}
+
+void Object::render()
+{
+	for (ComponentList::iterator it = renderReceivers.begin();
+		 it != renderReceivers.end();
+		 it++)
+	{
+		(*it)->onRender();
+	}
+}

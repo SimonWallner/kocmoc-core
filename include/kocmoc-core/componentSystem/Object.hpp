@@ -53,7 +53,9 @@ namespace kocmoc
 				/**
 				 * Create a new object with the given name.
 				 */
-				Object(std::string name);
+				explicit Object(std::string name);
+				
+				virtual void init(void) {};
 				
 				/**
 				 * Add a component to the object

@@ -49,9 +49,15 @@ namespace kocmoc
 				virtual void onRender(void) {}
 								
 			protected:
-				void setParent(Object* _parent)
+				/**
+				 * Set the parent of this component.
+				 * This shall be only called by Object::addComponent(...)
+				 *
+				 * @param parent the new parent object.
+				 */
+				void setParent(Object* parent)
 				{
-					parent = _parent;
+					this->parent = parent;
 				}
 				
 				/**
