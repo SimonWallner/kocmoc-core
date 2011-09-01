@@ -4,27 +4,37 @@
 #include <string>
 #include <list>
 
-#include <kocmoc-core/component/Renderable.hpp>
+// wrap, wrap
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#include <assimp/assimp.hpp>
+#pragma GCC diagnostic error "-Wunused-parameter"
 
 namespace kocmoc
 {
 	namespace core
 	{
+		namespace component
+		{
+			class Renderable;
+		}
+		
 		namespace scene
 		{
 			class AssetLoader
 			{
 			public:
-				virtual component::Renderable* load(std::string name) = 0;
+				AssetLoader(void);
 				
 				void addResourcePath(std::string path);
 				
-				component::Renderable* loadAsset(std::string name);
+				component::Renderable* load(std::string name);
 				
 			private:
 				typedef std::list<std::string> ResourcePathList;
 				
 				ResourcePathList resourcePaths;
+				
+				Assimp::Importer importer;
 			};
 		}
 	}

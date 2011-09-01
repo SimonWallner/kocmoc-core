@@ -2,6 +2,7 @@
 
 # set compiler flags
 add_definitions(-Wall -Wextra -pedantic -Werror)
+# can't use  due to unused parameter in assimp header.
 # later add  -Weffc++
 
 

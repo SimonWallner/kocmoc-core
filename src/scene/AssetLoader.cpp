@@ -8,6 +8,8 @@
 
 #include <kocmoc-core/scene/AssetLoader.hpp>
 
+#include <kocmoc-core/component/Renderable.hpp>
+
 using namespace kocmoc::core::scene;
 
 using std::string;
@@ -19,3 +21,12 @@ void AssetLoader::addResourcePath(string path)
 	resourcePaths.push_back(path);
 }
 
+Renderable* AssetLoader::load(string name)
+{
+	
+}
+
+AssetLoader::AssetLoader()
+{
+	
+}
