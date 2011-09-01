@@ -8,7 +8,7 @@
 
 #include <kocmoc-core/component/ObjectBehaviour.hpp>
 
-using namespace kocmoc::component;
+using namespace kocmoc::core::component;
 
 ObjectBehaviour::ObjectBehaviour()
 	: position(glm::vec3(0, 0, 0))

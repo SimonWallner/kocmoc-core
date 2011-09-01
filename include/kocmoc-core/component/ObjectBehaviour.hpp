@@ -15,19 +15,22 @@
 
 namespace kocmoc
 {
-	namespace component
+	namespace core
 	{
-		class ObjectBehaviour : public core::componentSystem::Component
+		namespace component
 		{
-		public:
-			
-			ObjectBehaviour();
+			class ObjectBehaviour : public core::componentSystem::Component
+			{
+			public:
+				
+				ObjectBehaviour();
 
-			void onUpdate(void) {};
+				void onUpdate(void) {}
 
-			glm::vec3 position;
-			
-		};
+				glm::vec3 position;
+				
+			};
+		}
 	}
 }
 

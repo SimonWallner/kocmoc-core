@@ -11,7 +11,7 @@
 
 #include <iostream>
 
-using namespace kocmoc::component;
+using namespace kocmoc::core::component;
 using std::string;
 
 void Renderable::onRender()

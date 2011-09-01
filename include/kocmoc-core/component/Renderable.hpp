@@ -16,18 +16,21 @@
 
 namespace kocmoc
 {
-	namespace component
+	namespace core
 	{
-		class Renderable : public core::componentSystem::Component
+		namespace component
 		{
-		public:
-			void onRender(void);
-			
-			void init(void);
-			
-		private:
-			ObjectBehaviour* objectBehaviour;
-		};
+			class Renderable : public core::componentSystem::Component
+			{
+			public:
+				void onRender(void);
+				
+				void init(void);
+				
+			private:
+				ObjectBehaviour* objectBehaviour;
+			};
+		}
 	}
 }
 
