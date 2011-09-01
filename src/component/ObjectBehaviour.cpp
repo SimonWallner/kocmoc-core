@@ -6,7 +6,7 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#include "ObjectBehaviour.hpp"
+#include <kocmoc-core/component/ObjectBehaviour.hpp>
 
 using namespace kocmoc::component;
 

@@ -9,9 +9,10 @@
 #ifndef KOCMCO_COMPONENT_RENDERABLE_HPP
 #define KOCMCO_COMPONENT_RENDERABLE_HPP
 
-#include <kocmoc-core/componentSystem/Component.hpp>
+#include <string>
 
-#include "ObjectBehaviour.hpp"
+#include <kocmoc-core/componentSystem/Component.hpp>
+#include <kocmoc-core/component/ObjectBehaviour.hpp>
 
 namespace kocmoc
 {
@@ -23,8 +24,6 @@ namespace kocmoc
 			void onRender(void);
 			
 			void init(void);
-			
-			void loadAsset(std::string name);
 			
 		private:
 			ObjectBehaviour* objectBehaviour;

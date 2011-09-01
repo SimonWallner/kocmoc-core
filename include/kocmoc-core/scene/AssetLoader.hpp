@@ -4,7 +4,7 @@
 #include <string>
 #include <list>
 
-#include <kocmoc-core/scene/Renderable.hpp>
+#include <kocmoc-core/component/Renderable.hpp>
 
 namespace kocmoc
 {
@@ -15,9 +15,11 @@ namespace kocmoc
 			class AssetLoader
 			{
 			public:
-				virtual Renderable* load(std::string name) = 0;
+				virtual component::Renderable* load(std::string name) = 0;
 				
 				void addResourcePath(std::string path);
+				
+				component::Renderable* loadAsset(std::string name);
 				
 			private:
 				typedef std::list<std::string> ResourcePathList;

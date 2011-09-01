@@ -6,11 +6,13 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#include "Renderable.hpp"
+
+#include <kocmoc-core/component/Renderable.hpp>
 
 #include <iostream>
 
 using namespace kocmoc::component;
+using std::string;
 
 void Renderable::onRender()
 {
@@ -20,9 +22,4 @@ void Renderable::onRender()
 void Renderable::init()
 {
 	objectBehaviour = parent->getComponent<ObjectBehaviour>();
-}
-
-void Renderable::loadAsset(string name)
-{
-	
 }
