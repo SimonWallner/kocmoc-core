@@ -5,9 +5,11 @@
 using namespace kocmoc::core::componentSystem;
 using std::string;
 using kocmoc::core::types::Symbol;
+using kocmoc::core::util::Properties;
 
-Object::Object(string _name)
-	: name(_name)
+Object::Object(string _name, Properties* _props)
+	: props(_props)
+	, name(_name)
 {}
 
 void Object::addComponent(Component *component)

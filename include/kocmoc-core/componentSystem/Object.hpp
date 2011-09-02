@@ -15,6 +15,7 @@
 #include <typeinfo>
 
 #include <kocmoc-core/types/Symbol.hpp>
+#include <kocmoc-core/util/Properties.hpp>
 
 namespace kocmoc
 {
@@ -51,9 +52,12 @@ namespace kocmoc
 				}
 				
 				/**
-				 * Create a new object with the given name.
+				 * Create a new object
+				 * @param name	The human readable name of the object.
+				 * @param props	A general set of properties to be used by the 
+				 *		Object.
 				 */
-				explicit Object(std::string name);
+				explicit Object(std::string name, util::Properties* props);
 				
 				virtual void init(void) {};
 				
@@ -100,8 +104,10 @@ namespace kocmoc
 				 */
 				void render(void);
 				
-			private:
+			protected:
+				util::Properties* props;
 				
+			private:
 				std::string name;
 				
 				typedef std::list<Component* > ComponentList;

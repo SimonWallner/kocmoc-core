@@ -7,7 +7,10 @@
 // wrap, wrap
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 #include <assimp/assimp.hpp>
+#include <assimp/aiPostProcess.h>
 #pragma GCC diagnostic error "-Wunused-parameter"
+
+#include <kocmoc-core/exception/ResourceNotFoundException.hpp>
 
 namespace kocmoc
 {
@@ -35,6 +38,15 @@ namespace kocmoc
 				ResourcePathList resourcePaths;
 				
 				Assimp::Importer importer;
+				
+				/**
+				 * Try to find a given file in all the resource paths.
+				 * @param the name of the file as a path relative to the existin
+				 *		resource paths.
+				 * @return the absolute path to the asset
+				 * @throws 
+				 */
+				std::string findAbsolutePathInResources(std::string name) throw(exception::ResourceNotFoundException);
 			};
 		}
 	}

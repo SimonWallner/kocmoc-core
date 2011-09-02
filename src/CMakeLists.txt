@@ -1,9 +1,8 @@
 # cmake list for kocmoc-core src/
 
 # set compiler flags
-add_definitions(-Wall -Wextra -pedantic -Werror)
-# can't use  due to unused parameter in assimp header.
-# later add  -Weffc++
+add_definitions(-Wall -Wextra -pedantic -Werror -Winit-self)
+# later add  -Weffc++ -Wdouble-promotion -Wshadow -Wc++0x-compat -Wfloat-equal -Wmissing-include-dirs
 
 
 # ----------------- find stuff -------------------------
@@ -80,8 +79,10 @@ set (TARGET_LINK_LIBRARIES kocmoc-core
 	${IL_LIBRARIES}
 	${ILU_LIBRARIES}
 	${ILUT_LIBRARIES}
-	${ASSIMP_LIBRARY}
+	${ASSIMP_LIBRARY_RELEASE}
 	${TINYXML_LIBRARIES}
 )
+# link to assimp release right now, since the debug lib is not found
+# if it is present, ASSIMP_LIBRARY should work again.
 
 target_link_libraries(${TARGET_LINK_LIBRARIES})
