@@ -11,12 +11,19 @@
 
 #include <iostream>
 
+#include <GL/glfw3.h>
+
 using namespace kocmoc::core::component;
 using std::string;
 
+Renderable::Renderable(unsigned int _vaoHandle)
+	: vaoHandle(_vaoHandle)
+{}
+
 void Renderable::onRender()
 {
-	std::cout << "position: " << objectBehaviour->position.x << std::endl;
+	glDrawBuffer(GL_TRIANGLES);
+	
 }
 
 void Renderable::init()

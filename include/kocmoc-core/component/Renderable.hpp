@@ -23,12 +23,16 @@ namespace kocmoc
 			class Renderable : public core::componentSystem::Component
 			{
 			public:
+				Renderable(unsigned int vaoHandle);
+				
 				void onRender(void);
 				
 				void init(void);
 				
 			private:
 				ObjectBehaviour* objectBehaviour;
+				
+				unsigned int vaoHandle;
 			};
 		}
 	}
