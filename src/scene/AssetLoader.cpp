@@ -18,6 +18,7 @@
 #include <kocmoc-core/component/Renderable.hpp>
 #include <kocmoc-core/util/util.hpp>
 #include <kocmoc-core/types/types.h>
+#include <kocmoc-core/scene/TriangleMesh.hpp>
 
 using namespace kocmoc::core::scene;
 using namespace Assimp;
@@ -26,6 +27,7 @@ using std::string;
 
 using kocmoc::core::component::Renderable;
 using kocmoc::core::types::uint;
+using kocmoc::core::scene::TriangleMesh;
 
 void AssetLoader::addResourcePath(string path)
 {
@@ -37,7 +39,7 @@ Renderable* AssetLoader::load(string name)
 	string absolutePath = findAbsolutePathInResources(name);	
 	std::cout << "trying to load asset: " << absolutePath << std::endl;
 	
-	const aiScene* scene = importer.ReadFile(absolutePath, aiProcess_Triangulate);
+	const aiScene* scene = importer.ReadFile(absolutePath, aiProcess_Triangulate | aiProcess_SortByPType);
 	
 	if (!scene) // error
 	{
@@ -48,27 +50,36 @@ Renderable* AssetLoader::load(string name)
 	
 	if (scene->HasMeshes())
 	{
-		aiMesh* mesh = scene->mMeshes[0];
-		
-		if (mesh->HasPositions())
+		for (uint i = 0; i < scene->mNumMeshes; i++)
 		{
-			
-			GLuint vaoHandle = 0;
-			
-			glGenVertexArraysAPPLE(1, &vaoHandle);
-			glBindVertexArrayAPPLE(vaoHandle);
-			
-			GLuint handle = 0;
-			glGenBuffers(1, &handle);
-			glBindBuffer(GL_ARRAY_BUFFER, handle);
-			glBufferData(GL_ARRAY_BUFFER, mesh->mNumVertices * sizeof(float), mesh->mVertices, GL_STATIC_DRAW);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-			glEnableVertexAttribArray(0);
-			
-			return new Renderable(vaoHandle);
+			aiMesh* mesh = scene->mMeshes[i];
+			if (mesh->mPrimitiveTypes == aiPrimitiveType_TRIANGLE)
+			{
+				uint vertexCount = mesh->mNumVertices;
+				uint vertexIndexCount = mesh->mNumFaces * 3;
+				
+				float* positions = new float[vertexCount * 3];
+				for (uint j = 0; j < vertexCount; j++)
+				{
+					positions[j*3  ] = mesh->mVertices[j].x;
+					positions[j*3+1] = mesh->mVertices[j].y;
+					positions[j*3+2] = mesh->mVertices[j].z;
+				}
+				
+				uint* indices = new uint[vertexIndexCount];
+				for (uint j = 0; j < mesh->mNumFaces; j++)
+				{
+					indices[j*3  ] = mesh->mFaces[j].mIndices[0];
+					indices[j*3+1] = mesh->mFaces[j].mIndices[1];
+					indices[j*3+2] = mesh->mFaces[j].mIndices[2];
+				}
+				
+				
+				TriangleMesh::VertexAttribute positionAttribute(3, positions, true);
+				TriangleMesh triangleMesh(vertexIndexCount, vertexCount, indices, positionAttribute);
+			}	
 		}
 	}
-	
 	return NULL;
 }
 

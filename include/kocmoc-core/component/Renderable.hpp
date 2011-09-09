@@ -31,8 +31,6 @@ namespace kocmoc
 				
 			private:
 				ObjectBehaviour* objectBehaviour;
-				
-				unsigned int vaoHandle;
 			};
 		}
 	}
