@@ -43,7 +43,7 @@ namespace kocmoc
 				
 				virtual ~RenderMesh(void);
 
-				void draw(scene::Camera *camera) = 0;
+				virtual void draw(scene::Camera *camera) = 0;
 
 				types::uint getVertexCount(void) const
 				{

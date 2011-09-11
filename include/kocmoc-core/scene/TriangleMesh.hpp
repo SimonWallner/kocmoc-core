@@ -19,10 +19,10 @@ namespace kocmoc
 
 		namespace scene
 		{
-			const types::Symbol textureDiffuseColour = types::symbolize("diffuseColour");
-			const types::Symbol textureSpecularColour = types::symbolize("specularColour");
-			const types::Symbol textureNormalMap = types::symbolize("normalMap");
-			const types::Symbol textureEmmisiveColour = types::symbolize("emmisiveColour");
+//			const types::Symbol textureDiffuseColour = types::symbolize("diffuseColour");
+//			const types::Symbol textureSpecularColour = types::symbolize("specularColour");
+//			const types::Symbol textureNormalMap = types::symbolize("normalMap");
+//			const types::Symbol textureEmmisiveColour = types::symbolize("emmisiveColour");
 
 			/**
 			 * The \c TriangleMesh acts as the canonical basis for triangle meshes.
