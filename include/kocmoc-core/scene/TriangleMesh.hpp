@@ -22,6 +22,10 @@ namespace kocmoc
 
 		namespace scene
 		{
+			const types::Symbol textureDiffuseColour = types::symbolize("diffuseColour");
+			const types::Symbol textureSpecularColour = types::symbolize("specularColour");
+			const types::Symbol textureNormalMap = types::symbolize("normalMap");
+			const types::Symbol textureEmmisiveColour = types::symbolize("emmisiveColour");
 
 			/**
 			 * The \c TriangleMesh acts as the canonical basis for triangle meshes.
@@ -46,10 +50,10 @@ namespace kocmoc
 			 *		- tangents, 
 			 *
 			 *	\b Textures
-			 *		- diffuse color, \c RGB
-			 *		- specular color + shinyness, \c RGBA
+			 *		- diffuse colour, \c RGB
+			 *		- specular colour + shinyness, \c RGBA
 			 *		- normal map, \c RGB
-			 *		- emmissive color, \c RGB (TODO: change to HDR format)
+			 *		- emmissive colour, \c RGB (TODO: change to HDR format)
 			 *
 			 *	\b Primitives
 			 *		- indexed trianlges, no tri-strips at this time!
@@ -154,7 +158,10 @@ namespace kocmoc
 				/**
 				 * Add a texture to this mesh.
 				 *
-				 * @param name The name under which the texture will be filed.
+				 * @param name The name under which the texture will be filed. 
+				 *		Use on of the texture name constants defined in this 
+				 *		very name space. Orther texture names might not be 
+				 *		recognised.
 				 * @param texture The texture object itself.
 				 */
 				void addTexture(types::Symbol name, std::string path);
@@ -171,6 +178,9 @@ namespace kocmoc
 				/** Map of textures in this mesh */
 				TextureMap textures;
 
+				/**
+				 * A pointer to the shader to be used.
+				 */
 				renderer::Shader* shader;
 			};
 		}
