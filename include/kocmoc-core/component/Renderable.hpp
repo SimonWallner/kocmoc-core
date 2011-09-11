@@ -13,6 +13,7 @@
 
 #include <kocmoc-core/componentSystem/Component.hpp>
 #include <kocmoc-core/component/ObjectBehaviour.hpp>
+#include <kocmoc-core/types/Symbol.hpp>
 
 namespace kocmoc
 {
@@ -20,12 +21,21 @@ namespace kocmoc
 	{
 		namespace component
 		{
+			class Camera;
+		
 			class Renderable : public core::componentSystem::Component
 			{
 			public:
-				Renderable(unsigned int vaoHandle);
+				Renderable();
 				
-				void onRender(void);
+				/**
+				 * Render callback function.
+				 * 
+				 * @param camera The camera that should be used for rendering.
+				 * @param pass The name of the current render pass. i.e. "normal",
+				 *		"shadowmap", "transparent", "earlyZ", etc.
+				 */
+				void onRender(Camera* camera, types::Symbol pass);
 				
 				void init(void);
 				

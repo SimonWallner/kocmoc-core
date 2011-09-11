@@ -39,46 +39,60 @@ Renderable* AssetLoader::load(string name)
 	string absolutePath = findAbsolutePathInResources(name);	
 	std::cout << "trying to load asset: " << absolutePath << std::endl;
 	
-	const aiScene* scene = importer.ReadFile(absolutePath, aiProcess_Triangulate | aiProcess_SortByPType);
+	const aiScene* scene = importer.ReadFile(absolutePath,
+											 aiProcess_Triangulate |
+											 aiProcess_SortByPType |
+											 aiProcess_CalcTangentSpace |
+											 aiProcess_ImproveCacheLocality);
 	
 	if (!scene) // error
 	{
 		std::cout << "Assimp asset loading error" << importer.GetErrorString() << std::endl;
 	}
 	else
-		std::cout << "loading successful" << std::endl;
-	
-	if (scene->HasMeshes())
 	{
-		for (uint i = 0; i < scene->mNumMeshes; i++)
+		if (scene->HasMeshes())
 		{
-			aiMesh* mesh = scene->mMeshes[i];
-			if (mesh->mPrimitiveTypes == aiPrimitiveType_TRIANGLE)
+			for (uint i = 0; i < scene->mNumMeshes; i++)
 			{
-				uint vertexCount = mesh->mNumVertices;
-				uint vertexIndexCount = mesh->mNumFaces * 3;
-				
-				float* positions = new float[vertexCount * 3];
-				for (uint j = 0; j < vertexCount; j++)
+				aiMesh* mesh = scene->mMeshes[i];
+				if (mesh->mPrimitiveTypes == aiPrimitiveType_TRIANGLE)
 				{
-					positions[j*3  ] = mesh->mVertices[j].x;
-					positions[j*3+1] = mesh->mVertices[j].y;
-					positions[j*3+2] = mesh->mVertices[j].z;
-				}
-				
-				uint* indices = new uint[vertexIndexCount];
-				for (uint j = 0; j < mesh->mNumFaces; j++)
-				{
-					indices[j*3  ] = mesh->mFaces[j].mIndices[0];
-					indices[j*3+1] = mesh->mFaces[j].mIndices[1];
-					indices[j*3+2] = mesh->mFaces[j].mIndices[2];
-				}
-				
-				
-				TriangleMesh::VertexAttribute positionAttribute(3, positions, true);
-				TriangleMesh triangleMesh(vertexIndexCount, vertexCount, indices, positionAttribute);
-			}	
+					uint vertexCount = mesh->mNumVertices;
+					uint vertexIndexCount = mesh->mNumFaces * 3;
+					
+					float* positions = new float[vertexCount * 3];
+					for (uint j = 0; j < vertexCount; j++)
+					{
+						positions[j*3  ] = mesh->mVertices[j].x;
+						positions[j*3+1] = mesh->mVertices[j].y;
+						positions[j*3+2] = mesh->mVertices[j].z;
+					}
+					
+					uint* indices = new uint[vertexIndexCount];
+					for (uint j = 0; j < mesh->mNumFaces; j++)
+					{
+						indices[j*3  ] = mesh->mFaces[j].mIndices[0];
+						indices[j*3+1] = mesh->mFaces[j].mIndices[1];
+						indices[j*3+2] = mesh->mFaces[j].mIndices[2];
+					}
+					
+					
+					TriangleMesh::VertexAttribute positionAttribute(3, positions, true);
+					TriangleMesh triangleMesh(vertexIndexCount, vertexCount, indices, positionAttribute);
+				}	
+			}
+			
+			for (uint i = 0; i < scene->mNumMaterials; i++)
+			{
+				aiMaterial* mat = scene->mMaterials[i];
+				aiString* path;
+				mat->GetTexture(aiTextureType_DIFFUSE, 0, path);
+				std::cout << "diffuse texture 0: " << path->data << std::endl;
+			}
 		}
+		std::cout << "loading successful" << std::endl;
+		AI_MATKEY_SHADING_MODEL
 	}
 	return NULL;
 }

@@ -16,14 +16,12 @@
 using namespace kocmoc::core::component;
 using std::string;
 
-Renderable::Renderable(unsigned int _vaoHandle)
-	: vaoHandle(_vaoHandle)
+Renderable::Renderable()
 {}
 
-void Renderable::onRender()
+void Renderable::onRender(Camera* camera, types::Symbol pass)
 {
-	glDrawBuffer(GL_TRIANGLES);
-	
+	std::cout << camera << pass;
 }
 
 void Renderable::init()
