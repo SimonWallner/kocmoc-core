@@ -6,8 +6,6 @@ using kocmoc::core::types::symbolize;
 using kocmoc::core::types::Symbol;
 using kocmoc::core::types::uint;
 
-using glm::vec3;
-
 
 TriangleMesh::TriangleMesh(uint _vertexIndexCount,
 						   uint* _indices,

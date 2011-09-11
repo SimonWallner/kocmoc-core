@@ -77,9 +77,7 @@ Renderable* AssetLoader::load(string name)
 						indices[j*3+2] = mesh->mFaces[j].mIndices[2];
 					}
 					
-					
-					TriangleMesh::VertexAttribute positionAttribute(3, positions, true);
-					TriangleMesh triangleMesh(vertexIndexCount, vertexCount, indices, positionAttribute);
+//					TriangleMesh triangleMesh(vertexIndexCount, indices, vertexCount, positions);
 				}	
 			}
 			
@@ -92,7 +90,7 @@ Renderable* AssetLoader::load(string name)
 			}
 		}
 		std::cout << "loading successful" << std::endl;
-		AI_MATKEY_SHADING_MODEL
+
 	}
 	return NULL;
 }

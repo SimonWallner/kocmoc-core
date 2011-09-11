@@ -10,7 +10,6 @@ namespace kocmoc
 		namespace scene
 		{
 			class TriangleMesh;
-			class Camera;
 		}
 		
 		namespace renderer
@@ -21,14 +20,13 @@ namespace kocmoc
 			class RenderMesh21 : public RenderMesh
 			{
 			public:
-				RenderMesh21(scene::TriangleMesh* triangleMsh)
-					: RenderMesh(triangleMsh)
+				RenderMesh21(scene::TriangleMesh* triangleMesh)
+					: RenderMesh(triangleMesh)
 				{}
 				
-				virtual void prepare(void);
+				void prepare(void);
 				
-				void draw(camera::Camera *camera) = 0;
-
+				void draw(scene::Camera *camera);
 			};
 		}
 	}

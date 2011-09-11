@@ -15,8 +15,7 @@ namespace kocmoc
 {
 	namespace core
 	{
-
-		namespace camera
+		namespace scene
 		{
 			class Camera;
 		}
@@ -44,7 +43,7 @@ namespace kocmoc
 				
 				virtual ~RenderMesh(void);
 
-				void draw(glm::mat4 parentTransform, camera::Camera *camera);
+				void draw(scene::Camera *camera) = 0;
 
 				types::uint getVertexCount(void) const
 				{

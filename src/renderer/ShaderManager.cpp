@@ -1,6 +1,8 @@
-#include "ShaderManager.hpp"
+#include <kocmoc-core/renderer/ShaderManager.hpp>
 
-using namespace kocmoc::renderer;
+#include <iostream>
+
+using namespace kocmoc::core::renderer;
 
 using std::string;
 
