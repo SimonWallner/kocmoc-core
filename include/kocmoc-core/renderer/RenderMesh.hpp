@@ -3,19 +3,18 @@
 
 #include <vector>
 
-#include <glm.hpp>
+#include <glm/glm.hpp>
+
+#include <GL/glfw3.h>
 
 #include <kocmoc-core/renderer/Shader.hpp>
-#include <kocmoc-core/scene/PolyMesh.hpp>
+#include <kocmoc-core/scene/TriangleMesh.hpp>
+#include <kocmoc-core/types/types.h>
 
 namespace kocmoc
 {
 	namespace core
 	{
-		namespace scene
-		{
-			class LineGizmo;
-		}
 
 		namespace camera
 		{
@@ -24,83 +23,84 @@ namespace kocmoc
 
 		namespace renderer
 		{
-			// TODO add shader attribute semantic hint/explanation/ref
+			class Shader;
 
 			/**
-			 * Wrap a polyMesh so that we can enhance it with further properties
-			 * and finally render it.
+			 * This is the hardware dependent (2.1, 3.2, ES2.0, etc.) wrapper
+			 * that takes a version independent triangle mesh and makes it 
+			 * displayable for the target platform.
 			 *
-			 * Practically a RenderMesh is friends with a PolyMesh in order to ease
-			 * cooperation. This is indeed tight coupling, but it seems appropriate
-			 * here.
+			 * Well, to be more precise, this is the HW independent interface
+			 * that is implemented by the hardware specific implementations.
 			 */
 			class RenderMesh
 			{
 			public:
-				// TODO: rename to polyMesh
-				const scene::PolyMesh* mesh;
-				Shader* shader;
 
-				RenderMesh(scene::PolyMesh* mesh, Shader* shader);
-				~RenderMesh(void);
+				RenderMesh(scene::TriangleMesh* _triangleMsh)
+					: triangleMesh(_triangleMsh)
+					, prepared(false)
+				{}
+				
+				virtual ~RenderMesh(void);
 
 				void draw(glm::mat4 parentTransform, camera::Camera *camera);
 
-				void setModelMatrix(glm::mat4 _modelMatrix);
-
-				uint getVertexCount(void);
-
-			private:
+				types::uint getVertexCount(void) const
+				{
+					return triangleMesh->vertexCount;
+				}
 				
-				typedef std::vector<RenderTexture > RenderTextureList;
+				/**
+				 * Prepare the mesh for rendering.
+				 *
+				 * This covers all the chores that have to be done before the 
+				 * actual rendering. Like, setting up textures, loading shaders
+				 * uploading vertex data, etc.
+				 */
+				virtual void prepare(void) = 0;
+				
+				/**
+				 * Find out if this \c RenderMesh is ready for rendering.
+				 */
+				bool isPrepared(void) const
+				{
+					return prepared;
+				}
 
+			protected:
+				
 				/** A texture wrapper */
 				struct RenderTexture
 				{
 					const GLuint handle;
 					const GLuint textureUnit;
-
+					
 					RenderTexture(GLuint _handle, GLuint _textureUnit)
-						: handle(_handle)
-						, textureUnit(_textureUnit)
+					: handle(_handle)
+					, textureUnit(_textureUnit)
 					{};
 				};
-
-				RenderTextureList renderTextures;
-
-				glm::mat4 modelMatrix;
-
-				bool isUploaded;
-
-				GLuint vaoHandle;
-				uint triangulatedVertexIndexCount;
-
-				scene::LineGizmo* originGizmo;
-				scene::LineGizmo* boundingBox;
-
-				glm::mat4 bbTransform;
-
-				// uniform locations
-				GLint uniformCameraPosition;
-				GLint uniformProjectionMatrix;
-				GLint uniformViewMatrix;
-				GLint uniformModelMatrix;
-
-				bool uniformsAreSet;
-
-				bool debugDrawMeshGizmo;
 				
+				typedef std::vector<RenderTexture > RenderTextureList;
 
-				void uploadData(void);
-				
-				/** Set up the textures.
-				 * 
-				 * - read bindings from shader
-				 * - fetch specified textures from poly mesh
-				 * - load these textures 
-				 * - store in render textures
+				/**
+				 * The triangle mesh that holds the data. Once everything is 
+				 * uploaded this might even be \c NULL.
 				 */
-				void setUpTextures(void);
+				const scene::TriangleMesh* triangleMesh;
+				
+				/** whether the mesh is ready for rendering or not */
+				bool prepared;
+				
+				/** 
+				 * A pointer to the shader that is used. exactly one shader per
+				 * mesh. Shall not be \ NULL.
+				 */
+				Shader* shader;
+
+				/** List of \c RenderTexture */
+				RenderTextureList renderTextures;
 			};
 		}
 	}

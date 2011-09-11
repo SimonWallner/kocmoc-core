@@ -35,3 +35,4 @@ void TriangleMesh::addTexture(Symbol name, std::string path)
 {
 	textures[name] = path;
 }
+

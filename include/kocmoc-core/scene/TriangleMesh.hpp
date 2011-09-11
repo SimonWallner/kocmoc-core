@@ -4,8 +4,6 @@
 #include <map>
 #include <string>
 
-#include <glm/glm.hpp>
-
 #include <kocmoc-core/types/Symbol.hpp>
 #include <kocmoc-core/types/types.h>
 
@@ -17,7 +15,6 @@ namespace kocmoc
 		namespace renderer
 		{
 			class RenderMesh;
-			class Shader;
 		}
 
 		namespace scene
@@ -166,7 +163,7 @@ namespace kocmoc
 				 */
 				void addTexture(types::Symbol name, std::string path);
 				
-				void setShader(renderer::Shader* _shader)
+				void setShader(std::string _shader)
 				{
 					shader = _shader;
 				}
@@ -179,9 +176,9 @@ namespace kocmoc
 				TextureMap textures;
 
 				/**
-				 * A pointer to the shader to be used.
+				 * The name of the shader to use.
 				 */
-				renderer::Shader* shader;
+				std::string shader;
 			};
 		}
 	}
