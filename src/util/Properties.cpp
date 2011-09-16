@@ -45,7 +45,10 @@ string Properties::getString(Symbol name)
 	if (ci != stringCache.end())
 		return ci->second;
 	else
+	{
+		std::cout << "could not find property: '" << name << "'" << std::endl;
 		return "UNDEFINED";
+	}
 }
 
 void Properties::dumpCache()

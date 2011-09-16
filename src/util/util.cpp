@@ -53,7 +53,7 @@ void util::tokenize(const string& str, vector<string >& tokens, const string& de
 	}
 }
 
-bool util::parseConfigXMLFileIntoProperties(string path, Properties* props)
+bool util::parser::parseConfigXMLFileIntoProperties(string path, Properties* props)
 {
 	std::cout << "trying to parse: '" << path << "'" << std::endl;
 	

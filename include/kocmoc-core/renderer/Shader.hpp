@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 
+#define LOG_BUFFER_SIZE 8096
 
 namespace kocmoc
 {
@@ -14,9 +15,9 @@ namespace kocmoc
 	{
 		namespace renderer
 		{
-
-			// TODO replace assert with useful exceptions!
-
+			
+			const std::string fragmentDataLocation = "colour";
+			
 			/**
 			 * Basic shader class, taken from/built upon the RTR OpenGL 3 sample
 			 */
@@ -49,26 +50,16 @@ namespace kocmoc
 				/**
 				 * Bind the shader to OpenGL.
 				 *
-				 * @pre The shader must be uploaded to the GPU.
+				 * @note The shader must be uploaded to the GPU.
 				 */
 				void bind() const;
 
 				/**
 				 * Unbind the shader
 				 *
-				 * @pre The shader must be uploaded to the GPU.
+				 * @note The shader must be uploaded to the GPU.
 				 */
 				void unbind() const;
-
-				/**
-				 * Query the location of a vertex attribute inside the shader.
-				 *
-				 * @param name The name of the attribute
-				 * @return the attribute location.
-				 *
-				 * @pre The shader must be uploaded to the GPU.
-				 */
-				GLint getAttributeLocation(const std::string &name) const;
 
 				/**
 				 * Query the location of a uniform inside the shader.
@@ -76,7 +67,7 @@ namespace kocmoc
 				 * @param name The name of the uniform
 				 * @return the uniform location.
 				 *
-				 * @pre The shader must be uploaded to the GPU.
+				 * @note The shader must be uploaded to the GPU.
 				 */
 				GLint getUniformLocation(const std::string &name) const;
 
@@ -86,7 +77,7 @@ namespace kocmoc
 				 *
 				 * I.e. delete the program and create it again from source. 
 				 *
-				 * @pre The shader must be uploaded to the GPU.
+				 * @note The shader must be uploaded to the GPU.
 				 */
 				void reload();
 
@@ -109,8 +100,8 @@ namespace kocmoc
 				GLuint compile(GLenum type, const std::string &source);
 				void link (void);
 
-				void shaderLog(GLuint shader);
-				void programLog(GLuint programHandle);
+				void dumpShaderLog(GLuint shader);
+				void dumpProgramLog(GLuint programHandle);
 
 				void create(const std::string &vertexShaderFile, const std::string &fragmentShaderFile);
 				void destroy(void);

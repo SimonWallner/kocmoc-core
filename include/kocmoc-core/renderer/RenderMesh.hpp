@@ -22,6 +22,20 @@ namespace kocmoc
 
 		namespace renderer
 		{
+			
+			// vertex attribute constants
+			const char* vertexAttributePositionName = "position";
+			const types::uint vertexAttributePositionIndex = 0;
+			
+			const char* vertexAttributeNormalName = "normal";
+			const types::uint vertexAttributeNormalIndex = 1;
+			
+			const char* vertexAttributeUVName = "uv";
+			const types::uint vertexAttributeUVIndex = 2;
+			
+			const char* vertexAttributeTangentName = "tangent";
+			const types::uint vertexAttributeTangentIndex = 3;
+			
 			class Shader;
 
 			/**
@@ -78,9 +92,8 @@ namespace kocmoc
 					RenderTexture(GLuint _handle, GLuint _textureUnit)
 					: handle(_handle)
 					, textureUnit(_textureUnit)
-					{};
+					{}
 				};
-				
 				typedef std::vector<RenderTexture > RenderTextureList;
 
 				/**

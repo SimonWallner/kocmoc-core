@@ -4,6 +4,9 @@
 #include <iostream>
 #include <cassert>
 
+#include <kocmoc-core/renderer/RenderMesh.hpp>
+#include <kocmoc-core/util/util.hpp>
+
 using namespace kocmoc::core::renderer;
 
 using std::string;
@@ -25,43 +28,23 @@ bool Shader::prepare()
 	// Load the shader files
 	string vertexShaderSource;
 	string fragmentShaderSource;
-//
-//	try 
-//	{
-//		vertexShaderSource = util::parser::parseShader(vertexShaderName, pathPrefix);
-//	}
-//	catch (Exception& e)
-//	{
-//		cerr << "Vertex shader " << vertexShaderName <<" failed to parse. Cause:" << endl;
-//		cerr << e.getMessage() << endl;
-//		return false;
-//	}
-//
-//	try 
-//	{
-//		fragmentShaderSource = util::parser::parseShader(fragmentShaderName, pathPrefix);
-//	}
-//	catch (Exception& e)
-//	{
-//		cerr << "Fragment shader " << fragmentShaderName <<" failed to parse. Cause:" << endl;
-//		cerr << e.getMessage() << endl;
-//		return false;
-//	}
-//
-//
-//	// Compile the shaders
-//	vertexShader = compile(GL_VERTEX_SHADER, vertexShaderSource);
-//	if (vertexShader == 0)
-//		return false;
-//
-//	fragmentShader = compile(GL_FRAGMENT_SHADER, fragmentShaderSource);
-//	if (fragmentShader == 0)
-//		return false;
-//
-//	// Link the shaders into a program
-//	link();
-//	if (programHandle == 0)
-//		return false;
+
+	vertexShaderSource = util::read_file(vertexShaderName);
+	fragmentShaderSource = util::read_file(fragmentShaderName);
+
+	// Compile the shaders
+	vertexShader = compile(GL_VERTEX_SHADER, vertexShaderSource);
+	if (vertexShader == 0)
+		return false;
+
+	fragmentShader = compile(GL_FRAGMENT_SHADER, fragmentShaderSource);
+	if (fragmentShader == 0)
+		return false;
+
+	// Link the shaders into a program
+	link();
+	if (programHandle == 0)
+		return false;
 
 	prepared = true;
 	
@@ -98,8 +81,7 @@ void Shader::destroy()
 GLuint Shader::compile (GLenum type, const std::string &source)
 {
 	// Create shader object
-
-	GLuint shaderHandle = glCreateShader(type);
+	const GLuint shaderHandle = glCreateShader(type);
 
 	if (shaderHandle == 0) {
 		cerr << "Could not create shader object." << endl;
@@ -107,9 +89,8 @@ GLuint Shader::compile (GLenum type, const std::string &source)
 	}
 
 	// Define shader source and compile
-
-	const char* src = source.data();
-	int len = source.size();
+	const char* src = source.c_str();
+	const int len = source.size();
 
 	glShaderSource(shaderHandle, 1, &src, &len);
 
@@ -123,7 +104,7 @@ GLuint Shader::compile (GLenum type, const std::string &source)
 	{
 		cout << "Shader compilation failed: (" << vertexShaderName << ", "
 			 << fragmentShaderName << ")" << endl;
-		shaderLog(shaderHandle);
+		dumpShaderLog(shaderHandle);
 	}
 
 	return shaderHandle;    
@@ -134,21 +115,16 @@ void Shader::link(void)
 	// Create program handle
 	programHandle = glCreateProgram();
 
-	// Attach shaders and link
+	// Attach shaders
 	glAttachShader(programHandle, vertexShader);
 	glAttachShader(programHandle, fragmentShader);
 
-//	// bind attribute and frag data locations to indexes
-//	for (VertexAttributeSemanticList::const_iterator ci = vertexAttributeSemanticList.begin();
-//		ci != vertexAttributeSemanticList.end();
-//		ci++)
-//	{
-//		glBindAttribLocation(programHandle, ci->attributeLocation, ci->attributeShaderName.c_str());
-//	}
-//	glBindFragDataLocation(programHandle, 0, FRAGMENT_DATA_LOCATION_0_NAME);
-//	glBindFragDataLocation(programHandle, 1, FRAGMENT_DATA_LOCATION_1_NAME);
-
-
+	// bind attribute locations to indexes
+	glBindAttribLocation(programHandle, vertexAttributePositionIndex, vertexAttributePositionName);
+	glBindAttribLocation(programHandle, vertexAttributeNormalIndex, vertexAttributeNormalName);
+	glBindAttribLocation(programHandle, vertexAttributeUVIndex, vertexAttributeUVName);
+	glBindAttribLocation(programHandle, vertexAttributeTangentIndex, vertexAttributeTangentName);
+	
 	glLinkProgram(programHandle);
 
 	// Check for problems
@@ -158,16 +134,14 @@ void Shader::link(void)
 	if (status != GL_TRUE)
 	{
 		cout << "Shader linking failed." << endl;
-		programLog(programHandle);
+		dumpProgramLog(programHandle);
 
 		glDeleteProgram(programHandle);
 		programHandle = 0;
 	}
 }
 
-#define LOG_BUFFER_SIZE 8096
-
-void Shader::programLog(GLuint programHandle)
+void Shader::dumpProgramLog(GLuint programHandle)
 {
 	char logBuffer[LOG_BUFFER_SIZE];
 	GLsizei length;
@@ -180,7 +154,7 @@ void Shader::programLog(GLuint programHandle)
 	}
 }
 
-void Shader::shaderLog(GLuint shader)
+void Shader::dumpShaderLog(GLuint shader)
 {
 	char logBuffer[LOG_BUFFER_SIZE];
 	GLsizei length;
@@ -205,17 +179,7 @@ void Shader::unbind() const
 	glUseProgram(0);
 }
 
-GLint Shader::getAttributeLocation(const std::string &name) const
-{
-	//assert(isUploaded);
-	return glGetAttribLocation(programHandle, name.c_str());
-}
-
 GLint Shader::getUniformLocation(const std::string &name) const
 {
-	//assert(isUploaded);
-	GLint location = glGetUniformLocation(programHandle, name.c_str());
-	//if (location < 0 && _DEBUG)
-	//	cout << "uniform location: " << name << " not found!" << endl;
-	return location;
+	return glGetUniformLocation(programHandle, name.c_str());
 }
