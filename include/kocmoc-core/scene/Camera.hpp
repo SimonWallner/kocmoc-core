@@ -12,7 +12,7 @@ namespace kocmoc
 			class Shader;
 		}
 		
-		namespace camera
+		namespace scene
 		{
 			/**
 			 * Abstract camera class

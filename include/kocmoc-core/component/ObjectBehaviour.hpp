@@ -25,7 +25,9 @@ namespace kocmoc
 				
 				ObjectBehaviour();
 
-				void onUpdate(void) {}
+				void onUpdate(float deltaT) {
+					UNUSED deltaT;
+				}
 
 				glm::vec3 position;
 				

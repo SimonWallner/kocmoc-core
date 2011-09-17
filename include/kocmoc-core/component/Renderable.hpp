@@ -32,10 +32,8 @@ namespace kocmoc
 				 * Render callback function.
 				 * 
 				 * @param camera The camera that should be used for rendering.
-				 * @param pass The name of the current render pass. i.e. "normal",
-				 *		"shadowmap", "transparent", "earlyZ", etc.
 				 */
-				void onRender(Camera* camera, types::Symbol pass);
+				void onRender(Camera* camera);
 				
 				void init(void);
 				

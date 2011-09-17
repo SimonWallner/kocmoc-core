@@ -19,9 +19,9 @@ using std::string;
 Renderable::Renderable()
 {}
 
-void Renderable::onRender(Camera* camera, types::Symbol pass)
+void Renderable::onRender(Camera* camera)
 {
-	std::cout << camera << pass;
+	UNUSED camera;
 }
 
 void Renderable::init()

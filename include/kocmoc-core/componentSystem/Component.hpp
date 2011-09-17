@@ -11,11 +11,17 @@
 
 #include <kocmoc-core/componentSystem/Object.hpp>
 #include <kocmoc-core/types/Symbol.hpp>
+#include <kocmoc-core/compiler.h>
 
 namespace kocmoc
 {
 	namespace core
 	{
+		namespace scene
+		{
+			class Camera;
+		}
+		
 		namespace componentSystem
 		{
 			/**
@@ -45,8 +51,15 @@ namespace kocmoc
 				 */
 				virtual void init(void) {}
 				
-				virtual void onUpdate(void) {}
-				virtual void onRender(void) {}
+				virtual void onUpdate(float deltaT)
+				{
+					UNUSED deltaT;
+				}
+				
+				virtual void onRender(scene::Camera* camera)
+				{
+					UNUSED camera;
+				}
 								
 			protected:
 				/**

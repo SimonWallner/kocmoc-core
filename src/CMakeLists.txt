@@ -1,7 +1,7 @@
 # cmake list for kocmoc-core src/
 
 # set compiler flags
-add_definitions(-Wall -Wextra -pedantic -Werror -Winit-self)
+add_definitions(-Wall -Wextra -pedantic -Werror -Winit-self -Wno-error=unused-parameter)
 # later add  -Weffc++ -Wdouble-promotion -Wshadow -Wc++0x-compat -Wfloat-equal -Wmissing-include-dirs
 
 
@@ -66,7 +66,7 @@ file(GLOB_RECURSE SOURCE_FILES *.cpp)
 # git revision number magic
 # configure header file and append it to the other header files
 configure_file("${PROJECT_SOURCE_DIR}/include/kocmoc-core/version.hpp.in" "${PROJECT_BINARY_DIR}/include/kocmoc-core/version.hpp")
-list(APPEND INCLUDE_C_HEADER_FILES "${PROJECT_BINARY_DIR}/include/kocmoc-core/version.hpp")
+list(APPEND INCLUDE_HEADER_FILES "${PROJECT_BINARY_DIR}/include/kocmoc-core/version.hpp")
 
 
 add_library(kocmoc-core ${SOURCE_FILES} ${HEADER_FILES} ${INCLUDE_C_HEADER_FILES} ${INCLUDE_HEADER_FILES})

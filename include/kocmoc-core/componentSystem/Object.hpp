@@ -21,6 +21,11 @@ namespace kocmoc
 {
 	namespace core
 	{
+		namespace scene
+		{
+			class Camera;
+		}
+		
 		namespace componentSystem
 		{
 			class Component;
@@ -87,9 +92,11 @@ namespace kocmoc
 				void registerUpdateReceiver(Component* receiver);
 				
 				/**
-				 * Call update on all components
+				 * Call update on all components.
+				 * 
+				 * @param deltaT the time since the last update in seconds.
 				 */
-				void update(void);
+				void update(float deltaT);
 				
 				
 				/**
@@ -100,9 +107,9 @@ namespace kocmoc
 				void registerRenderReceiver(Component* receiver);
 				
 				/**
-				 * call render on all components
+				 * call render on all components with the given camera.
 				 */
-				void render(void);
+				void render(scene::Camera* camera);
 				
 			protected:
 				util::Properties* props;
