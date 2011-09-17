@@ -24,17 +24,17 @@ namespace kocmoc
 		{
 			
 			// vertex attribute constants
-			const char* vertexAttributePositionName = "position";
-			const types::uint vertexAttributePositionIndex = 0;
+			static const char* vertexAttributePositionName = "position";
+			static const types::uint vertexAttributePositionIndex = 0;
 			
-			const char* vertexAttributeNormalName = "normal";
-			const types::uint vertexAttributeNormalIndex = 1;
+			static const char* vertexAttributeNormalName = "normal";
+			static const types::uint vertexAttributeNormalIndex = 1;
 			
-			const char* vertexAttributeUVName = "uv";
-			const types::uint vertexAttributeUVIndex = 2;
+			static const char* vertexAttributeUVName = "uv";
+			static const types::uint vertexAttributeUVIndex = 2;
 			
-			const char* vertexAttributeTangentName = "tangent";
-			const types::uint vertexAttributeTangentIndex = 3;
+			static const char* vertexAttributeTangentName = "tangent";
+			static const types::uint vertexAttributeTangentIndex = 3;
 			
 			class Shader;
 

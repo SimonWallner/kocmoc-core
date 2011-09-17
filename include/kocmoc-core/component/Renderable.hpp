@@ -10,6 +10,7 @@
 #define KOCMCO_COMPONENT_RENDERABLE_HPP
 
 #include <string>
+#include <list>
 
 #include <kocmoc-core/componentSystem/Component.hpp>
 #include <kocmoc-core/component/ObjectBehaviour.hpp>
@@ -19,9 +20,18 @@ namespace kocmoc
 {
 	namespace core
 	{
-		namespace component
+		namespace renderer
+		{
+			class RenderMesh;
+		}
+		
+		namespace scene
 		{
 			class Camera;
+		}
+		
+		namespace component
+		{
 		
 			class Renderable : public core::componentSystem::Component
 			{
@@ -33,12 +43,25 @@ namespace kocmoc
 				 * 
 				 * @param camera The camera that should be used for rendering.
 				 */
-				void onRender(Camera* camera);
+				void onRender(scene::Camera* camera);
 				
 				void init(void);
 				
+				/**
+				 * A a renderMesh to the list, so that it is rendered during
+				 * \onRender(...)
+				 */
+				void add(renderer::RenderMesh* renderMesh)
+				{
+					renderMeshList.push_back(renderMesh);
+				}
+				
 			private:
+				typedef std::list<renderer::RenderMesh* > RenderMeshList;
+				
 				ObjectBehaviour* objectBehaviour;
+				
+				RenderMeshList renderMeshList;
 			};
 		}
 	}

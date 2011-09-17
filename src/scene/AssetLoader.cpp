@@ -92,7 +92,8 @@ Renderable* AssetLoader::load(string name)
 		std::cout << "loading successful" << std::endl;
 
 	}
-	return NULL;
+	Renderable* renderable = new Renderable();
+	return renderable;
 }
 
 AssetLoader::AssetLoader()

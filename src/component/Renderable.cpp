@@ -13,15 +13,23 @@
 
 #include <GL/glfw3.h>
 
+#include <kocmoc-core/renderer/RenderMesh.hpp>
+
 using namespace kocmoc::core::component;
 using std::string;
+using kocmoc::core::scene::Camera;
 
 Renderable::Renderable()
 {}
 
 void Renderable::onRender(Camera* camera)
 {
-	UNUSED camera;
+	for (RenderMeshList::const_iterator ci = renderMeshList.begin();
+		 ci != renderMeshList.end();
+		 ci++)
+	{
+		(*ci)->draw(camera);
+	}
 }
 
 void Renderable::init()
