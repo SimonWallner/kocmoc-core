@@ -10,6 +10,7 @@
 #include <kocmoc-core/renderer/Shader.hpp>
 #include <kocmoc-core/scene/TriangleMesh.hpp>
 #include <kocmoc-core/types/types.h>
+#include <kocmoc-core/compiler.h>
 
 namespace kocmoc
 {
@@ -24,16 +25,16 @@ namespace kocmoc
 		{
 			
 			// vertex attribute constants
-			static const char* vertexAttributePositionName = "position";
+			static const char* const vertexAttributePositionName = "position";
 			static const types::uint vertexAttributePositionIndex = 0;
 			
-			static const char* vertexAttributeNormalName = "normal";
+			static const char* const vertexAttributeNormalName = "normal";
 			static const types::uint vertexAttributeNormalIndex = 1;
 			
-			static const char* vertexAttributeUVName = "uv";
+			static const char* const vertexAttributeUVName = "uv";
 			static const types::uint vertexAttributeUVIndex = 2;
 			
-			static const char* vertexAttributeTangentName = "tangent";
+			static const char* const vertexAttributeTangentName = "tangent";
 			static const types::uint vertexAttributeTangentIndex = 3;
 			
 			class Shader;

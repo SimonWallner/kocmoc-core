@@ -32,7 +32,7 @@ void InputManager::poll(void)
 		 ci++)
 	{
 		// poll key
-		if (glfwGetKey(windowHandle, (int)ci->second))
+		if (glfwGetKey(windowHandle, ci->second))
 		{
 			// fetch listeners
 			for(ButtonEventListenerMultiMap::const_iterator listeners = buttonEventListenerMultiMap.find(ci->first);

@@ -11,7 +11,7 @@ using kocmoc::core::scene::Camera;
 void RenderMesh21::prepare(void)
 {
 	GLuint buffer = 0;
-	
+
 	glGenBuffers(1, &buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
 	glBufferData(GL_ARRAY_BUFFER, 
