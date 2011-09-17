@@ -20,6 +20,8 @@
 #include <kocmoc-core/types/types.h>
 #include <kocmoc-core/scene/TriangleMesh.hpp>
 
+#include <renderer/RenderMesh21.hpp>
+
 using namespace kocmoc::core::scene;
 using namespace Assimp;
 
@@ -28,6 +30,7 @@ using std::string;
 using kocmoc::core::component::Renderable;
 using kocmoc::core::types::uint;
 using kocmoc::core::scene::TriangleMesh;
+using kocmoc::core::renderer::RenderMesh21;
 
 void AssetLoader::addResourcePath(string path)
 {
@@ -36,6 +39,8 @@ void AssetLoader::addResourcePath(string path)
 
 Renderable* AssetLoader::load(string name)
 {
+	Renderable* renderable = new Renderable();
+	
 	string absolutePath = findAbsolutePathInResources(name);	
 	std::cout << "trying to load asset: " << absolutePath << std::endl;
 	
@@ -60,6 +65,14 @@ Renderable* AssetLoader::load(string name)
 				{
 					uint vertexCount = mesh->mNumVertices;
 					uint vertexIndexCount = mesh->mNumFaces * 3;
+
+					uint* indices = new uint[vertexIndexCount];
+					for (uint j = 0; j < mesh->mNumFaces; j++)
+					{
+						indices[j*3  ] = mesh->mFaces[j].mIndices[0];
+						indices[j*3+1] = mesh->mFaces[j].mIndices[1];
+						indices[j*3+2] = mesh->mFaces[j].mIndices[2];
+					}
 					
 					float* positions = new float[vertexCount * 3];
 					for (uint j = 0; j < vertexCount; j++)
@@ -69,15 +82,21 @@ Renderable* AssetLoader::load(string name)
 						positions[j*3+2] = mesh->mVertices[j].z;
 					}
 					
-					uint* indices = new uint[vertexIndexCount];
+					float* normals = new float[vertexCount * 3];
 					for (uint j = 0; j < mesh->mNumFaces; j++)
 					{
-						indices[j*3  ] = mesh->mFaces[j].mIndices[0];
-						indices[j*3+1] = mesh->mFaces[j].mIndices[1];
-						indices[j*3+2] = mesh->mFaces[j].mIndices[2];
+						normals[j*3  ] = mesh->mNormals[j].x;
+						normals[j*3+1] = mesh->mNormals[j].y;
+						normals[j*3+2] = mesh->mNormals[j].z;
 					}
 					
-//					TriangleMesh triangleMesh(vertexIndexCount, indices, vertexCount, positions);
+					TriangleMesh* triangleMesh = new TriangleMesh(vertexIndexCount,
+																 indices,
+																 vertexCount,
+																 positions,
+																 normals);
+					RenderMesh21* renderMesh = new RenderMesh21(triangleMesh);
+					renderable->add(renderMesh);
 				}	
 			}
 			
@@ -92,7 +111,6 @@ Renderable* AssetLoader::load(string name)
 		std::cout << "loading successful" << std::endl;
 
 	}
-	Renderable* renderable = new Renderable();
 	return renderable;
 }
 

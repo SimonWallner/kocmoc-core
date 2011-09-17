@@ -43,6 +43,7 @@ endif()
 
 include_directories(
 	${PROJECT_SOURCE_DIR}/include
+	${PROJECT_SOURCE_DIR}/src
 	${PROJECT_BINARY_DIR}/include
 	${PROJECT_SOURCE_DIR}/external/glfw/include
 	${PROJECT_SOURCE_DIR}/external/glm/include

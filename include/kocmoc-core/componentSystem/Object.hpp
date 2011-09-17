@@ -64,7 +64,7 @@ namespace kocmoc
 				 */
 				explicit Object(std::string name, util::Properties* props);
 				
-				virtual void init(void) {};
+				virtual void init(void) {}
 				
 				/**
 				 * Add a component to the object

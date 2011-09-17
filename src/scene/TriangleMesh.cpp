@@ -21,7 +21,7 @@ TriangleMesh::TriangleMesh(uint _vertexIndexCount,
 	, vertexNormals(_vertexNormals)
 	, vertexUVs(_vertexUVs)
 	, vertexTangents(_vertexTangents)
-	, shader(NULL)
+	, shader("undefined")
 {}
 
 TriangleMesh::~TriangleMesh()

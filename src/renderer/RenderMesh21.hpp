@@ -24,9 +24,16 @@ namespace kocmoc
 					: RenderMesh(triangleMesh)
 				{}
 				
+				~RenderMesh21(void) {}
+				
 				void prepare(void);
 				
 				void draw(scene::Camera *camera);
+				
+			private:
+				GLuint vboHandle;
+				GLuint indicesHandle;
+				unsigned int strideLength;
 			};
 		}
 	}

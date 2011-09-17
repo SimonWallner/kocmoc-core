@@ -56,7 +56,7 @@ namespace kocmoc
 					, prepared(false)
 				{}
 				
-				virtual ~RenderMesh(void);
+				virtual ~RenderMesh(void) {}
 
 				virtual void draw(scene::Camera *camera) = 0;
 

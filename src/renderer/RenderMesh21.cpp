@@ -10,19 +10,68 @@ using kocmoc::core::scene::Camera;
 
 void RenderMesh21::prepare(void)
 {
-	GLuint buffer = 0;
+	strideLength = (3 + 3 + 2 + 3); // position + normal + uv + tangent
+	float* interleaved = new float[triangleMesh->vertexCount * strideLength];
+	
+	//interleave
+	for (unsigned int i = 0; i < triangleMesh->vertexCount; i++)
+	{
+		unsigned j = 0;
+		interleaved[i*strideLength + j++] = triangleMesh->vertexPositions[i + 0];
+		interleaved[i*strideLength + j++] = triangleMesh->vertexPositions[i + 1];
+		interleaved[i*strideLength + j++] = triangleMesh->vertexPositions[i + 2];
+		
+		interleaved[i*strideLength + j++] = triangleMesh->vertexNormals[i + 0];
+		interleaved[i*strideLength + j++] = triangleMesh->vertexNormals[i + 1];
+		interleaved[i*strideLength + j++] = triangleMesh->vertexNormals[i + 2];
+		
+		interleaved[i*strideLength + j++] = triangleMesh->vertexUVs[i + 0];
+		interleaved[i*strideLength + j++] = triangleMesh->vertexUVs[i + 1];
+		
+		interleaved[i*strideLength + j++] = triangleMesh->vertexTangents[i + 0];
+		interleaved[i*strideLength + j++] = triangleMesh->vertexTangents[i + 1];
+		interleaved[i*strideLength + j++] = triangleMesh->vertexTangents[i + 2];
+	}
+	
+	vboHandle = 0;
 
-	glGenBuffers(1, &buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	glGenBuffers(1, &vboHandle);
+	glBindBuffer(GL_ARRAY_BUFFER, vboHandle);
 	glBufferData(GL_ARRAY_BUFFER, 
-				 3 * triangleMesh->vertexCount * sizeof(float), 
-				 triangleMesh->vertexPositions, 
+				 triangleMesh->vertexCount * strideLength * sizeof(float), 
+				 interleaved, 
 				 GL_STATIC_DRAW);
-
-	glVertexAttrib3fv(0, NULL);
+	
+	delete [] interleaved;	
+	
+	glGenBuffers(1, &indicesHandle);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesHandle);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+				 triangleMesh->vertexIndexCount,
+				 triangleMesh->indices,
+				 GL_STATIC_DRAW);
 }
 
 void RenderMesh21::draw(Camera *camera)
 {
-	std::cout << "drawing with camera: " << camera << std::endl;
+	UNUSED camera;
+	
+	glBindBuffer(GL_ARRAY_BUFFER, vboHandle);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesHandle);
+	
+	// for each vertex attribute do...
+	// positions
+	glEnableVertexAttribArray(vertexAttributePositionIndex);
+	glVertexAttribPointer(vertexAttributePositionIndex, 3, GL_FLOAT, false,
+						  strideLength, 0);
+	
+	
+	// draw
+	glDrawElements(GL_TRIANGLES,
+				   triangleMesh->vertexIndexCount / 3,
+				   GL_UNSIGNED_INT,
+				   NULL);
+	
+	// cleanup
+	glDisableVertexAttribArray(vertexAttributePositionIndex);
 }
