@@ -4,6 +4,10 @@
 
 #include <GL/glfw3.h>
 
+#include <glm/gtc/type_ptr.hpp>
+
+#include <kocmoc-core/scene/Camera.hpp>
+
 using namespace kocmoc::core::renderer;
 
 using kocmoc::core::scene::Camera;
@@ -74,8 +78,6 @@ void RenderMesh21::draw(Camera *camera)
 	if (!shader->isPrepared())
 		shader->prepare();
 	
-	UNUSED camera;
-	
 	glBindBuffer(GL_ARRAY_BUFFER, vboHandle);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesHandle);
 	
@@ -85,11 +87,24 @@ void RenderMesh21::draw(Camera *camera)
 	glVertexAttribPointer(vertexAttributePositionIndex, 3, GL_FLOAT, false,
 						  strideLength, 0);
 	
-	
 
-	// draw
 	shader->bind();
 	{
+		// update shader
+		GLint location;
+		location = shader->getUniformLocation("modelMatrix");
+		if (location >= 0)
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(glm::mat4(1.0)));
+		
+		location = shader->getUniformLocation("viewMatrix");
+		if (location >= 0)
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(camera->getViewMatrix()));
+		
+		location = shader->getUniformLocation("projectionMatrix");
+		if (location >= 0)
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(camera->getProjectionMatrix()));
+		
+		
 		glDrawElements(GL_TRIANGLES,
 					   triangleMesh->vertexIndexCount / 3,
 					   GL_UNSIGNED_INT,
