@@ -19,6 +19,7 @@
 #include <kocmoc-core/util/util.hpp>
 #include <kocmoc-core/types/types.h>
 #include <kocmoc-core/scene/TriangleMesh.hpp>
+#include <kocmoc-core/renderer/Shader.hpp>
 
 #include <renderer/RenderMesh21.hpp>
 
@@ -31,17 +32,18 @@ using kocmoc::core::component::Renderable;
 using kocmoc::core::types::uint;
 using kocmoc::core::scene::TriangleMesh;
 using kocmoc::core::renderer::RenderMesh21;
+using kocmoc::core::renderer::Shader;
 
 void AssetLoader::addResourcePath(const string path)
 {
 	resourcePaths.push_back(path);
 }
 
-Renderable* AssetLoader::load(const string name)
+Renderable* AssetLoader::load(const string modelName, const string shaderPath)
 {
 	Renderable* renderable = new Renderable();
 	
-	string absolutePath = findAbsolutePathInResources(name);	
+	string absolutePath = findAbsolutePathInResources(modelName);	
 	std::cout << "trying to load asset: " << absolutePath << std::endl;
 	
 	const aiScene* scene = importer.ReadFile(absolutePath,
@@ -95,7 +97,10 @@ Renderable* AssetLoader::load(const string name)
 																 vertexCount,
 																 positions,
 																 normals);
-					RenderMesh21* renderMesh = new RenderMesh21(triangleMesh);
+					
+					Shader* shader = new Shader(shaderPath + ".vert", shaderPath + ".frag");
+					
+					RenderMesh21* renderMesh = new RenderMesh21(triangleMesh, shader);
 					renderable->add(renderMesh);
 				}	
 			}

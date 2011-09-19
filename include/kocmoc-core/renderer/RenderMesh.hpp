@@ -51,8 +51,9 @@ namespace kocmoc
 			{
 			public:
 
-				RenderMesh(scene::TriangleMesh* _triangleMsh)
+				RenderMesh(scene::TriangleMesh* _triangleMsh, Shader* _shader)
 					: triangleMesh(_triangleMsh)
+					, shader(_shader)
 					, prepared(false)
 				{}
 				
@@ -103,15 +104,15 @@ namespace kocmoc
 				 */
 				const scene::TriangleMesh* triangleMesh;
 				
-				/** whether the mesh is ready for rendering or not */
-				bool prepared;
-				
 				/** 
 				 * A pointer to the shader that is used. exactly one shader per
 				 * mesh. Shall not be \ NULL.
 				 */
 				Shader* shader;
-
+				
+				/** whether the mesh is ready for rendering or not */
+				bool prepared;
+				
 				/** List of \c RenderTexture */
 				RenderTextureList renderTextures;
 			};

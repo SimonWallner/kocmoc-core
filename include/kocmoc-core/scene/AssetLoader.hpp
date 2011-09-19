@@ -30,7 +30,7 @@ namespace kocmoc
 				
 				void addResourcePath(const std::string path);
 				
-				component::Renderable* load(const std::string name);
+				component::Renderable* load(const std::string NodelName, const std::string shaderPath);
 				
 			private:
 				typedef std::list<std::string> ResourcePathList;

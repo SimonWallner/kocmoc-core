@@ -71,6 +71,9 @@ void RenderMesh21::draw(Camera *camera)
 	if (!prepared)
 		prepare();
 	
+	if (!shader->isPrepared())
+		shader->prepare();
+	
 	UNUSED camera;
 	
 	glBindBuffer(GL_ARRAY_BUFFER, vboHandle);
@@ -85,10 +88,14 @@ void RenderMesh21::draw(Camera *camera)
 	
 
 	// draw
-	glDrawElements(GL_TRIANGLES,
-				   triangleMesh->vertexIndexCount / 3,
-				   GL_UNSIGNED_INT,
-				   NULL);
+	shader->bind();
+	{
+		glDrawElements(GL_TRIANGLES,
+					   triangleMesh->vertexIndexCount / 3,
+					   GL_UNSIGNED_INT,
+					   NULL);
+	}
+	shader->unbind();
 	
 	// cleanup
 	glDisableVertexAttribArray(vertexAttributePositionIndex);

@@ -20,8 +20,8 @@ namespace kocmoc
 			class RenderMesh21 : public RenderMesh
 			{
 			public:
-				RenderMesh21(scene::TriangleMesh* triangleMesh)
-					: RenderMesh(triangleMesh)
+				RenderMesh21(scene::TriangleMesh* triangleMesh, Shader* _shader)
+					: RenderMesh(triangleMesh, _shader)
 				{}
 				
 				~RenderMesh21(void) {}
