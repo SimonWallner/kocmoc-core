@@ -6,22 +6,22 @@ using namespace kocmoc::core::util;
 using kocmoc::core::types::Symbol;
 using std::string;
 
-void Properties::add(Symbol name, float value)
+void Properties::add(const Symbol name, const float value)
 {
 	floatCache[name] = value;
 }
 
-void Properties::add(Symbol name, bool value)
+void Properties::add(const Symbol name, const bool value)
 {
 	boolCache[name] = value;
 }
 
-void Properties::add(Symbol name, string value)
+void Properties::add(const Symbol name, const string value)
 {
 	stringCache[name] = value;
 }
 
-float Properties::getFloat(Symbol name)
+float Properties::getFloat(const Symbol name) const
 {
 	PropertiesFloatCache::const_iterator ci = floatCache.find(name);
 	if (ci != floatCache.end())
@@ -30,7 +30,7 @@ float Properties::getFloat(Symbol name)
 		return 0.0f;
 }
 
-bool Properties::getBool(Symbol name)
+bool Properties::getBool(const Symbol name) const
 {
 	PropertiesBoolCache::const_iterator ci = boolCache.find(name);
 	if (ci != boolCache.end())
@@ -39,7 +39,7 @@ bool Properties::getBool(Symbol name)
 		return false;
 }
 
-string Properties::getString(Symbol name)
+const string Properties::getString(const Symbol name) const
 {
 	PropertiesStringCache::const_iterator ci = stringCache.find(name);
 	if (ci != stringCache.end())
@@ -51,7 +51,7 @@ string Properties::getString(Symbol name)
 	}
 }
 
-void Properties::dumpCache()
+void Properties::dumpCache() const
 {
 	std::cout << "dumping cache..." << std::endl;
 	

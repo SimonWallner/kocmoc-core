@@ -28,9 +28,9 @@ namespace kocmoc
 			public:
 				AssetLoader(void);
 				
-				void addResourcePath(std::string path);
+				void addResourcePath(const std::string path);
 				
-				component::Renderable* load(std::string name);
+				component::Renderable* load(const std::string name);
 				
 			private:
 				typedef std::list<std::string> ResourcePathList;
@@ -46,7 +46,7 @@ namespace kocmoc
 				 * @return the absolute path to the asset
 				 * @throws 
 				 */
-				std::string findAbsolutePathInResources(std::string name) throw(exception::ResourceNotFoundException);
+				std::string findAbsolutePathInResources(const std::string name) const throw(exception::ResourceNotFoundException);
 			};
 		}
 	}

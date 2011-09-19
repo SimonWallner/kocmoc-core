@@ -19,21 +19,21 @@ namespace kocmoc
 				/**
 				 * Add values to the map
 				 */
-				void add(types::Symbol name, float value);
-				void add(types::Symbol name, bool value);
-				void add(types::Symbol name, std::string);
+				void add(const types::Symbol name, const float value);
+				void add(const types::Symbol name, const bool value);
+				void add(const types::Symbol name, const std::string);
 
 				/**
 				 * Get a property with the given name.
 				 */
-				float getFloat(types::Symbol name);
-				bool getBool(types::Symbol name);
-				std::string getString(types::Symbol name);
+				float getFloat(const types::Symbol name) const ;
+				bool getBool(const types::Symbol name) const;
+				const std::string getString(const types::Symbol name) const;
 
 				/**
 				 * Dump the cache to stdout for debugging
 				 */
-				void dumpCache(void);
+				void dumpCache(void) const;
 				
 			private:								
 				typedef std::map<types::Symbol, std::string> PropertiesStringCache;

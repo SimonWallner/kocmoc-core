@@ -32,12 +32,12 @@ using kocmoc::core::types::uint;
 using kocmoc::core::scene::TriangleMesh;
 using kocmoc::core::renderer::RenderMesh21;
 
-void AssetLoader::addResourcePath(string path)
+void AssetLoader::addResourcePath(const string path)
 {
 	resourcePaths.push_back(path);
 }
 
-Renderable* AssetLoader::load(string name)
+Renderable* AssetLoader::load(const string name)
 {
 	Renderable* renderable = new Renderable();
 	
@@ -103,7 +103,7 @@ Renderable* AssetLoader::load(string name)
 			for (uint i = 0; i < scene->mNumMaterials; i++)
 			{
 				aiMaterial* mat = scene->mMaterials[i];
-				aiString* path;
+				aiString* path = new aiString();
 				mat->GetTexture(aiTextureType_DIFFUSE, 0, path);
 				std::cout << "diffuse texture 0: " << path->data << std::endl;
 			}
@@ -119,13 +119,13 @@ AssetLoader::AssetLoader()
 	
 }
 
-string AssetLoader::findAbsolutePathInResources(string name) throw(exception::ResourceNotFoundException)
+string AssetLoader::findAbsolutePathInResources(const string name) const throw(exception::ResourceNotFoundException)
 {
 	for (ResourcePathList::const_iterator ci = resourcePaths.begin();
 		 ci != resourcePaths.end();
 		 ci++)
 	{
-		string absolutePath = *ci + name;
+		string absolutePath = (*ci) + name;
 		if (util::file_exists(absolutePath))
 			return absolutePath;
 	}
