@@ -10,7 +10,13 @@ using kocmoc::core::scene::Camera;
 
 void RenderMesh21::prepare(void)
 {
-	strideLength = (3 + 3 + 2 + 3); // position + normal + uv + tangent
+	strideLength = (3 + 3); // position + normal + uv + tangent
+	if (triangleMesh->vertexUVs != NULL)
+		strideLength += 2;
+	if (triangleMesh->vertexTangents != NULL)
+		strideLength += 3;
+	
+	
 	float* interleaved = new float[triangleMesh->vertexCount * strideLength];
 	
 	//interleave
@@ -25,12 +31,18 @@ void RenderMesh21::prepare(void)
 		interleaved[i*strideLength + j++] = triangleMesh->vertexNormals[i + 1];
 		interleaved[i*strideLength + j++] = triangleMesh->vertexNormals[i + 2];
 		
-		interleaved[i*strideLength + j++] = triangleMesh->vertexUVs[i + 0];
-		interleaved[i*strideLength + j++] = triangleMesh->vertexUVs[i + 1];
+		if (triangleMesh->vertexUVs != NULL)
+		{
+			interleaved[i*strideLength + j++] = triangleMesh->vertexUVs[i + 0];
+			interleaved[i*strideLength + j++] = triangleMesh->vertexUVs[i + 1];
+		}
 		
-		interleaved[i*strideLength + j++] = triangleMesh->vertexTangents[i + 0];
-		interleaved[i*strideLength + j++] = triangleMesh->vertexTangents[i + 1];
-		interleaved[i*strideLength + j++] = triangleMesh->vertexTangents[i + 2];
+		if (triangleMesh->vertexTangents != NULL)
+		{
+			interleaved[i*strideLength + j++] = triangleMesh->vertexTangents[i + 0];
+			interleaved[i*strideLength + j++] = triangleMesh->vertexTangents[i + 1];
+			interleaved[i*strideLength + j++] = triangleMesh->vertexTangents[i + 2];
+		}
 	}
 	
 	vboHandle = 0;
@@ -50,10 +62,15 @@ void RenderMesh21::prepare(void)
 				 triangleMesh->vertexIndexCount,
 				 triangleMesh->indices,
 				 GL_STATIC_DRAW);
+
+	prepared = true;
 }
 
 void RenderMesh21::draw(Camera *camera)
 {
+	if (!prepared)
+		prepare();
+	
 	UNUSED camera;
 	
 	glBindBuffer(GL_ARRAY_BUFFER, vboHandle);
@@ -66,6 +83,7 @@ void RenderMesh21::draw(Camera *camera)
 						  strideLength, 0);
 	
 	
+
 	// draw
 	glDrawElements(GL_TRIANGLES,
 				   triangleMesh->vertexIndexCount / 3,

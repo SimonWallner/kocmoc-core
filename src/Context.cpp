@@ -91,6 +91,11 @@ void Context::swapBuffers()
 	glfwPollEvents();
 }
 
+bool Context::isAlive()
+{
+	return glfwIsWindow(windowHandle);
+}
+
 void Context::getError()
 {
 	GLenum err = glGetError();
@@ -123,9 +128,4 @@ void Context::getError()
 		default:
 			break;
 	}
-}
-
-bool Context::isAlive()
-{
-	return glfwIsWindow(windowHandle);
 }
