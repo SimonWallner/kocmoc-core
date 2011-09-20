@@ -1,9 +1,13 @@
 #ifndef KOCMOC_CORE_COMPONENT_CAMERA_CONTROLLER_HPP
 #define KOCMOC_CORE_COMPONENT_CAMERA_CONTROLLER_HPP
 
+#include <iostream>
+
 #include <kocmoc-core/componentSystem/Component.hpp>
+#include <kocmoc-core/input/InputManager.hpp>
 #include <kocmoc-core/input/ButtonEventListener.hpp>
 #include <kocmoc-core/types/Symbol.hpp>
+#include <kocmoc-core/scene/FilmCamera.hpp>
 
 namespace kocmoc
 {
@@ -11,6 +15,11 @@ namespace kocmoc
 	{
 		namespace component
 		{
+			namespace cameraControllerConstants
+			{
+				const types::Symbol left = types::symbolize("left");
+			}
+			
 			/**
 			 * Camera controller class that takes user input and moves the camera
 			 * accordingly.
@@ -18,9 +27,8 @@ namespace kocmoc
 			class CameraController : public componentSystem::Component
 			{
 			public:
-				CameraController(scene::Camera* _camera)
-					: camera(_camera)
-				{};
+				CameraController(scene::FilmCamera* _camera, input::InputManager* inputManager);
+
 				
 				void onUpdate(float deltaT);
 				
@@ -30,19 +38,23 @@ namespace kocmoc
 				{
 				public:
 					KeyWatcher(CameraController* _p)
-					: p(_p)
-					{};
+						: p(_p)
+					{}
 					
-					void buttonEventCallback(core::types::Symbol name, core::input::ButtonEvent event)
+					void buttonEventCallback(types::Symbol name, input::ButtonEvent event)
 					{
-						if (name == types::symbolize("left") && event.isPressed == true)
-//							p->camera
+						if (name == cameraControllerConstants::left && event.isPressed == true)
+						{
+							p->camera->dolly(glm::vec3(-0.01, 0, 0));
+							std::cout << "track left" << std::endl;
+						}
 					}
+					
 				private:
 					CameraController* p;
 				} kw;
 				
-				scene::Camera* camera;
+				scene::FilmCamera* camera;
 			};
 		}
 	}
