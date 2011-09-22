@@ -16,7 +16,7 @@ namespace kocmoc
 		namespace renderer
 		{
 			
-			const std::string fragmentDataLocation = "colour";
+			static const std::string fragmentDataLocation = "colour";
 			
 			/**
 			 * Basic shader class, taken from/built upon the RTR OpenGL 3 sample

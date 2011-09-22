@@ -1,8 +1,10 @@
 #include <kocmoc-core/input/InputManager.hpp>
 
 #include <string>
+#include <iostream>
 
 #include <kocmoc-core/input/ButtonEventListener.hpp>
+#include <kocmoc-core/compiler.h>
 
 using namespace kocmoc::core::input;
 using kocmoc::core::types::Symbol;
@@ -32,6 +34,9 @@ void InputManager::poll(void)
 		 ci++)
 	{
 		// poll key
+		int key = ci->second;
+		UNUSED key;
+		
 		if (glfwGetKey(windowHandle, (int)ci->second))
 		{
 			// fetch listeners
@@ -46,5 +51,16 @@ void InputManager::poll(void)
 				(listeners->second)->buttonEventCallback(ci->first, event);
 			}
 		}
+	}
+}
+
+void InputManager::dumpBindings()
+{
+	std::cout << "event to key code bindings:" << std::endl;
+	for (ButtonEventKeyBindings::const_iterator ci = buttonEventKeyBindings.begin();
+		 ci != buttonEventKeyBindings.end();
+		 ci++)
+	{
+		std::cout << "\t" << ci->first << " --> " << ci->second << std::endl;
 	}
 }

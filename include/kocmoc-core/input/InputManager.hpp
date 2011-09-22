@@ -44,6 +44,11 @@ namespace kocmoc
 				
 				void poll(void);
 				
+				/**
+				 * dump the bindings to std::out
+				 */
+				void dumpBindings(void);
+				
 			private:
 				
 				typedef std::pair<types::Symbol, ButtonEventListener*> EventPair;

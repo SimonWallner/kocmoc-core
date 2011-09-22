@@ -70,7 +70,7 @@ namespace kocmoc
 				 * @param radians The horizontal AOV in radians.
 				 */
 				void setAngleOfView(float radians);
-				float getAngleOfView(void) {return angleOfView;};
+				float getAngleOfView(void) {return angleOfView;}
 
 				// override fuctions from camera
 				const glm::mat4 getViewMatrix();
@@ -79,7 +79,7 @@ namespace kocmoc
 				void updateMatrixes();
 
 				/** get the cameras eye position */
-				const glm::vec3 getPosition(void) {return eyePosition;};
+				const glm::vec3 getPosition(void) {return eyePosition;}
 
 
 				/**

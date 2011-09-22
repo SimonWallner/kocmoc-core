@@ -15,11 +15,6 @@ namespace kocmoc
 	{
 		namespace component
 		{
-			namespace cameraControllerConstants
-			{
-				const types::Symbol left = types::symbolize("left");
-			}
-			
 			/**
 			 * Camera controller class that takes user input and moves the camera
 			 * accordingly.
@@ -41,20 +36,16 @@ namespace kocmoc
 						: p(_p)
 					{}
 					
-					void buttonEventCallback(types::Symbol name, input::ButtonEvent event)
-					{
-						if (name == cameraControllerConstants::left && event.isPressed == true)
-						{
-							p->camera->dolly(glm::vec3(-0.01, 0, 0));
-							std::cout << "track left" << std::endl;
-						}
-					}
+					void buttonEventCallback(types::Symbol name, input::ButtonEvent event);
 					
 				private:
 					CameraController* p;
 				} kw;
 				
 				scene::FilmCamera* camera;
+
+				types::Symbol left, right, up, down;
+
 			};
 		}
 	}
