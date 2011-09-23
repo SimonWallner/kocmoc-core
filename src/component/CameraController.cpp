@@ -15,13 +15,16 @@ CameraController::CameraController(FilmCamera* _camera, InputManager* inputManag
 	inputManager->registerButtonEventListener(left, &kw);
 	inputManager->bindButtonEventToKey(left, 'A'); // A
 	inputManager->bindButtonEventToKey(left, 263); // left
-	
+
+	inputManager->registerButtonEventListener(right, &kw);
 	inputManager->bindButtonEventToKey(right, 'D'); // D
 	inputManager->bindButtonEventToKey(right, 262); // right
 	
+	inputManager->registerButtonEventListener(up, &kw);
 	inputManager->bindButtonEventToKey(up, 'W'); // W
 	inputManager->bindButtonEventToKey(up, 265); // up
 	
+	inputManager->registerButtonEventListener(down, &kw);
 	inputManager->bindButtonEventToKey(down, 'S'); // S
 	inputManager->bindButtonEventToKey(down, 264); // down
 }

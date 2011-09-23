@@ -52,9 +52,9 @@ namespace kocmoc
 			private:
 				
 				typedef std::pair<types::Symbol, ButtonEventListener*> EventPair;
-				typedef std::pair<types::Symbol, char> keyBindingPair;
+				typedef std::pair<types::Symbol, int> keyBindingPair;
 				typedef std::multimap<types::Symbol, ButtonEventListener*> ButtonEventListenerMultiMap;
-				typedef std::multimap<types::Symbol, char> ButtonEventKeyBindings;
+				typedef std::multimap<types::Symbol, int> ButtonEventKeyBindings;
 				
 	//			typedef std::vector<AnalogEventListener*> AnalogEventListenerList;
 				

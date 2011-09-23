@@ -39,6 +39,8 @@ void InputManager::poll(void)
 		
 		if (glfwGetKey(windowHandle, (int)ci->second))
 		{
+			std::cout << "key pressed: " << (int)ci->second << std::endl;
+			
 			// fetch listeners
 			for(ButtonEventListenerMultiMap::const_iterator listeners = buttonEventListenerMultiMap.find(ci->first);
 				listeners != buttonEventListenerMultiMap.end();
