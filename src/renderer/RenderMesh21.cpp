@@ -63,7 +63,7 @@ void RenderMesh21::prepare(void)
 	glGenBuffers(1, &indicesHandle);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesHandle);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-				 triangleMesh->vertexIndexCount,
+				 triangleMesh->vertexIndexCount * sizeof(unsigned int),
 				 triangleMesh->indices,
 				 GL_STATIC_DRAW);
 
