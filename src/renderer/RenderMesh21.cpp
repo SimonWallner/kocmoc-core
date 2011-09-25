@@ -76,7 +76,15 @@ void RenderMesh21::draw(Camera *camera)
 		prepare();
 	
 	if (!shader->isPrepared())
+	{
 		shader->prepare();
+		// texture
+	
+		GLint location = shader->getUniformLocation("sDiffuse");
+		if (location >= 0)
+			glUniform1i(location, GL_TEXTURE0);
+	}
+
 	
 	glBindBuffer(GL_ARRAY_BUFFER, vboHandle);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesHandle);
@@ -85,6 +93,16 @@ void RenderMesh21::draw(Camera *camera)
 	// positions
 	glEnableVertexAttribArray(vertexAttributePositionIndex);
 	glVertexAttribPointer(vertexAttributePositionIndex, 3, GL_FLOAT, false,
+						  strideLength, 0);
+	
+	// normal
+	glEnableVertexAttribArray(vertexAttributeNormalIndex);
+	glVertexAttribPointer(vertexAttributeNormalIndex, 3, GL_FLOAT, false,
+						  strideLength, 0);
+	
+	// uv
+	glEnableVertexAttribArray(vertexAttributeUVIndex);
+	glVertexAttribPointer(vertexAttributeUVIndex, 2, GL_FLOAT, false,
 						  strideLength, 0);
 	
 
@@ -114,4 +132,6 @@ void RenderMesh21::draw(Camera *camera)
 	
 	// cleanup
 	glDisableVertexAttribArray(vertexAttributePositionIndex);
+	glDisableVertexAttribArray(vertexAttributeNormalIndex);
+	glDisableVertexAttribArray(vertexAttributeUVIndex);
 }

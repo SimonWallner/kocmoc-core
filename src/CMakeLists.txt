@@ -1,7 +1,7 @@
 # cmake list for kocmoc-core src/
 
 # set compiler flags
-add_definitions(-Wall -Wextra -pedantic -Werror -Winit-self -Wno-error=unused-parameter)
+add_definitions(-Wall -Wextra -pedantic -Werror -Winit-self -Wno-long-long)
 # later add  -Weffc++ -Wdouble-promotion -Wshadow -Wc++0x-compat -Wfloat-equal -Wmissing-include-dirs
 
 
