@@ -8,6 +8,8 @@
 
 #include <kocmoc-core/scene/Camera.hpp>
 
+#define BUFFER_OFFSET(i) ((char *)NULL + (i))
+
 using namespace kocmoc::core::renderer;
 
 using kocmoc::core::scene::Camera;
@@ -78,13 +80,16 @@ void RenderMesh21::draw(Camera *camera)
 	if (!shader->isPrepared())
 	{
 		shader->prepare();
-		// texture
-	
-		GLint location = shader->getUniformLocation("sDiffuse");
-		if (location >= 0)
-			glUniform1i(location, GL_TEXTURE0);
-	}
 
+		// texture
+		shader->bind();
+		{
+			GLint location = shader->getUniformLocation("sDiffuse");
+			if (location >= 0)
+				glUniform1i(location, 0);
+		}
+		shader->unbind();
+	}
 	
 	glBindBuffer(GL_ARRAY_BUFFER, vboHandle);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesHandle);
@@ -98,12 +103,12 @@ void RenderMesh21::draw(Camera *camera)
 	// normal
 	glEnableVertexAttribArray(vertexAttributeNormalIndex);
 	glVertexAttribPointer(vertexAttributeNormalIndex, 3, GL_FLOAT, false,
-						  strideLength, 0);
+						  strideLength, BUFFER_OFFSET(sizeof(GLfloat) * 3));
 	
 	// uv
 	glEnableVertexAttribArray(vertexAttributeUVIndex);
 	glVertexAttribPointer(vertexAttributeUVIndex, 2, GL_FLOAT, false,
-						  strideLength, 0);
+						  strideLength, BUFFER_OFFSET(sizeof(GLfloat) * 6));
 	
 
 	shader->bind();
