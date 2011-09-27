@@ -16,39 +16,23 @@ using kocmoc::core::scene::Camera;
 
 void RenderMesh21::prepare(void)
 {
-	strideLength = (3 + 3); // position + normal + uv + tangent
-	if (triangleMesh->vertexUVs != NULL)
-		strideLength += 2;
-	if (triangleMesh->vertexTangents != NULL)
-		strideLength += 3;
-	
-	
-	float* interleaved = new float[triangleMesh->vertexCount * strideLength];
-	
-	//interleave
+	interleave* interleaved = new interleave[triangleMesh->vertexCount];
+
 	for (unsigned int i = 0; i < triangleMesh->vertexCount; i++)
 	{
-		unsigned j = 0;
-		interleaved[i*strideLength + j++] = triangleMesh->vertexPositions[i + 0];
-		interleaved[i*strideLength + j++] = triangleMesh->vertexPositions[i + 1];
-		interleaved[i*strideLength + j++] = triangleMesh->vertexPositions[i + 2];
+		interleaved[i].x = triangleMesh->vertexPositions[i*3 + 0];
+		interleaved[i].y = triangleMesh->vertexPositions[i*3 + 1];
+		interleaved[i].z = triangleMesh->vertexPositions[i*3 + 2];
 		
-		interleaved[i*strideLength + j++] = triangleMesh->vertexNormals[i + 0];
-		interleaved[i*strideLength + j++] = triangleMesh->vertexNormals[i + 1];
-		interleaved[i*strideLength + j++] = triangleMesh->vertexNormals[i + 2];
+		interleaved[i].nx = triangleMesh->vertexNormals[i*3 + 0];
+		interleaved[i].ny = triangleMesh->vertexNormals[i*3 + 1];
+		interleaved[i].nz = triangleMesh->vertexNormals[i*3 + 2];
 		
 		if (triangleMesh->vertexUVs != NULL)
 		{
-			interleaved[i*strideLength + j++] = triangleMesh->vertexUVs[i + 0];
-			interleaved[i*strideLength + j++] = triangleMesh->vertexUVs[i + 1];
-		}
-		
-		if (triangleMesh->vertexTangents != NULL)
-		{
-			interleaved[i*strideLength + j++] = triangleMesh->vertexTangents[i + 0];
-			interleaved[i*strideLength + j++] = triangleMesh->vertexTangents[i + 1];
-			interleaved[i*strideLength + j++] = triangleMesh->vertexTangents[i + 2];
-		}
+			interleaved[i].u = triangleMesh->vertexUVs[i*2 + 0];
+			interleaved[i].v = triangleMesh->vertexUVs[i*2 + 1];
+		}		
 	}
 	
 	vboHandle = 0;
@@ -56,7 +40,7 @@ void RenderMesh21::prepare(void)
 	glGenBuffers(1, &vboHandle);
 	glBindBuffer(GL_ARRAY_BUFFER, vboHandle);
 	glBufferData(GL_ARRAY_BUFFER, 
-				 triangleMesh->vertexCount * strideLength * sizeof(float), 
+				 triangleMesh->vertexCount * sizeof(interleave), 
 				 interleaved, 
 				 GL_STATIC_DRAW);
 	
@@ -82,23 +66,24 @@ void RenderMesh21::draw(Camera *camera)
 		shader->prepare();
 	}
 	
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesHandle);
 	glBindBuffer(GL_ARRAY_BUFFER, vboHandle);
 		
 	// for each vertex attribute do...
 	// positions
 	glEnableVertexAttribArray(vertexAttributePositionIndex);
 	glVertexAttribPointer(vertexAttributePositionIndex, 3, GL_FLOAT, false,
-						  strideLength * sizeof(GLfloat), 0);
+						  sizeof(interleave), 0);
 	
 	// normal
 	glEnableVertexAttribArray(vertexAttributeNormalIndex);
 	glVertexAttribPointer(vertexAttributeNormalIndex, 3, GL_FLOAT, false,
-						  strideLength * sizeof(GLfloat), BUFFER_OFFSET(sizeof(GLfloat) * 3));
+						  sizeof(interleave), BUFFER_OFFSET(sizeof(GLfloat) * 3));
 	
 	// uv
 	glEnableVertexAttribArray(vertexAttributeUVIndex);
 	glVertexAttribPointer(vertexAttributeUVIndex, 2, GL_FLOAT, false,
-						  strideLength * sizeof(GLfloat), BUFFER_OFFSET(sizeof(GLfloat) * 6));
+						  sizeof(interleave), BUFFER_OFFSET(sizeof(GLfloat) * 6));
 	
 
 	shader->bind();
@@ -118,7 +103,6 @@ void RenderMesh21::draw(Camera *camera)
 			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(camera->getProjectionMatrix()));
 		
 		
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesHandle);
 		glDrawElements(GL_TRIANGLES,
 					   triangleMesh->vertexIndexCount,
 					   GL_UNSIGNED_INT,

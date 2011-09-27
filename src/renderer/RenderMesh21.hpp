@@ -33,7 +33,13 @@ namespace kocmoc
 			private:
 				GLuint vboHandle;
 				GLuint indicesHandle;
-				unsigned int strideLength;
+				
+				struct interleave
+				{
+					float x, y, z;		// position
+					float nx, ny, nz;	// normals
+					float u, v;			// uv
+				};
 			};
 		}
 	}
