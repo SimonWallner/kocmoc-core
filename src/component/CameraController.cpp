@@ -41,7 +41,7 @@ void CameraController::KeyWatcher::buttonEventCallback(types::Symbol name, input
 	else if (name == p->right && event.isPressed == true)
 		p->camera->dolly(glm::vec3(+0.01, 0, 0));
 	else if (name == p->up && event.isPressed == true)
-		p->camera->dolly(glm::vec3(0, 0, -0.01));
-	else if (name == p->down && event.isPressed == true)
 		p->camera->dolly(glm::vec3(0, 0, +0.01));
+	else if (name == p->down && event.isPressed == true)
+		p->camera->dolly(glm::vec3(0, 0, -0.01));
 }

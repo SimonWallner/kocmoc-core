@@ -79,6 +79,7 @@ GLFWwindow Context::getWindowHandle()
 
 void Context::setGLStates()
 {
+	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.442047, 0.387623, 0.361867, 1.0f); // tinted gray
 //	glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // pitch black
 	glEnable(GL_FRAMEBUFFER_SRGB_EXT);
@@ -86,8 +87,12 @@ void Context::setGLStates()
 	glPointSize(2.0f);
 	glLineWidth(2.0f);
 	
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
+//	glEnable(GL_CULL_FACE);
+//	glCullFace(GL_BACK);
+	
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	
 	getError();
 }
