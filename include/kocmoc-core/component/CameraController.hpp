@@ -46,6 +46,7 @@ namespace kocmoc
 
 				types::Symbol left, right, up, down;
 
+				float lastDeltaT;
 			};
 		}
 	}

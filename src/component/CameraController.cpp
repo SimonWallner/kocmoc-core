@@ -11,6 +11,7 @@ CameraController::CameraController(FilmCamera* _camera, InputManager* inputManag
 	, right(types::symbolize("right"))
 	, up(types::symbolize("up"))
 	, down(types::symbolize("down"))
+	, lastDeltaT(0.0f)
 {
 	inputManager->registerButtonEventListener(left, &kw);
 	inputManager->bindButtonEventToKey(left, 'A'); // A
@@ -31,17 +32,17 @@ CameraController::CameraController(FilmCamera* _camera, InputManager* inputManag
 
 void CameraController::onUpdate(float deltaT)
 {
-	UNUSED deltaT;
+	lastDeltaT = deltaT;
 }
 
 void CameraController::KeyWatcher::buttonEventCallback(types::Symbol name, input::ButtonEvent event)
 {
 	if (name == p->left && event.isPressed == true)
-		p->camera->dolly(glm::vec3(-0.01, 0, 0));
+		p->camera->dolly(glm::vec3(-1.0f * p->lastDeltaT, 0, 0));
 	else if (name == p->right && event.isPressed == true)
-		p->camera->dolly(glm::vec3(+0.01, 0, 0));
+		p->camera->dolly(glm::vec3(+1.0f * p->lastDeltaT, 0, 0));
 	else if (name == p->up && event.isPressed == true)
-		p->camera->dolly(glm::vec3(0, 0, +0.01));
+		p->camera->dolly(glm::vec3(0, 0, +1.0f * p->lastDeltaT));
 	else if (name == p->down && event.isPressed == true)
-		p->camera->dolly(glm::vec3(0, 0, -0.01));
+		p->camera->dolly(glm::vec3(0, 0, -1.0f * p->lastDeltaT));
 }
