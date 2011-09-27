@@ -18,7 +18,7 @@ InputManager::InputManager(GLFWwindow _windowHandle)
 
 void InputManager::registerButtonEventListener(Symbol name, ButtonEventListener *listener)
 {
-	buttonEventListenerMultiMap.insert(EventPair(name, listener));
+	buttonEventListenerMultiMap.insert(ButtonEventPair(name, listener));
 }
 
 void InputManager::bindButtonEventToKey(Symbol name, int key)

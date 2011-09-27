@@ -1,6 +1,10 @@
 #ifndef KOCMOC_CORE_INPUT_MANAGER_HPP
 #define KOCMOC_CORE_INPUT_MANAGER_HPP
 
+#define ANALOG_EVENT_MOUSE_X 0
+#define ANALOG_EVENT_MOUSE_Y 1
+
+
 #include <map>
 
 #include <GL/glfw3.h>
@@ -40,7 +44,7 @@ namespace kocmoc
 				
 				void bindButtonEventToKey(types::Symbol name, int key);
 				
-//				void bindAnalogEventToMouse(Symbol name, int event);
+				void bindAnalogEventToMouse(types::Symbol name, int analogEventSymbolicConstant);
 				
 				void poll(void);
 				
@@ -51,12 +55,12 @@ namespace kocmoc
 				
 			private:
 				
-				typedef std::pair<types::Symbol, ButtonEventListener*> EventPair;
+				typedef std::pair<types::Symbol, ButtonEventListener*> ButtonEventPair;
 				typedef std::pair<types::Symbol, int> keyBindingPair;
 				typedef std::multimap<types::Symbol, ButtonEventListener*> ButtonEventListenerMultiMap;
 				typedef std::multimap<types::Symbol, int> ButtonEventKeyBindings;
 				
-	//			typedef std::vector<AnalogEventListener*> AnalogEventListenerList;
+				// TODO add analog events, ftw!
 				
 				GLFWwindow windowHandle;
 				

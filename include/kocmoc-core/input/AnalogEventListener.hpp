@@ -24,7 +24,7 @@ namespace kocmoc
 			
 			class AnalogEventListener
 			{
-				void AnalogEventCallback(Symbol name, ButtonEvent event) = 0;
+				void AnalogEventCallback(Symbol name, AnalogEvent event) = 0;
 			}
 		}
 	}
