@@ -27,6 +27,7 @@ namespace kocmoc
 			{
 			public:
 				AssetLoader(void);
+				~AssetLoader(void);
 				
 				void addResourcePath(const std::string path);
 				

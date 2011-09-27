@@ -63,6 +63,6 @@ void InputManager::dumpBindings()
 		 ci != buttonEventKeyBindings.end();
 		 ci++)
 	{
-		std::cout << "\t" << ci->first << " --> " << ci->second << std::endl;
+		std::cout << "\t" << ci->first << " --> " << ci->second << " '" << (char) ci->second << "'" << std::endl;
 	}
 }

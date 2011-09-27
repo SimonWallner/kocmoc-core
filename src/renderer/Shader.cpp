@@ -45,9 +45,27 @@ bool Shader::prepare()
 	link();
 	if (programHandle == 0)
 		return false;
+	
+	// set texture sampler uniforms
+	bind();
+	{
+		GLint location;
+		location = getUniformLocation("sDiffuse");
+		if (location >= 0)
+			glUniform1i(location, 0);
+		location = getUniformLocation("sSpecular");
+		if (location >= 0)
+			glUniform1i(location, 1);
+		location = getUniformLocation("sGloss");
+		if (location >= 0)
+			glUniform1i(location, 2);
+		location = getUniformLocation("sNormal");
+		if (location >= 0)
+			glUniform1i(location, 3);
+	}
+	unbind();
 
 	prepared = true;
-	
 	return prepared;
 }
 

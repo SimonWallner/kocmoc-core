@@ -14,6 +14,8 @@
 #include <GL/glfw3.h>
 
 #include <assimp/aiScene.h>
+#include <assimp/DefaultLogger.h>
+#include <assimp/LogStream.h>
 
 #include <kocmoc-core/component/Renderable.hpp>
 #include <kocmoc-core/util/util.hpp>
@@ -46,11 +48,13 @@ Renderable* AssetLoader::load(const string modelName, const string shaderPath)
 	string absolutePath = findAbsolutePathInResources(modelName);	
 	std::cout << "trying to load asset: " << absolutePath << std::endl;
 	
-	const aiScene* scene = importer.ReadFile(absolutePath,
-											 aiProcess_Triangulate |
-											 aiProcess_SortByPType |
-											 aiProcess_CalcTangentSpace |
-											 aiProcess_ImproveCacheLocality);
+//	const aiScene* scene = importer.ReadFile(absolutePath,
+//											 aiProcess_Triangulate |
+//											 aiProcess_SortByPType |
+//											 aiProcess_CalcTangentSpace |
+//											 aiProcess_ImproveCacheLocality);
+	const aiScene* scene = importer.ReadFile(absolutePath, aiProcess_ValidateDataStructure
+											 | aiProcess_Triangulate);
 	
 	if (!scene) // error
 	{
@@ -121,7 +125,19 @@ Renderable* AssetLoader::load(const string modelName, const string shaderPath)
 
 AssetLoader::AssetLoader()
 {
+	// Create a logger instance 
+	DefaultLogger::create("", Logger::VERBOSE);
+	DefaultLogger::get()->attachStream(LogStream::createDefaultStream(aiDefaultLogStream_STDOUT));
 	
+	// Now I am ready for logging my stuff
+	DefaultLogger::get()->info("logging starts here...");	
+	
+}
+
+AssetLoader::~AssetLoader()
+{
+	// Kill it after the work is done
+	DefaultLogger::kill();
 }
 
 string AssetLoader::findAbsolutePathInResources(const string name) const throw(exception::ResourceNotFoundException)

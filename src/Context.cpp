@@ -78,8 +78,12 @@ GLFWwindow Context::getWindowHandle()
 
 void Context::setGLStates()
 {
-	glClearColor(0.442047, 0.387623, 0.361867, 1.0f); // tinted gray
+//	glClearColor(0.442047, 0.387623, 0.361867, 1.0f); // tinted gray
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glEnable(GL_FRAMEBUFFER_SRGB_EXT);
+//	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPointSize(2.0f);
+	glLineWidth(2.0f);
 	getError();
 }
 

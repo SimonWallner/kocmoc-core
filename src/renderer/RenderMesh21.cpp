@@ -80,35 +80,25 @@ void RenderMesh21::draw(Camera *camera)
 	if (!shader->isPrepared())
 	{
 		shader->prepare();
-
-		// texture
-		shader->bind();
-		{
-			GLint location = shader->getUniformLocation("sDiffuse");
-			if (location >= 0)
-				glUniform1i(location, 0);
-		}
-		shader->unbind();
 	}
 	
 	glBindBuffer(GL_ARRAY_BUFFER, vboHandle);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesHandle);
-	
+		
 	// for each vertex attribute do...
 	// positions
 	glEnableVertexAttribArray(vertexAttributePositionIndex);
 	glVertexAttribPointer(vertexAttributePositionIndex, 3, GL_FLOAT, false,
-						  strideLength, 0);
+						  strideLength * sizeof(GLfloat), 0);
 	
 	// normal
 	glEnableVertexAttribArray(vertexAttributeNormalIndex);
 	glVertexAttribPointer(vertexAttributeNormalIndex, 3, GL_FLOAT, false,
-						  strideLength, BUFFER_OFFSET(sizeof(GLfloat) * 3));
+						  strideLength * sizeof(GLfloat), BUFFER_OFFSET(sizeof(GLfloat) * 3));
 	
 	// uv
 	glEnableVertexAttribArray(vertexAttributeUVIndex);
 	glVertexAttribPointer(vertexAttributeUVIndex, 2, GL_FLOAT, false,
-						  strideLength, BUFFER_OFFSET(sizeof(GLfloat) * 6));
+						  strideLength * sizeof(GLfloat), BUFFER_OFFSET(sizeof(GLfloat) * 6));
 	
 
 	shader->bind();
@@ -128,10 +118,12 @@ void RenderMesh21::draw(Camera *camera)
 			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(camera->getProjectionMatrix()));
 		
 		
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesHandle);
 		glDrawElements(GL_TRIANGLES,
-					   triangleMesh->vertexIndexCount / 3,
+					   triangleMesh->vertexIndexCount,
 					   GL_UNSIGNED_INT,
 					   NULL);
+		
 	}
 	shader->unbind();
 	
