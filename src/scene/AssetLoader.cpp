@@ -51,7 +51,7 @@ Renderable* AssetLoader::load(const string modelName, const string shaderPath)
 	const aiScene* scene = importer.ReadFile(absolutePath,
 											 aiProcess_Triangulate |
 											 aiProcess_SortByPType |
-											 aiProcess_CalcTangentSpace |
+//											 aiProcess_CalcTangentSpace |
 											 aiProcess_ImproveCacheLocality
 											 );
 
@@ -96,11 +96,19 @@ Renderable* AssetLoader::load(const string modelName, const string shaderPath)
 						normals[j*3+2] = mesh->mNormals[j].z;
 					}
 					
+					float* uvs = new float[vertexCount * 2];
+					for (uint j = 0; j < mesh->mNumFaces; j++)
+					{
+						uvs[j*2  ] = mesh->mTextureCoords[0][j].x;
+						uvs[j*2+1] = mesh->mTextureCoords[0][j].y;
+					}
+					
 					TriangleMesh* triangleMesh = new TriangleMesh(vertexIndexCount,
 																 indices,
 																 vertexCount,
 																 positions,
-																 normals);
+																 normals,
+																 uvs);
 					
 					Shader* shader = new Shader(shaderPath + ".vert", shaderPath + ".frag");
 					

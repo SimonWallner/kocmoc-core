@@ -16,8 +16,8 @@ using kocmoc::core::scene::Camera;
 
 void RenderMesh21::prepare(void)
 {
+	// interleave vertex attribute for great good.
 	interleave* interleaved = new interleave[triangleMesh->vertexCount];
-
 	for (unsigned int i = 0; i < triangleMesh->vertexCount; i++)
 	{
 		interleaved[i].x = triangleMesh->vertexPositions[i*3 + 0];

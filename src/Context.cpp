@@ -38,6 +38,7 @@ Context::Context(void)
         std::cout << "Failed to open GLFW window" << std::endl;
         exit(EXIT_FAILURE);
     }
+	glfwSetWindowPos(windowHandle, 0, 0);
 	
 	GLenum err = glewInit();
 	if (err != GLEW_OK)
@@ -78,12 +79,16 @@ GLFWwindow Context::getWindowHandle()
 
 void Context::setGLStates()
 {
-//	glClearColor(0.442047, 0.387623, 0.361867, 1.0f); // tinted gray
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.442047, 0.387623, 0.361867, 1.0f); // tinted gray
+//	glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // pitch black
 	glEnable(GL_FRAMEBUFFER_SRGB_EXT);
 //	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glPointSize(2.0f);
 	glLineWidth(2.0f);
+	
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	
 	getError();
 }
 
