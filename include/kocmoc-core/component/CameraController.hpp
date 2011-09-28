@@ -6,6 +6,7 @@
 #include <kocmoc-core/componentSystem/Component.hpp>
 #include <kocmoc-core/input/InputManager.hpp>
 #include <kocmoc-core/input/ButtonEventListener.hpp>
+#include <kocmoc-core/input/AnalogEventListener.hpp>
 #include <kocmoc-core/types/Symbol.hpp>
 #include <kocmoc-core/scene/FilmCamera.hpp>
 
@@ -24,27 +25,27 @@ namespace kocmoc
 			public:
 				CameraController(scene::FilmCamera* _camera, input::InputManager* inputManager);
 
-				
-				void onUpdate(float deltaT);
+				void onUpdate(const float deltaT);
 				
 			private:
-				
-				class KeyWatcher : public core::input::ButtonEventListener
+				class InputCallback : public core::input::ButtonEventListener, public core::input::AnalogEventListener
 				{
 				public:
-					KeyWatcher(CameraController* _p)
+					InputCallback(CameraController* _p)
 						: p(_p)
 					{}
 					
 					void buttonEventCallback(types::Symbol name, input::ButtonEvent event);
+					void analogEventCallback(types::Symbol name, input::AnalogEvent event);
 					
 				private:
 					CameraController* p;
-				} kw;
+				} ic;
+				
 				
 				scene::FilmCamera* camera;
 
-				types::Symbol left, right, up, down;
+				types::Symbol left, right, up, down, mouseTumbleH, mouseTumbleV;
 
 				float lastDeltaT;
 			};

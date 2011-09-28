@@ -20,12 +20,16 @@ namespace kocmoc
 			struct AnalogEvent
 			{
 				double value;
-			}
+				AnalogEvent(double _value)
+					: value(_value)
+				{}
+			};
 			
 			class AnalogEventListener
 			{
-				void AnalogEventCallback(Symbol name, AnalogEvent event) = 0;
-			}
+			public:
+				virtual void analogEventCallback(types::Symbol name, AnalogEvent event) = 0;
+			};
 		}
 	}
 }
