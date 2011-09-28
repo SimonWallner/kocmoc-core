@@ -1,10 +1,11 @@
 #ifndef KOCMOC_CORE_INPUT_MANAGER_HPP
 #define KOCMOC_CORE_INPUT_MANAGER_HPP
 
-#define ANALOG_EVENT_MOUSE_DELTA_X 0
-#define ANALOG_EVENT_MOUSE_DELTA_Y 1
-#define ANALOG_EVENT_MOUSE_ABSOLUTE_X 2
-#define ANALOG_EVENT_MOUSE_ABSOLUTE_Y 3
+// symbolic input event constants
+#define ANALOG_EVENT_MOUSE_DELTA_X		0
+#define ANALOG_EVENT_MOUSE_DELTA_Y		1
+#define ANALOG_EVENT_MOUSE_ABSOLUTE_X	2
+#define ANALOG_EVENT_MOUSE_ABSOLUTE_Y	3
 
 
 #include <map>
@@ -94,7 +95,7 @@ namespace kocmoc
 				AnalogEventListenerMultiMap analogEventListeners;
 				AnalogEventBindings analogEventBindigs;
 				
-				types::uint mouseX, mouseY;
+				int mouseX, mouseY;
 				
 				void notifyAnalogListeners(int AnalogEventSymbolicConstant, const AnalogEvent& event);
 			};

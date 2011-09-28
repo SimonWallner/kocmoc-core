@@ -49,10 +49,11 @@ Renderable* AssetLoader::load(const string modelName, const string shaderPath)
 	std::cout << "trying to load asset: " << absolutePath << std::endl;
 	
 	const aiScene* scene = importer.ReadFile(absolutePath,
-											 aiProcess_Triangulate |
-											 aiProcess_SortByPType |
-//											 aiProcess_CalcTangentSpace |
-											 aiProcess_ImproveCacheLocality
+											 aiProcess_Triangulate
+											 | aiProcess_SortByPType
+//											 | aiProcess_CalcTangentSpace
+											 | aiProcess_ImproveCacheLocality
+//											 | aiProcess_FlipWindingOrder
 											 );
 
 	

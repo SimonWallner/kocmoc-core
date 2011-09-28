@@ -47,10 +47,13 @@ void CameraController::InputCallback::buttonEventCallback(types::Symbol name, in
 {
 	if (name == p->left && event.isPressed == true)
 		p->camera->dolly(glm::vec3(-1.0f * p->lastDeltaT, 0, 0));
+	
 	else if (name == p->right && event.isPressed == true)
 		p->camera->dolly(glm::vec3(+1.0f * p->lastDeltaT, 0, 0));
+	
 	else if (name == p->up && event.isPressed == true)
 		p->camera->dolly(glm::vec3(0, 0, +1.0f * p->lastDeltaT));
+	
 	else if (name == p->down && event.isPressed == true)
 		p->camera->dolly(glm::vec3(0, 0, -1.0f * p->lastDeltaT));
 }
@@ -59,6 +62,7 @@ void CameraController::InputCallback::analogEventCallback(types::Symbol name, in
 {
 	if (name == p->mouseTumbleH)
 		p->camera->tumble(event.value*0.001f, 0.0f);
+	
 	else if (name == p->mouseTumbleV)
 		p->camera->tumble(0.0f, event.value*-0.001f);
 }

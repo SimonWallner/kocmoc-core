@@ -16,6 +16,7 @@ InputManager::InputManager(GLFWwindow _windowHandle)
 	, mouseY(0)
 {
 	glfwEnable(windowHandle, GLFW_STICKY_KEYS);
+	glfwDisable(windowHandle, GLFW_MOUSE_CURSOR);
 }
 
 
@@ -50,8 +51,11 @@ void InputManager::poll(void)
 		if (glfwGetKey(windowHandle, (int)ci->first))
 		{
 			// fetch listeners
-			for(ButtonEventListenerMultiMap::const_iterator listeners = buttonEventListeners.find(ci->second);
-				listeners != buttonEventListeners.end();
+			std::pair<ButtonEventListenerMultiMap::const_iterator, ButtonEventListenerMultiMap::const_iterator> bounds =
+				buttonEventListeners.equal_range(ci->second);
+			
+			for (ButtonEventListenerMultiMap::const_iterator listeners = bounds.first;
+				listeners != bounds.second;
 				listeners++)
 			{
 				// fire listener
@@ -64,15 +68,14 @@ void InputManager::poll(void)
 	}
 	
 	// poll mouse
-	int newMouseX, newMouseY;
+	int newMouseX;
+	int newMouseY;
 	glfwGetMousePos(windowHandle, &newMouseX, &newMouseY);
-	double deltaX = (double)newMouseX - (double)mouseX;
-	double deltaY = (double)newMouseY - (double)mouseY;
 	
 	notifyAnalogListeners(ANALOG_EVENT_MOUSE_ABSOLUTE_X, AnalogEvent(newMouseX));
 	notifyAnalogListeners(ANALOG_EVENT_MOUSE_ABSOLUTE_Y, AnalogEvent(newMouseY));
-	notifyAnalogListeners(ANALOG_EVENT_MOUSE_DELTA_X, AnalogEvent(deltaX));
-	notifyAnalogListeners(ANALOG_EVENT_MOUSE_DELTA_Y, AnalogEvent(deltaY));
+	notifyAnalogListeners(ANALOG_EVENT_MOUSE_DELTA_X, AnalogEvent(newMouseX - mouseX));
+	notifyAnalogListeners(ANALOG_EVENT_MOUSE_DELTA_Y, AnalogEvent(newMouseY - mouseY));
 	
 	mouseX = newMouseX;
 	mouseY = newMouseY;
@@ -80,15 +83,23 @@ void InputManager::poll(void)
 
 void InputManager::notifyAnalogListeners(int analogEventSymbolicConstant, const AnalogEvent& event)
 {
-	for (AnalogEventBindings::const_iterator ci = analogEventBindigs.find(analogEventSymbolicConstant);
-		 ci != analogEventBindigs.end();
+	// constant --> symbol
+	std::pair<AnalogEventBindings::const_iterator, AnalogEventBindings::const_iterator> bounds = 
+		analogEventBindigs.equal_range(analogEventSymbolicConstant);
+	
+	for (AnalogEventBindings::const_iterator ci = bounds.first;
+		 ci != bounds.second;
 		 ci++)
 	{
-		for (AnalogEventListenerMultiMap::const_iterator ci2 = analogEventListeners.find(ci->second);
-			 ci2 != analogEventListeners.end();
-			 ci2++)
+		// symbol --> listener
+		std::pair<AnalogEventListenerMultiMap::const_iterator, AnalogEventListenerMultiMap::const_iterator> bounds2 = 
+			analogEventListeners.equal_range(ci->second);
+		
+		for (AnalogEventListenerMultiMap::const_iterator listeners = bounds2.first;
+			 listeners != bounds2.second;
+			 listeners++)
 		{
-			(ci2->second)->analogEventCallback(ci->second, event);
+			(listeners->second)->analogEventCallback(ci->second, event);
 		}
 	}
 }
@@ -102,4 +113,20 @@ void InputManager::dumpBindings()
 	{
 		std::cout << "\t" << ci->first << "(" << (char) ci->first << ") --> " << ci->second << std::endl;
 	}
+	
+	std::cout << "analog bindings: " << std::endl;
+	for (AnalogEventBindings::const_iterator ci = analogEventBindigs.begin();
+		 ci != analogEventBindigs.end();
+		 ci++)
+	{
+		std::cout << "\t" << ci->first << " --> " << ci->second << std::endl;
+	}	
+	
+	std::cout << "analog callbacks:" << std::endl;
+	for (AnalogEventListenerMultiMap::const_iterator ci = analogEventListeners.begin();
+		 ci != analogEventListeners.end();
+		 ci++)
+	{
+		std::cout << "\t" << ci->first << " --> " << ci->second << std::endl;
+	}	
 }

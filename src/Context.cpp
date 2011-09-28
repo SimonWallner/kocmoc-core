@@ -30,8 +30,9 @@ Context::Context(void)
         exit(EXIT_FAILURE);
     }
 	
-	//	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 2);
-	//	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 1);
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 2);
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 1);
+	glfwOpenWindowHint(GLFW_DEPTH_BITS, 32);
     windowHandle = glfwOpenWindow(width, height, windowMode, "kocmoc", NULL);
     if (!windowHandle)
     {
@@ -87,8 +88,8 @@ void Context::setGLStates()
 	glPointSize(2.0f);
 	glLineWidth(2.0f);
 	
-//	glEnable(GL_CULL_FACE);
-//	glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 	
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
