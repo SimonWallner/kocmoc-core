@@ -54,6 +54,7 @@ Renderable* AssetLoader::load(const string modelName, const string shaderPath)
 //											 | aiProcess_CalcTangentSpace
 											 | aiProcess_ImproveCacheLocality
 //											 | aiProcess_FlipWindingOrder
+//											 | aiProcess_GenUVCoords
 											 );
 
 	
@@ -90,7 +91,7 @@ Renderable* AssetLoader::load(const string modelName, const string shaderPath)
 					}
 					
 					float* normals = new float[vertexCount * 3];
-					for (uint j = 0; j < mesh->mNumFaces; j++)
+					for (uint j = 0; j < vertexCount; j++)
 					{
 						normals[j*3  ] = mesh->mNormals[j].x;
 						normals[j*3+1] = mesh->mNormals[j].y;
@@ -98,7 +99,7 @@ Renderable* AssetLoader::load(const string modelName, const string shaderPath)
 					}
 					
 					float* uvs = new float[vertexCount * 2];
-					for (uint j = 0; j < mesh->mNumFaces; j++)
+					for (uint j = 0; j < vertexCount; j++)
 					{
 						uvs[j*2  ] = mesh->mTextureCoords[0][j].x;
 						uvs[j*2+1] = mesh->mTextureCoords[0][j].y;
