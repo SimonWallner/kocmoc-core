@@ -3,7 +3,7 @@
 
 #include <map>
 #include <IL/il.h>
-#include <GL/glfw3.h>
+#include <kocmoc-core/gl.h>
 
 namespace kocmoc
 {

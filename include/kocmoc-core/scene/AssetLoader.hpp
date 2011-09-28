@@ -11,6 +11,7 @@
 #pragma GCC diagnostic error "-Wunused-parameter"
 
 #include <kocmoc-core/exception/ResourceNotFoundException.hpp>
+#include <kocmoc-core/scene/ImageLoader.hpp>
 
 namespace kocmoc
 {
@@ -36,6 +37,7 @@ namespace kocmoc
 			private:
 				typedef std::list<std::string> ResourcePathList;
 				
+				ImageLoader* imageLoader;
 				ResourcePathList resourcePaths;
 				
 				Assimp::Importer importer;

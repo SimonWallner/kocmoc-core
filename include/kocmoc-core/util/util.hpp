@@ -26,6 +26,12 @@ namespace kocmoc
 			
 			void tokenize(const std::string& str, std::vector<std::string >& tokens, const std::string& delimiter);
 			
+			/**
+			 * Get the filename of a path, e.g.
+			 * foo/bar/buz/file.name --> file.name
+			 */
+			std::string getFileName(const std::string &path);
+			
 			
 			namespace parser
 			{

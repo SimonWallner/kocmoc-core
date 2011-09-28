@@ -52,16 +52,16 @@ bool Shader::prepare()
 		GLint location;
 		location = getUniformLocation("sDiffuse");
 		if (location >= 0)
-			glUniform1i(location, 0);
+			glUniform1i(location, textureUnitDiffuse);
 		location = getUniformLocation("sSpecular");
 		if (location >= 0)
-			glUniform1i(location, 1);
+			glUniform1i(location, textureUnitSpecular);
 		location = getUniformLocation("sGloss");
 		if (location >= 0)
-			glUniform1i(location, 2);
+			glUniform1i(location, textureUnitGloss);
 		location = getUniformLocation("sNormal");
 		if (location >= 0)
-			glUniform1i(location, 3);
+			glUniform1i(location, textureUnitNormal);
 	}
 	unbind();
 

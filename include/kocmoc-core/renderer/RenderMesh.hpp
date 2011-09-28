@@ -37,6 +37,12 @@ namespace kocmoc
 			static const char* const vertexAttributeTangentName = "inTangent";
 			static const types::uint vertexAttributeTangentIndex = 3;
 			
+			// texture units
+			static const int textureUnitDiffuse		= 0;
+			static const int textureUnitSpecular	= 1;
+			static const int textureUnitGloss		= 2;
+			static const int textureUnitNormal		= 3;
+			
 			class Shader;
 
 			/**
@@ -57,6 +63,7 @@ namespace kocmoc
 					, prepared(false)
 				{}
 				
+				void addTexture(GLint handle, int textureUnit);
 				virtual ~RenderMesh(void) {}
 
 				virtual void draw(scene::Camera *camera) = 0;

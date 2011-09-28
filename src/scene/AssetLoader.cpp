@@ -10,8 +10,7 @@
 
 #include <iostream>
 
-#include <GL/glew.h>
-#include <GL/glfw3.h>
+#include <kocmoc-core/gl.h>
 
 #include <assimp/aiScene.h>
 #include <assimp/DefaultLogger.h>
@@ -22,6 +21,7 @@
 #include <kocmoc-core/types/types.h>
 #include <kocmoc-core/scene/TriangleMesh.hpp>
 #include <kocmoc-core/renderer/Shader.hpp>
+#include <kocmoc-core/util/util.hpp>
 
 #include <renderer/RenderMesh21.hpp>
 
@@ -119,12 +119,40 @@ Renderable* AssetLoader::load(const string modelName, const string shaderPath)
 				}	
 			}
 			
-			for (uint i = 0; i < scene->mNumMaterials; i++)
+			// use only first material for now!
+			std::cout << "material count: " << scene->mNumMaterials << std::endl;
+			if (scene->mNumMaterials > 0)
 			{
-				aiMaterial* mat = scene->mMaterials[i];
+				aiMaterial* material = scene->mMaterials[0];
 				aiString* path = new aiString();
-				mat->GetTexture(aiTextureType_DIFFUSE, 0, path);
-				std::cout << "diffuse texture 0: " << path->data << std::endl;
+
+				if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
+				{
+					material->GetTexture(aiTextureType_DIFFUSE, 0, path);
+					std::cout << "diffuse texture 0: " << path->data << std::endl;
+					
+					std::string imagePath = util::getFileName(string(path->data));
+					std::cout << "diffuse texture 0: " << imagePath << std::endl;
+//					GLuint handle = imageLoader->loadImage(imagePath);
+				}
+				
+				if (material->GetTextureCount(aiTextureType_SPECULAR) > 0)
+				{
+					material->GetTexture(aiTextureType_SPECULAR, 0, path);
+					std::cout << "specular texture 0: " << path->data << std::endl;
+				}
+				
+				if (material->GetTextureCount(aiTextureType_SHININESS) > 0)
+				{
+					material->GetTexture(aiTextureType_SHININESS, 0, path);
+					std::cout << "gloss texture 0: " << path->data << std::endl;
+				}
+				
+				if (material->GetTextureCount(aiTextureType_NORMALS) > 0)
+				{
+					material->GetTexture(aiTextureType_NORMALS, 0, path);
+					std::cout << "normals texture 0: " << path->data << std::endl;
+				}
 			}
 		}
 		std::cout << "loading successful" << std::endl;
@@ -134,6 +162,7 @@ Renderable* AssetLoader::load(const string modelName, const string shaderPath)
 }
 
 AssetLoader::AssetLoader()
+	:imageLoader(new ImageLoader)
 {
 	// Create a logger instance 
 	DefaultLogger::create("", Logger::VERBOSE);
@@ -148,6 +177,8 @@ AssetLoader::~AssetLoader()
 {
 	// Kill it after the work is done
 	DefaultLogger::kill();
+	
+	delete imageLoader;
 }
 
 string AssetLoader::findAbsolutePathInResources(const string name) const throw(exception::ResourceNotFoundException)
