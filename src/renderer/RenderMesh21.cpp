@@ -85,6 +85,15 @@ void RenderMesh21::draw(Camera *camera)
 	glVertexAttribPointer(vertexAttributeUVIndex, 2, GL_FLOAT, false,
 						  sizeof(interleave), BUFFER_OFFSET(sizeof(GLfloat) * 6));
 	
+	// textures
+	for (TextureMap::const_iterator ci = textureMap.begin();
+		 ci != textureMap.end();
+		 ci++)
+	{
+		glActiveTexture(GL_TEXTURE0 + ci->first);
+		glBindTexture(GL_TEXTURE_2D, ci->second);
+	}
+
 
 	shader->bind();
 	{
@@ -116,3 +125,4 @@ void RenderMesh21::draw(Camera *camera)
 	glDisableVertexAttribArray(vertexAttributeNormalIndex);
 	glDisableVertexAttribArray(vertexAttributeUVIndex);
 }
+

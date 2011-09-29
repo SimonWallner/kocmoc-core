@@ -44,6 +44,8 @@ void AssetLoader::addResourcePath(const string path)
 Renderable* AssetLoader::load(const string modelName, const string shaderPath)
 {
 	Renderable* renderable = new Renderable();
+	Shader* shader;
+	RenderMesh21* renderMesh;
 	
 	string absolutePath = findAbsolutePathInResources(modelName);	
 	std::cout << "trying to load asset: " << absolutePath << std::endl;
@@ -112,9 +114,9 @@ Renderable* AssetLoader::load(const string modelName, const string shaderPath)
 																 normals,
 																 uvs);
 					
-					Shader* shader = new Shader(shaderPath + ".vert", shaderPath + ".frag");
+					shader = new Shader(shaderPath + ".vert", shaderPath + ".frag");
 					
-					RenderMesh21* renderMesh = new RenderMesh21(triangleMesh, shader);
+					renderMesh = new RenderMesh21(triangleMesh, shader);
 					renderable->add(renderMesh);
 				}	
 			}
@@ -125,38 +127,47 @@ Renderable* AssetLoader::load(const string modelName, const string shaderPath)
 			{
 				aiMaterial* material = scene->mMaterials[0];
 				aiString* path = new aiString();
-
+				
+				// FIXME: refactor!
 				if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0)
 				{
 					material->GetTexture(aiTextureType_DIFFUSE, 0, path);
-					std::cout << "diffuse texture 0: " << path->data << std::endl;
-					
-					std::string imagePath = util::getFileName(string(path->data));
-					std::cout << "diffuse texture 0: " << imagePath << std::endl;
-//					GLuint handle = imageLoader->loadImage(imagePath);
+					std::string imageName = util::getFileName(string(path->data));
+					std::cout << "diffuse texture 0: " << imageName << std::endl;
+					GLuint handle = imageLoader->loadImage(findAbsolutePathInResources("/textures/" + imageName));
+					renderMesh->addTexture(handle, renderer::textureUnitDiffuse);
 				}
 				
 				if (material->GetTextureCount(aiTextureType_SPECULAR) > 0)
 				{
 					material->GetTexture(aiTextureType_SPECULAR, 0, path);
-					std::cout << "specular texture 0: " << path->data << std::endl;
+					std::string imageName = util::getFileName(string(path->data));
+					std::cout << "diffuse texture 0: " << imageName << std::endl;
+					GLuint handle = imageLoader->loadImage(findAbsolutePathInResources("/textures/" + imageName));
+					renderMesh->addTexture(handle, renderer::textureUnitSpecular);
 				}
 				
 				if (material->GetTextureCount(aiTextureType_SHININESS) > 0)
 				{
 					material->GetTexture(aiTextureType_SHININESS, 0, path);
-					std::cout << "gloss texture 0: " << path->data << std::endl;
+					std::string imageName = util::getFileName(string(path->data));
+					std::cout << "diffuse texture 0: " << imageName << std::endl;
+					GLuint handle = imageLoader->loadImage(findAbsolutePathInResources("/textures/" + imageName));
+					renderMesh->addTexture(handle, renderer::textureUnitGloss);
 				}
 				
 				if (material->GetTextureCount(aiTextureType_NORMALS) > 0)
 				{
 					material->GetTexture(aiTextureType_NORMALS, 0, path);
-					std::cout << "normals texture 0: " << path->data << std::endl;
+					std::string imageName = util::getFileName(string(path->data));
+					std::cout << "diffuse texture 0: " << imageName << std::endl;
+					GLuint handle = imageLoader->loadImage(findAbsolutePathInResources("/textures/" + imageName));
+					renderMesh->addTexture(handle, renderer::textureUnitNormal);
 				}
 			}
 		}
 		std::cout << "loading successful" << std::endl;
-
+		
 	}
 	return renderable;
 }

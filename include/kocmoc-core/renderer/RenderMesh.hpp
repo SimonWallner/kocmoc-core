@@ -63,7 +63,7 @@ namespace kocmoc
 					, prepared(false)
 				{}
 				
-				void addTexture(GLint handle, int textureUnit);
+				virtual void addTexture(GLint handle, int textureUnit) = 0;
 				virtual ~RenderMesh(void) {}
 
 				virtual void draw(scene::Camera *camera) = 0;

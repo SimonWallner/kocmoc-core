@@ -1,6 +1,8 @@
 #ifndef KOCMOC_CORE_RENDERER_RENDER_MESH_21_HPP
 #define KOCMOC_CORE_RENDERER_RENDER_MESH_21_HPP
 
+#include <map>
+
 #include <kocmoc-core/renderer/RenderMesh.hpp>
 
 namespace kocmoc
@@ -26,11 +28,18 @@ namespace kocmoc
 				
 				~RenderMesh21(void) {}
 				
+				void addTexture(GLint handle, int textureUnit)
+				{
+					textureMap[textureUnit] = handle;
+				}
+				
 				void prepare(void);
 				
 				void draw(scene::Camera *camera);
 				
 			private:
+				typedef std::map<int, GLint> TextureMap;
+				
 				GLuint vboHandle;
 				GLuint indicesHandle;
 				
@@ -40,6 +49,8 @@ namespace kocmoc
 					float nx, ny, nz;	// normals
 					float u, v;			// uv
 				};
+				
+				TextureMap textureMap;
 			};
 		}
 	}

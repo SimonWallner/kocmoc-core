@@ -35,12 +35,11 @@ namespace kocmoc
 				 * 
 				 * Only files are supported that are supported by the underlying devIl lib.
 				 *
-				 * @param filename the filename of the texture including the extension
-				 *		like 'texture.png'
+				 * @param path full file path
 				 * @return The texture handle. If an error occurs, \c0 is
 				 *		returned instead
 				 */
-				GLuint loadImage(std::string filename);
+				GLuint loadImage(std::string path);
 
 
 				/**

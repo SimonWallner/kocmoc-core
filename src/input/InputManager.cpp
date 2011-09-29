@@ -16,7 +16,7 @@ InputManager::InputManager(GLFWwindow _windowHandle)
 	, mouseY(0)
 {
 	glfwEnable(windowHandle, GLFW_STICKY_KEYS);
-	glfwDisable(windowHandle, GLFW_MOUSE_CURSOR);
+	glfwSetCursorMode(windowHandle, GLFW_CURSOR_HIDDEN);
 }
 
 
