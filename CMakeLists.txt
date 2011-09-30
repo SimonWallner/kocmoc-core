@@ -35,6 +35,30 @@ add_custom_target(doc-kocmoc-core
 	)
 endif(DOXYGEN_FOUND)
 
+# core media file handling
+# -- check xml files ---------------------------------------------------------
+set (XML_FILES 
+	media/sputnik-core-config.xml.in
+	)
+
+foreach(f ${XML_FILES})
+	execute_process(
+		COMMAND xmllint ${f} --valid
+		WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+		RESULT_VARIABLE XML_VALIDATION_RESULT
+		OUTPUT_QUIET
+		)
+
+	if (XML_VALIDATION_RESULT) # 1 => error, 0 => OK
+		message(WARNING "faild to validate xml file: ${f}")
+	endif()
+endforeach()
+
+# -- copy and configure ------------------------------------------------------
+message(STATUS "configuring files...")
+set(KOCMOC_CORE_MEDIA_PATH ${PROJECT_SOURCE_DIR}/media/)
+configure_file(media/sputnik-config.xml.in ${KOCMOC_CORE_CONFIG_TARGET_LOCATION})
+
 
 add_subdirectory(external/glfw)
 add_subdirectory(src)
