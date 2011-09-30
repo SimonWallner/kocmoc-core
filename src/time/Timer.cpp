@@ -1,6 +1,6 @@
 #include <kocmoc-core/time/Timer.hpp>
 
-#include <GL/glfw3.h>
+#include <kocmoc-core/gl.h>
 
 using namespace kocmoc::core::time;
 

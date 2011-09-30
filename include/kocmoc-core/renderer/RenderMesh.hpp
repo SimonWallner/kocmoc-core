@@ -5,7 +5,7 @@
 
 #include <glm/glm.hpp>
 
-#include <GL/glfw3.h>
+#include <kocmoc-core/gl.h>
 
 #include <kocmoc-core/renderer/Shader.hpp>
 #include <kocmoc-core/scene/TriangleMesh.hpp>

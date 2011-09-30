@@ -1,7 +1,7 @@
 #ifndef KOCMOC_CORE_RENDERER_SHADER_HPP
 #define KOCMOC_CORE_RENDERER_SHADER_HPP
 
-#include <GL/glfw3.h>
+#include <kocmoc-core/gl.h>
 #include <kocmoc-core/types/Symbol.hpp>
 
 #include <string>

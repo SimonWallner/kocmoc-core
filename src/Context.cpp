@@ -1,7 +1,6 @@
 #include <iostream>
 
-#include <GL/glew.h>
-#include <GL/glfw3.h>
+#include <kocmoc-core/gl.h>
 /**
  * this is bullshit!
  * can't include the header to this file as the first include since glew does

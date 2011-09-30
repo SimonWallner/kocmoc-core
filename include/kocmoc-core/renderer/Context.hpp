@@ -1,7 +1,7 @@
 #ifndef KOCMOC_CORE_CONTEXT_HPP
 #define KOCMOC_CORE_CONTEXT_HPP
 
-#include <GL/glfw3.h>
+#include <kocmoc-core/gl.h>
 
 namespace kocmoc {
 	namespace core {

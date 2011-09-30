@@ -10,7 +10,7 @@
 
 #include <map>
 
-#include <GL/glfw3.h>
+#include <kocmoc-core/gl.h>
 
 #include <kocmoc-core/types/Symbol.hpp>
 #include <kocmoc-core/types/types.h>

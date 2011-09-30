@@ -11,7 +11,7 @@
 
 #include <iostream>
 
-#include <GL/glfw3.h>
+#include <kocmoc-core/gl.h>
 
 #include <kocmoc-core/renderer/RenderMesh.hpp>
 
