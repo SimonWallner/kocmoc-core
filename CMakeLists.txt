@@ -38,10 +38,14 @@ endif(DOXYGEN_FOUND)
 # core media file handling
 # -- check xml files ---------------------------------------------------------
 set (XML_FILES 
-	media/sputnik-core-config.xml.in
+	${PROJECT_SOURCE_DIR}/media/kocmoc-core-config.xml.in
 	)
 
 foreach(f ${XML_FILES})
+	if (NOT EXISTS ${f})
+		message(WARNING "file: ${f} does not exist!")
+	endif()
+			
 	execute_process(
 		COMMAND xmllint ${f} --valid
 		WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
@@ -57,7 +61,7 @@ endforeach()
 # -- copy and configure ------------------------------------------------------
 message(STATUS "configuring files...")
 set(KOCMOC_CORE_MEDIA_PATH ${PROJECT_SOURCE_DIR}/media/)
-configure_file(media/sputnik-config.xml.in ${KOCMOC_CORE_CONFIG_TARGET_LOCATION})
+configure_file(media/kocmoc-core-config.xml.in ${KOCMOC_CORE_CONFIG_TARGET_LOCATION})
 
 
 add_subdirectory(external/glfw)
