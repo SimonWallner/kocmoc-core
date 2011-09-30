@@ -59,6 +59,10 @@ foreach(f ${XML_FILES})
 endforeach()
 
 # -- copy and configure ------------------------------------------------------
+if(NOT DEFINED KOCMOC_CORE_CONFIG_TARGET_LOCATION)
+	message(WARNING "the variable KOCMOC_CORE_CONFIG_TARGET_LOCATION is not set. Now go and define it!")
+endif()
+
 message(STATUS "configuring files...")
 set(KOCMOC_CORE_MEDIA_PATH ${PROJECT_SOURCE_DIR}/media/)
 configure_file(media/kocmoc-core-config.xml.in ${KOCMOC_CORE_CONFIG_TARGET_LOCATION})
