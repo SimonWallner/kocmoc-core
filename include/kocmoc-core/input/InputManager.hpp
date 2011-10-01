@@ -72,7 +72,7 @@ namespace kocmoc
 				/**
 				 * dump the bindings to std::out
 				 */
-				void dumpBindings(void);
+				virtual void dumpBindings(void);
 				
 			private:
 				
