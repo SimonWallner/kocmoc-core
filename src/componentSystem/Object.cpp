@@ -48,3 +48,13 @@ void Object::render(Camera* camera)
 		(*it)->onRender(camera);
 	}
 }
+
+void Object::initComponents()
+{
+	for (ComponentMap::iterator it = components.begin();
+		 it != components.end();
+		 it++)
+	{
+		it->second->init();
+	}
+}

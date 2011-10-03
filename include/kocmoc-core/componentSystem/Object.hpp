@@ -62,7 +62,7 @@ namespace kocmoc
 				 * @param props	A general set of properties to be used by the 
 				 *		Object.
 				 */
-				explicit Object(std::string name, util::Properties* props);
+				Object(std::string name, util::Properties* props);
 				
 				virtual void init(void) {}
 				
@@ -110,6 +110,11 @@ namespace kocmoc
 				 * call render on all components with the given camera.
 				 */
 				void render(scene::Camera* camera);
+				
+				/**
+				 * call \c init on all registered components
+				 */
+				void initComponents(void);
 				
 			protected:
 				util::Properties* props;
