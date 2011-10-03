@@ -59,10 +59,7 @@ void InputManager::poll(void)
 				listeners++)
 			{
 				// fire listener
-				ButtonEvent event;
-				event.isPressed = true;
-				
-				(listeners->second)->buttonEventCallback(ci->second, event);
+				(listeners->second)->buttonEventCallback(ci->second, ButtonEvent(true));
 			}
 		}
 	}

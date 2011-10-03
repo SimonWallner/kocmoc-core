@@ -74,8 +74,7 @@ namespace kocmoc
 				 */
 				virtual void dumpBindings(void);
 				
-			private:
-				
+			protected:
 				typedef std::multimap<types::Symbol, ButtonEventListener* > ButtonEventListenerMultiMap;
 				typedef std::pair<types::Symbol, ButtonEventListener* > ButtonEventPair;
 				typedef std::multimap<int, types::Symbol> KeyButtonEventBindings;
@@ -84,15 +83,15 @@ namespace kocmoc
 				typedef std::multimap<types::Symbol, AnalogEventListener* > AnalogEventListenerMultiMap;
 				typedef std::pair<types::Symbol, AnalogEventListener* > AnalogEventPair;
 				typedef std::multimap<int, types::Symbol> AnalogEventBindings;
-				typedef std::pair<int, types::Symbol> AnalogBindingPair;
-				
-				
-				GLFWwindow windowHandle;
+				typedef std::pair<int, types::Symbol> AnalogBindingPair;								
 				
 				ButtonEventListenerMultiMap buttonEventListeners;
-				KeyButtonEventBindings buttonEventKeyBindings;
-				
 				AnalogEventListenerMultiMap analogEventListeners;
+				
+			private:				
+				GLFWwindow windowHandle;
+				
+				KeyButtonEventBindings buttonEventKeyBindings;
 				AnalogEventBindings analogEventBindigs;
 				
 				int mouseX, mouseY;

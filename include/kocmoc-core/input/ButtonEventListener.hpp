@@ -20,6 +20,10 @@ namespace kocmoc
 			struct ButtonEvent
 			{
 				bool isPressed;
+				
+				ButtonEvent(bool _isPressed)
+				: isPressed(_isPressed)
+				{};
 			};
 			
 			class ButtonEventListener
