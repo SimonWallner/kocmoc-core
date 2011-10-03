@@ -35,7 +35,7 @@ namespace kocmoc
 				
 				void prepare(void);
 				
-				void draw(scene::Camera *camera);
+				void draw(scene::Camera *camera, glm::mat4 modelMatrix);
 				
 			private:
 				typedef std::map<int, GLint> TextureMap;

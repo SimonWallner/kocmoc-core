@@ -66,7 +66,7 @@ namespace kocmoc
 				virtual void addTexture(GLint handle, int textureUnit) = 0;
 				virtual ~RenderMesh(void) {}
 
-				virtual void draw(scene::Camera *camera) = 0;
+				virtual void draw(scene::Camera *camera, glm::mat4 modelMatrix) = 0;
 
 				types::uint getVertexCount(void) const
 				{

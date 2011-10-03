@@ -56,7 +56,7 @@ void RenderMesh21::prepare(void)
 	prepared = true;
 }
 
-void RenderMesh21::draw(Camera *camera)
+void RenderMesh21::draw(Camera *camera, glm::mat4 modelMatrix)
 {
 	if (!prepared)
 		prepare();
@@ -101,7 +101,7 @@ void RenderMesh21::draw(Camera *camera)
 		GLint location;
 		location = shader->getUniformLocation("modelMatrix");
 		if (location >= 0)
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(glm::mat4(1.0)));
+			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 		
 		location = shader->getUniformLocation("viewMatrix");
 		if (location >= 0)

@@ -17,10 +17,7 @@ varying vec3 tangent;
 
 void main(void)
 {
-	// gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(inPosition, 1);
-	gl_Position = projectionMatrix * viewMatrix * vec4(inPosition, 1);
-	
-	// gl_Position = vec4(inPosition, 1);
+	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(inPosition, 1);
 
 	normal = inNormal;
 	uv = inUv;
