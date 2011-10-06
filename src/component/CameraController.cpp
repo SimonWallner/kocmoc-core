@@ -32,10 +32,10 @@ CameraController::CameraController(FilmCamera* _camera, InputManager* inputManag
 	inputManager->bindKeyToButtonEvent(264, down); // down
 	
 	// mouse controls
-	inputManager->registerAnalogEventListener(mouseTumbleH, &ic);
-	inputManager->bindAnalogEvent(ANALOG_EVENT_MOUSE_DELTA_X, mouseTumbleH);
-	inputManager->registerAnalogEventListener(mouseTumbleV, &ic);
-	inputManager->bindAnalogEvent(ANALOG_EVENT_MOUSE_DELTA_Y, mouseTumbleV);
+//	inputManager->registerAnalogEventListener(mouseTumbleH, &ic);
+//	inputManager->bindAnalogEvent(ANALOG_EVENT_MOUSE_DELTA_X, mouseTumbleH);
+//	inputManager->registerAnalogEventListener(mouseTumbleV, &ic);
+//	inputManager->bindAnalogEvent(ANALOG_EVENT_MOUSE_DELTA_Y, mouseTumbleV);
 }
 
 void CameraController::onUpdate(const float deltaT)

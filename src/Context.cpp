@@ -18,8 +18,8 @@ Context::Context(void)
 {
 	std::cout << "creating context now..." << std::endl;
 	
-	float width = 720;
-	float height = 432;
+	float width = 960;
+	float height = 540;
 	
 	int windowMode = GLFW_WINDOWED;
 	
