@@ -35,6 +35,12 @@ if(NOT TINYXML_FOUND)
 	message(WARNING "TinyXML not found!")
 endif()
 
+find_package(Freetype REQUIRED)
+if(NOT FREETYPE_FOUND)
+	message(WARNING "Freetype not found!")
+endif()
+
+
 # find_package(Boost REQUIRED)
 # if(NOT Boost_FOUND)
 # 	message(WARNING "Boost not found!")
