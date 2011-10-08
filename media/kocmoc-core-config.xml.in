@@ -15,4 +15,5 @@
 
 <properties>
 	<string name="core-media-path" value="${KOCMOC_CORE_MEDIA_PATH}" />
+	<string name="default-font-name" value="fonts/Open_Sans/OpenSans-Light.ttf" />
 </properties>

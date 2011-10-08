@@ -57,6 +57,8 @@ include_directories(
 	${IL_INCLUDE_DIR}
 	${ASSIMP_INCLUDE_DIR}
 	${TINYXML_INCLUDE_DIR}
+	${FREETYPE_INCLUDE_DIR_ft2build}
+	${FREETYPE_INCLUDE_DIR_freetype2}
 	# ${Boost_INCLUDE_DIR}
 )
 
@@ -88,6 +90,7 @@ set (TARGET_LINK_LIBRARIES kocmoc-core
 	${ILUT_LIBRARIES}
 	${ASSIMP_LIBRARY_RELEASE}
 	${TINYXML_LIBRARIES}
+	${FREETYPE_LIBRARY}
 )
 # link to assimp release right now, since the debug lib is not found
 # if it is present, ASSIMP_LIBRARY should work again.
