@@ -34,7 +34,8 @@ namespace kocmoc
 				
 			private:
 				FT_Library library;
-				FT_Face face;      
+				FT_Face face;
+				bool isKerningSupported;
 			};
 		}
 	}
