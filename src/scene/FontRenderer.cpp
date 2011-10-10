@@ -2,13 +2,17 @@
 
 #include <iostream>
 
-#include FT_GLYPH_H
-
 #include <kocmoc-core/compiler.h>
+#include <kocmoc-core/math/math.hpp>
+#include <kocmoc-core/scene/Image.hpp>
 
 using namespace kocmoc::core::scene;
 using std::string;
 using kocmoc::core::types::symbolize;
+using kocmoc::core::math::min;
+using kocmoc::core::math::max;
+using kocmoc::core::scene::Image;
+using kocmoc::core::types::uint;
 
 /**
  * code mostly derived from the tutorial found at
@@ -64,6 +68,7 @@ GLint FontRenderer::render(string text, GLint existingHandle)
 	
 	int penX = 0;
 	int penY = 0;
+	int maxHeight = 0;
 	
 	FT_UInt previousGlyphIndex = 0;
 	for (size_t i = 0; i < text.length(); i++)
@@ -96,20 +101,55 @@ GLint FontRenderer::render(string text, GLint existingHandle)
 			continue;  /* ignore errors, jump to next glyph */
 		
 		
+		FT_BBox bbox;
+		FT_Glyph_Get_CBox(glyphs[i], FT_GLYPH_BBOX_SUBPIXELS, &bbox);
+		
+		penX += (bbox.xMax - bbox.xMin);
+		maxHeight = max<int>(maxHeight, (bbox.yMax - bbox.yMin));
+		
 		previousGlyphIndex = glyphIndex;
-
 	}
 	
 	
 	// create blank image
+	Image<char > image(penX, maxHeight);
+	
 	// render string into image
+	FT_Vector origin;
+	origin.x = 0;
+	origin.y = 0;
+	
+	for (size_t i = 0; i < text.length(); i++)
+	{
+		FT_Error error = FT_Glyph_To_Bitmap(&glyphs[i],
+											FT_RENDER_MODE_NORMAL,
+											&origin,
+											true);
+		if (error) // ignore errors for now.
+			continue;
+		
+		FT_BitmapGlyph glyphBitmap = (FT_BitmapGlyph)glyphs[i];
+		
+		writeToImage(glyphBitmap, image, pos[i].x, pos[i].y);
+		
+		FT_Done_Glyph(glyphs[i]);
+	}
+	
 	// convert image to texture
 	// return handle
 	
-	UNUSED cText;
-	UNUSED glyphs;
-	UNUSED existingHandle;
-	
+
+	UNUSED existingHandle;	
 	return 0;
+}
+
+void FontRenderer::writeToImage(FT_BitmapGlyph& bitmapGlyph, Image<char>& image,
+						   uint penX, uint penY)
+{
+	// do stuff
+	UNUSED penX;
+	UNUSED penY;
+	UNUSED image;
+	UNUSED bitmapGlyph;
 }
 

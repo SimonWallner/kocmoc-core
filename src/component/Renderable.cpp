@@ -23,7 +23,7 @@ using glm::mat4;
 Renderable::Renderable()
 {}
 
-void Renderable::onRender(Camera* camera)
+void Renderable::onRender(renderer::RenderPass pass, Camera* camera)
 {
 	for (RenderMeshList::const_iterator ci = renderMeshList.begin();
 		 ci != renderMeshList.end();
@@ -32,6 +32,7 @@ void Renderable::onRender(Camera* camera)
 		mat4 modelMatrix = glm::gtx::transform::translate(objectBehaviour->position);
 		(*ci)->draw(camera, modelMatrix);
 	}
+	UNUSED pass;
 }
 
 void Renderable::init()

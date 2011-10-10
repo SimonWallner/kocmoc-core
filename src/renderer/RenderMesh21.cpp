@@ -24,9 +24,12 @@ void RenderMesh21::prepare(void)
 		interleaved[i].y = triangleMesh->vertexPositions[i*3 + 1];
 		interleaved[i].z = triangleMesh->vertexPositions[i*3 + 2];
 		
-		interleaved[i].nx = triangleMesh->vertexNormals[i*3 + 0];
-		interleaved[i].ny = triangleMesh->vertexNormals[i*3 + 1];
-		interleaved[i].nz = triangleMesh->vertexNormals[i*3 + 2];
+		if (triangleMesh->vertexNormals != NULL)
+		{
+			interleaved[i].nx = triangleMesh->vertexNormals[i*3 + 0];
+			interleaved[i].ny = triangleMesh->vertexNormals[i*3 + 1];
+			interleaved[i].nz = triangleMesh->vertexNormals[i*3 + 2];
+		}
 		
 		if (triangleMesh->vertexUVs != NULL)
 		{

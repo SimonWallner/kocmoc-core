@@ -27,6 +27,11 @@ namespace kocmoc
 				 * in advance.
 				 */
 				float getDeltaT(void) {return deltaT;}
+				
+				/**
+				 * Get the time at the last tick
+				 */
+				float getLastT(void) {return lastT;}
 					
 			private:
 				double lastT;

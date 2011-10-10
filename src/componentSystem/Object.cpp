@@ -7,6 +7,7 @@ using std::string;
 using kocmoc::core::types::Symbol;
 using kocmoc::core::util::Properties;
 using kocmoc::core::scene::Camera;
+using kocmoc::core::renderer::RenderPass;
 
 Object::Object(string _name, Properties* _props)
 	: props(_props)
@@ -29,23 +30,23 @@ void Object::registerUpdateReceiver(Component* receiver)
 	updateReceivers.push_back(receiver);
 }
 
-void Object::update(float deltaT)
+void Object::update(float deltaT, float t)
 {
 	for (ComponentList::iterator it = updateReceivers.begin();
 		 it != updateReceivers.end();
 		 it++)
 	{
-		(*it)->onUpdate(deltaT);
+		(*it)->onUpdate(deltaT, t);
 	}
 }
 
-void Object::render(Camera* camera)
+void Object::render(RenderPass pass, Camera* camera)
 {
 	for (ComponentList::iterator it = renderReceivers.begin();
 		 it != renderReceivers.end();
 		 it++)
 	{
-		(*it)->onRender(camera);
+		(*it)->onRender(pass, camera);
 	}
 }
 

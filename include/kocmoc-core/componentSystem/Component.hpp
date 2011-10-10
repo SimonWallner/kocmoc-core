@@ -51,13 +51,20 @@ namespace kocmoc
 				 */
 				virtual void init(void) {}
 				
-				virtual void onUpdate(float deltaT)
+				/**
+				 * update callback.
+				 * @param deltaT time since the last update in seconds
+				 * @param current time, this can also be negative.
+				 */
+				virtual void onUpdate(float deltaT, float t)
 				{
 					UNUSED deltaT;
+					UNUSED t;
 				}
 				
-				virtual void onRender(scene::Camera* camera)
+				virtual void onRender(renderer::RenderPass pass, scene::Camera* camera)
 				{
+					UNUSED pass;
 					UNUSED camera;
 				}
 								

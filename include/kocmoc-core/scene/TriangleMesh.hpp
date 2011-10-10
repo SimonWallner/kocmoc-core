@@ -135,7 +135,7 @@ namespace kocmoc
 				 * @param	indices				The vertex indices for the mesh.
 				 * @param	vertexCount			The number of unique vertices.
 				 * @param	vertexPositions		mandatory, must not be \c NULL
-				 * @param	vertexNormals		mandatory, must not be \c NULL
+				 * @param	vertexNormals		optional, can be \c NULL
 				 * @param	vertexUVs			optional, can be \c NULL
 				 * @param	vertexTangents		optional, can be \c NULL
 				 */
@@ -143,7 +143,7 @@ namespace kocmoc
 							 types::uint* indices,
 							 types::uint vertexCount,
 							 float* vertexPositions,
-							 float* vertexNormals,
+							 float* vertexNormals = NULL,
 							 float* vertexUVs = NULL,
 							 float* vertexTangents = NULL);
 

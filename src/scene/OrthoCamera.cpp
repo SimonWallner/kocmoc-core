@@ -11,9 +11,9 @@ OrthoCamera::OrthoCamera(vec3 _focus, vec3 _direction, vec3 _upVector)
 	: focus(_focus)
 	, direction(_direction)
 	, upVector(glm::core::function::geometric::normalize(_upVector))
-	, width(10)
-	, height(5)
-	, depth(10)
+	, width(1)
+	, height(1)
+	, depth(1)
 {}
 
 OrthoCamera::~OrthoCamera(void)

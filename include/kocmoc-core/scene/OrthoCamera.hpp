@@ -22,6 +22,16 @@ namespace kocmoc
 				OrthoCamera(glm::vec3 focus, glm::vec3 direction, glm::vec3 upVector);
 				~OrthoCamera(void);
 				
+				/**
+				 * set the size of the viewing cube in world space
+				 */
+				void setWidthHeightDepth(float _width, float _height, float _depth)
+				{
+					width = _width;
+					height = _height;
+					depth = _depth;
+				}
+				
 				// override fuctions from camera
 				const glm::mat4 getViewMatrix() {return viewMatrix;}
 				const glm::mat4 getProjectionMatrix() {return projectionMatrix;}

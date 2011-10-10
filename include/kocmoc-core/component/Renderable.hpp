@@ -43,7 +43,7 @@ namespace kocmoc
 				 * 
 				 * @param camera The camera that should be used for rendering.
 				 */
-				void onRender(scene::Camera* camera);
+				void onRender(renderer::RenderPass pass, scene::Camera* camera);
 				
 				void init(void);
 				

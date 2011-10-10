@@ -5,9 +5,12 @@
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
+#include FT_GLYPH_H
 
 #include <kocmoc-core/gl.h>
 #include <kocmoc-core/util/Properties.hpp>
+#include <kocmoc-core/types/types.h>
+#include <kocmoc-core/scene/Image.hpp>
 
 namespace kocmoc 
 {
@@ -36,6 +39,12 @@ namespace kocmoc
 				FT_Library library;
 				FT_Face face;
 				bool isKerningSupported;
+				
+				/**
+				 * write the bitmap to the image
+				 */
+				void writeToImage(FT_BitmapGlyph& bitmapGlyph, Image<char >& image,
+								  types::uint penX, types::uint penY);
 			};
 		}
 	}

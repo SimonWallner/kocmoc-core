@@ -16,6 +16,7 @@
 
 #include <kocmoc-core/types/Symbol.hpp>
 #include <kocmoc-core/util/Properties.hpp>
+#include <kocmoc-core/renderer/RenderPassEnum.hpp>
 
 namespace kocmoc
 {
@@ -72,19 +73,6 @@ namespace kocmoc
 				void addComponent(Component* component);
 				
 				/**
-				 * Register a component to receive messages.
-				 *
-				 * @param receiver The component to receive the messages.
-				 */
-				void registerMessageReceiver(Component* receiver);
-				
-				/**
-				 * Send a message to all registered message recievers
-				 */
-				void sendMessage(void);
-				
-				
-				/**
 				 * Register a component to receive update calls.
 				 *
 				 * @param receiver The component to receive the update call.
@@ -95,8 +83,9 @@ namespace kocmoc
 				 * Call update on all components.
 				 * 
 				 * @param deltaT the time since the last update in seconds.
+				 * @param current time in seconds. This might even be negative.
 				 */
-				void update(float deltaT);
+				void update(float deltaT, float t);
 				
 				
 				/**
@@ -109,7 +98,7 @@ namespace kocmoc
 				/**
 				 * call render on all components with the given camera.
 				 */
-				void render(scene::Camera* camera);
+				void render(renderer::RenderPass pass, scene::Camera* camera);
 				
 				/**
 				 * call \c init on all registered components
