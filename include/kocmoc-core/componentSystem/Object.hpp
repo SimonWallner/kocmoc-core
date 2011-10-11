@@ -43,11 +43,14 @@ namespace kocmoc
 				
 				/**
 				 * get a component by name and dynamic cast to it.
+				 * If there are more components with this name, the first one
+				 *	is returned.
+				 * @return first component that matches, or NULL if none match.
 				 */
 				template <class T>
 				T* getComponent()
 				{
-					ComponentMap::iterator it = components.find(types::symbolize(typeid(T).name()));
+					ComponentMultimap::iterator it = components.find(types::symbolize(typeid(T).name()));
 					if (it != components.end())
 					{
 						Component* c = it->second;
@@ -112,9 +115,10 @@ namespace kocmoc
 				std::string name;
 				
 				typedef std::list<Component* > ComponentList;
-				typedef std::map<types::Symbol, Component* > ComponentMap;
+				typedef std::multimap<types::Symbol, Component* > ComponentMultimap;
+				typedef std::pair<types::Symbol, Component* > NameComponentPair;
 				
-				ComponentMap components;
+				ComponentMultimap components;
 				ComponentList messageReceivers;
 				ComponentList updateReceivers;
 				ComponentList renderReceivers;

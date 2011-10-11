@@ -2,6 +2,7 @@
 #define KOCMOC_CORE_CONTEXT_HPP
 
 #include <kocmoc-core/gl.h>
+#include <kocmoc-core/util/Properties.hpp>
 
 namespace kocmoc {
 	namespace core {
@@ -16,7 +17,7 @@ namespace kocmoc {
 				/**
 				 * Create a new context, RAII
 				 */
-				Context(void);
+				Context(util::Properties* props);
 
 				~Context(void);
 
@@ -38,6 +39,7 @@ namespace kocmoc {
 				void getError(void);
 				
 				GLFWwindow windowHandle;
+				util::Properties* props;
 			};
 		}
 	}

@@ -16,7 +16,7 @@ Object::Object(string _name, Properties* _props)
 
 void Object::addComponent(Component *component)
 {
-	components[component->getName()] = component;
+	components.insert(NameComponentPair(component->getName(), component));
 	component->setParent(this);
 }
 
@@ -52,7 +52,7 @@ void Object::render(RenderPass pass, Camera* camera)
 
 void Object::initComponents()
 {
-	for (ComponentMap::iterator it = components.begin();
+	for (ComponentMultimap::iterator it = components.begin();
 		 it != components.end();
 		 it++)
 	{

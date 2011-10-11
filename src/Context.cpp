@@ -14,12 +14,13 @@
 
 using namespace kocmoc::core::renderer;
 
-Context::Context(void)
+Context::Context(util::Properties* _props)
+	: props(_props)
 {
 	std::cout << "creating context now..." << std::endl;
 	
-	float width = 960;
-	float height = 540;
+	float width = props->getFloat(types::symbolize("width"));
+	float height = props->getFloat(types::symbolize("height"));
 	
 	int windowMode = GLFW_WINDOWED;
 	
