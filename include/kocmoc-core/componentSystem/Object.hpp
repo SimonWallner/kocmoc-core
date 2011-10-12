@@ -42,6 +42,14 @@ namespace kocmoc
 			public:
 				
 				/**
+				 * Create a new object
+				 * @param name	The human readable name of the object.
+				 * @param props	A general set of properties to be used by the 
+				 *		Object.
+				 */
+				Object(std::string name, util::Properties* props);
+				
+				/**
 				 * get a component by name and dynamic cast to it.
 				 * If there are more components with this name, the first one
 				 *	is returned.
@@ -59,14 +67,6 @@ namespace kocmoc
 					else
 						return NULL;
 				}
-				
-				/**
-				 * Create a new object
-				 * @param name	The human readable name of the object.
-				 * @param props	A general set of properties to be used by the 
-				 *		Object.
-				 */
-				Object(std::string name, util::Properties* props);
 				
 				/**
 				 * Add a component to the object

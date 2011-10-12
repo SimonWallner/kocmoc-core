@@ -49,7 +49,7 @@ namespace kocmoc
 				
 				/**
 				 * A a renderMesh to the list, so that it is rendered during
-				 * \onRender(...)
+				 * onRender(...)
 				 */
 				void add(renderer::RenderMesh* renderMesh)
 				{
