@@ -64,11 +64,11 @@ GLuint ImageLoader::loadImage(std::string filename)
 		ilDeleteImages(1, &texid);
 		
 		cout << "texture: '" << filename << "' loaded successfully" << std::endl;
-		return true;
+		return handle;
 	} else
 	{
 		cout << "failed ot load image: " << filename << " '" << iluErrorString(error) << "'" << endl;
-		return false;
+		return -1;
 	}
 }
 
