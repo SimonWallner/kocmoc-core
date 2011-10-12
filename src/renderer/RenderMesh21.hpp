@@ -26,16 +26,18 @@ namespace kocmoc
 					: RenderMesh(triangleMesh, _shader)
 				{}
 				
-				~RenderMesh21(void) {}
+				~RenderMesh21() {}
 				
 				void addTexture(GLint handle, int textureUnit)
 				{
 					textureMap[textureUnit] = handle;
 				}
 				
-				void prepare(void);
+				void prepare();
 				
 				void draw(scene::Camera *camera, glm::mat4 modelMatrix);
+				void drawInstanced(scene::Camera *camera, glm::mat4 modelMatrix,
+								   unsigned int instanceCount);
 				
 			private:
 				typedef std::map<int, GLint> TextureMap;
@@ -51,6 +53,11 @@ namespace kocmoc
 				};
 				
 				TextureMap textureMap;
+				
+				GLint modelMatrixLocation;
+				GLint viewMatrixLocation;
+				GLint projectionMatrixLocation;
+				GLint instanceLocation;
 			};
 		}
 	}

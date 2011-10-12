@@ -56,6 +56,14 @@ namespace kocmoc
 					renderMeshList.push_back(renderMesh);
 				}
 				
+				/**
+				 * get the first mesh in this renderable
+				 */
+				renderer::RenderMesh* getFirstMesh()
+				{
+					return (*renderMeshList.begin());
+				}
+				
 			private:
 				typedef std::list<renderer::RenderMesh* > RenderMeshList;
 				

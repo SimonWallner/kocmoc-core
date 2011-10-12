@@ -68,7 +68,7 @@ namespace kocmoc
 				 */
 				Object(std::string name, util::Properties* props);
 				
-				virtual void init(void) {}
+				virtual void init() {}
 				
 				/**
 				 * Add a component to the object
@@ -101,12 +101,12 @@ namespace kocmoc
 				/**
 				 * call render on all components with the given camera.
 				 */
-				void render(renderer::RenderPass pass, scene::Camera* camera);
+				virtual void render(renderer::RenderPass pass, scene::Camera* camera);
 				
 				/**
 				 * call \c init on all registered components
 				 */
-				void initComponents(void);
+				void initComponents();
 				
 			protected:
 				util::Properties* props;

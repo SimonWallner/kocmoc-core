@@ -25,14 +25,16 @@ Renderable::Renderable()
 
 void Renderable::onRender(renderer::RenderPass pass, Camera* camera)
 {
-	for (RenderMeshList::const_iterator ci = renderMeshList.begin();
-		 ci != renderMeshList.end();
-		 ci++)
+	if (pass == kocmoc::core::renderer::RP_NORMAL)
 	{
-		mat4 modelMatrix = glm::gtx::transform::translate(objectBehaviour->position);
-		(*ci)->draw(camera, modelMatrix);
+		for (RenderMeshList::const_iterator ci = renderMeshList.begin();
+			 ci != renderMeshList.end();
+			 ci++)
+		{
+			mat4 modelMatrix = glm::gtx::transform::translate(objectBehaviour->position);
+			(*ci)->draw(camera, modelMatrix);
+		}
 	}
-	UNUSED pass;
 }
 
 void Renderable::init()

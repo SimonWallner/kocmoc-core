@@ -56,18 +56,33 @@ void RenderMesh21::prepare(void)
 				 triangleMesh->indices,
 				 GL_STATIC_DRAW);
 
+	// shader stuff
+	if (!shader->isPrepared())
+		shader->prepare();
+	
+	shader->bind();
+	{
+		modelMatrixLocation = shader->getUniformLocation("modelMatrix");
+		viewMatrixLocation = shader->getUniformLocation("viewMatrix");
+		projectionMatrixLocation = shader->getUniformLocation("projectionMatrix");
+		instanceLocation = shader->getUniformLocation("instance");
+	}
+	shader->unbind();
+	
 	prepared = true;
 }
 
 void RenderMesh21::draw(Camera *camera, glm::mat4 modelMatrix)
 {
+	drawInstanced(camera, modelMatrix, 1);
+}
+
+void RenderMesh21::drawInstanced(Camera *camera,
+								 glm::mat4 modelMatrix,
+								 unsigned int instanceCount)
+{
 	if (!prepared)
 		prepare();
-	
-	if (!shader->isPrepared())
-	{
-		shader->prepare();
-	}
 	
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesHandle);
 	glBindBuffer(GL_ARRAY_BUFFER, vboHandle);
@@ -101,25 +116,27 @@ void RenderMesh21::draw(Camera *camera, glm::mat4 modelMatrix)
 	shader->bind();
 	{
 		// update shader
-		GLint location;
-		location = shader->getUniformLocation("modelMatrix");
-		if (location >= 0)
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+
+		if (modelMatrixLocation >= 0)
+			glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 		
-		location = shader->getUniformLocation("viewMatrix");
-		if (location >= 0)
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(camera->getViewMatrix()));
+		if (viewMatrixLocation >= 0)
+			glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, glm::value_ptr(camera->getViewMatrix()));
 		
-		location = shader->getUniformLocation("projectionMatrix");
-		if (location >= 0)
-			glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(camera->getProjectionMatrix()));
+		if (projectionMatrixLocation >= 0)
+			glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, glm::value_ptr(camera->getProjectionMatrix()));
 		
-		
-		glDrawElements(GL_TRIANGLES,
-					   triangleMesh->vertexIndexCount,
-					   GL_UNSIGNED_INT,
-					   NULL);
-		
+		for (unsigned int i = 0; i < instanceCount; i++)
+		{
+			if (instanceLocation >= 0)
+				glUniform1i(instanceLocation, i);
+			
+			
+			glDrawElements(GL_TRIANGLES,
+						   triangleMesh->vertexIndexCount,
+						   GL_UNSIGNED_INT,
+						   NULL);
+		}
 	}
 	shader->unbind();
 	

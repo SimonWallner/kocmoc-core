@@ -66,7 +66,23 @@ namespace kocmoc
 				virtual void addTexture(GLint handle, int textureUnit) = 0;
 				virtual ~RenderMesh(void) {}
 
+				/**
+				 * Draw the render mesh
+				 * @param camera the camera that is used for drawing
+				 * @param modelMatrix
+				 */
 				virtual void draw(scene::Camera *camera, glm::mat4 modelMatrix) = 0;
+				
+				/**
+				 * Draw multiple instances of this render mesh.
+				 * The shader used to render this mesh must support that and
+				 * make sense of the multiple instances
+				 * 
+				 * @param camera the camera that is used for drawing
+				 * @param modelMatrix
+				 * @param instanceCount number of instances to draw.
+				 */
+				virtual void drawInstanced(scene::Camera *camera, glm::mat4 modelMatrix, unsigned int instanceCount) = 0;
 
 				types::uint getVertexCount(void) const
 				{
