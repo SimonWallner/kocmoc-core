@@ -15,6 +15,7 @@ namespace kocmoc
 			class Properties
 			{
 			public:
+				Properties() {}
 				
 				/**
 				 * Add values to the map
@@ -35,7 +36,10 @@ namespace kocmoc
 				 */
 				void dumpCache(void) const;
 				
-			private:								
+			private:		
+				Properties(const Properties& noCopy);
+				Properties& operator=(const Properties* noAssign);
+				
 				typedef std::map<types::Symbol, std::string> PropertiesStringCache;
 				typedef std::map<types::Symbol, float> PropertiesFloatCache;
 				typedef std::map<types::Symbol, bool> PropertiesBoolCache;
