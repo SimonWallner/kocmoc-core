@@ -39,6 +39,7 @@ namespace kocmoc
 				void drawInstanced(scene::Camera *camera, glm::mat4 modelMatrix,
 								   unsigned int instanceCount);
 				
+				void setShaderParam(std::string name, glm::vec3 value);
 			private:
 				typedef std::map<int, GLint> TextureMap;
 				

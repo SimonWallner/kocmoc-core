@@ -146,3 +146,16 @@ void RenderMesh21::drawInstanced(Camera *camera,
 	glDisableVertexAttribArray(vertexAttributeUVIndex);
 }
 
+void RenderMesh21::setShaderParam(std::string name, glm::vec3 value)
+{
+	if (!prepared)
+		prepare();
+	
+	shader->bind();
+	{
+		GLint location = shader->getUniformLocation(name);
+		if(location >= 0)
+			glUniform3fv(location, 1, glm::value_ptr(value));
+	}
+}
+

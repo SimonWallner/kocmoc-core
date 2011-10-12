@@ -105,6 +105,8 @@ namespace kocmoc
 				{
 					return prepared;
 				}
+				
+				virtual void setShaderParam(std::string name, glm::vec3 value) = 0;
 
 			protected:
 				
