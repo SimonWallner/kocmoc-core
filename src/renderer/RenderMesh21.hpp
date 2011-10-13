@@ -40,6 +40,7 @@ namespace kocmoc
 								   unsigned int instanceCount);
 				
 				void setShaderParam(std::string name, glm::vec3 value);
+				void setShaderParam(std::string name, int value);
 			private:
 				typedef std::map<int, GLint> TextureMap;
 				

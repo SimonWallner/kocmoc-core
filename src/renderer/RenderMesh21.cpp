@@ -159,3 +159,15 @@ void RenderMesh21::setShaderParam(std::string name, glm::vec3 value)
 	}
 }
 
+void RenderMesh21::setShaderParam(std::string name, int value)
+{
+	if (!prepared)
+		prepare();
+	
+	shader->bind();
+	{
+		GLint location = shader->getUniformLocation(name);
+		if(location >= 0)
+			glUniform1i(location, value);
+	}
+}
