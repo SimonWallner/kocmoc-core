@@ -19,10 +19,17 @@ namespace kocmoc
 		{
 			struct ButtonEvent
 			{
-				bool isPressed;
+				enum State
+				{
+					PRESSED,
+					RELEASED,
+					HELD
+				};
 				
-				ButtonEvent(bool _isPressed)
-				: isPressed(_isPressed)
+				State state;
+				
+				ButtonEvent(State _state)
+					: state(_state)
 				{};
 			};
 			

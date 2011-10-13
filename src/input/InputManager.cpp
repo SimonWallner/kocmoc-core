@@ -59,7 +59,7 @@ void InputManager::poll(void)
 				listeners++)
 			{
 				// fire listener
-				(listeners->second)->buttonEventCallback(ci->second, ButtonEvent(true));
+				(listeners->second)->buttonEventCallback(ci->second, ButtonEvent(ButtonEvent::HELD));
 			}
 		}
 	}

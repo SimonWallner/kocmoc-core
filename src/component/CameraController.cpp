@@ -45,16 +45,16 @@ void CameraController::onUpdate(const float deltaT)
 
 void CameraController::InputCallback::buttonEventCallback(types::Symbol name, input::ButtonEvent event)
 {
-	if (name == p->left && event.isPressed == true)
+	if (name == p->left && event.state == input::ButtonEvent::HELD)
 		p->camera->dolly(glm::vec3(-1.0f * p->lastDeltaT, 0, 0));
 	
-	else if (name == p->right && event.isPressed == true)
+	else if (name == p->right && event.state == input::ButtonEvent::HELD)
 		p->camera->dolly(glm::vec3(+1.0f * p->lastDeltaT, 0, 0));
 	
-	else if (name == p->up && event.isPressed == true)
+	else if (name == p->up && event.state == input::ButtonEvent::HELD)
 		p->camera->dolly(glm::vec3(0, 0, +1.0f * p->lastDeltaT));
 	
-	else if (name == p->down && event.isPressed == true)
+	else if (name == p->down && event.state == input::ButtonEvent::HELD)
 		p->camera->dolly(glm::vec3(0, 0, -1.0f * p->lastDeltaT));
 }
 
