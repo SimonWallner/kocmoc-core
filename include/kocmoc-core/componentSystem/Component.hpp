@@ -40,7 +40,7 @@ namespace kocmoc
 
 			public:
 				
-				types::Symbol getName(void)
+				types::Symbol getName()
 				{
 					return types::symbolize(typeid(*this).name());
 				}
@@ -49,7 +49,7 @@ namespace kocmoc
 				 * init is callen when all components are constructed.
 				 * This is where you get you pointers to other components.
 				 */
-				virtual void init(void) {}
+				virtual void init() {}
 				
 				/**
 				 * update callback.

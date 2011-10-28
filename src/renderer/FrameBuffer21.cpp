@@ -110,7 +110,6 @@ void FrameBuffer21::createQuad()
 								horizontalOffset,					verticalScale + verticallOffset,
 								horizontalOffset,					verticallOffset};
 
-	UNUSED quadTexCoord;
 	
 	TriangleMesh* triMesh = new TriangleMesh(6, indices, 4,
 											 quadVertices, NULL, quadTexCoord);

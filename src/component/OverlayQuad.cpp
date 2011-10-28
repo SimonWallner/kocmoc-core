@@ -2,7 +2,7 @@
 
 #include <glm/gtx/transform.hpp>
 
-#include <renderer/RenderMesh21.hpp>
+#include <kocmoc-core/renderer/RenderMesh21.hpp>
 
 
 using namespace kocmoc::core::component;

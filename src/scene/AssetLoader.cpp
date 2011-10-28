@@ -23,7 +23,7 @@
 #include <kocmoc-core/renderer/Shader.hpp>
 #include <kocmoc-core/util/util.hpp>
 
-#include <renderer/RenderMesh21.hpp>
+#include <kocmoc-core/renderer/RenderMesh21.hpp>
 
 using namespace kocmoc::core::scene;
 using namespace Assimp;
