@@ -35,10 +35,10 @@ void main(void)
 	color = c / 4.0f;
 
 	// === vignetting ===
-	float attenuation = 5.0f;
-	float power = 4.7;
+	float attenuation = 0.8f;
+	float power = 1.5;
 
-	float delta = distance(uv, vec2(0.5f, 0.5f));
+	float delta = distance((uv - vec2(0.5, 0.5)) / vec2(1, aspectRatio), vec2(0, 0)) * 2.0f;
 	float darkening = 1 - pow(delta, power) * attenuation;
 	color = color * vec4(vec3(darkening), 1);
 
