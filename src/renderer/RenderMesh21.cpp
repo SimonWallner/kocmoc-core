@@ -116,15 +116,18 @@ void RenderMesh21::drawInstanced(Camera *camera,
 	shader->bind();
 	{
 		// update shader
-
+		
 		if (modelMatrixLocation >= 0)
 			glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 		
-		if (viewMatrixLocation >= 0)
-			glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, glm::value_ptr(camera->getViewMatrix()));
-		
-		if (projectionMatrixLocation >= 0)
-			glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, glm::value_ptr(camera->getProjectionMatrix()));
+		if (camera != NULL)
+		{
+			if (viewMatrixLocation >= 0)
+				glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, glm::value_ptr(camera->getViewMatrix()));
+			
+			if (projectionMatrixLocation >= 0)
+				glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, glm::value_ptr(camera->getProjectionMatrix()));
+		}
 		
 		for (unsigned int i = 0; i < instanceCount; i++)
 		{

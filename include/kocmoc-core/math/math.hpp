@@ -10,6 +10,8 @@ namespace kocmoc
 	{
 		namespace math
 		{
+			static const float pi = 3.1415926535897932384f;
+			
 			template <typename T >
 			inline int sign(T x)
 			{
@@ -45,6 +47,27 @@ namespace kocmoc
 					return glm::length(position - (origin + t0 * direction));
 				else
 					return -1;
+			}
+			
+			/**
+			 * convert degrees into radians
+			 */
+			inline float deg2Rad(float deg)
+			{
+				return deg * (pi / 180);
+			}
+			
+			/**
+			 * convert a polar coordinate into a cartesian coordinate
+			 * @param rad angle in radians
+			 * @param r radius
+			 */
+			inline glm::vec2 pol2Cart(float rad, float r)
+			{
+				glm::vec2 res;
+				res.x = cos(rad) * r;
+				res.y = sin(rad) * r;
+				return res;
 			}
 		}		
 	}
