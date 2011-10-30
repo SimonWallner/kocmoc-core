@@ -35,11 +35,12 @@ void main(void)
 	color = c / 4.0f;	
 
 	// sample bloom target
-	vec4 b = texture2D(sBloom, finalUV + msaaOffset);
-	b += texture2D(sBloom, finalUV + msaaOffset * vec2(-1.0f, 1.0f));
-	b += texture2D(sBloom, finalUV + msaaOffset * vec2(1.0f, -1.0f));
-	b += texture2D(sBloom, finalUV + msaaOffset * vec2(-1.0f, -1.0f));
-	color += b / 4.0f;
+	msaaOffset *= 30;
+	vec4 bloom = texture2D(sBloom, finalUV + msaaOffset);
+	bloom += texture2D(sBloom, finalUV + msaaOffset * vec2(-1.0f, 1.0f));
+	bloom += texture2D(sBloom, finalUV + msaaOffset * vec2(1.0f, -1.0f));
+	bloom += texture2D(sBloom, finalUV + msaaOffset * vec2(-1.0f, -1.0f));
+	color += bloom / 4.0f;
 
 	// === vignetting ===
 	float attenuation = 0.75f;
