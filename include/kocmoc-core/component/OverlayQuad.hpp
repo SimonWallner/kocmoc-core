@@ -12,6 +12,7 @@ namespace kocmoc
 		namespace renderer
 		{
 			class RenderMesh;
+			class Shader;
 		}
 		
 		namespace component
@@ -19,10 +20,12 @@ namespace kocmoc
 			class OverlayQuad : public componentSystem::Component
 			{
 			public:
-				OverlayQuad(util::Properties* _props)
+				OverlayQuad(util::Properties* _props, renderer::Shader* _shader = NULL)
 					: props(_props)
+					, shader(_shader)
 					, position(glm::vec2(0.0f))
 					, scale(glm::vec2(1.0f))
+
 				{}
 				
 				void init();
@@ -41,6 +44,7 @@ namespace kocmoc
 			private:
 				renderer::RenderMesh* renderMesh;
 				util::Properties* props;
+				renderer::Shader* shader;
 				
 				glm::vec2 position;
 				glm::vec2 scale;

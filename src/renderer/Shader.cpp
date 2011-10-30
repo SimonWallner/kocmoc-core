@@ -142,7 +142,7 @@ void Shader::link(void)
 	glBindAttribLocation(programHandle, vertexAttributeNormalIndex, vertexAttributeNormalName);
 	glBindAttribLocation(programHandle, vertexAttributeUVIndex, vertexAttributeUVName);
 	glBindAttribLocation(programHandle, vertexAttributeTangentIndex, vertexAttributeTangentName);
-	
+		
 	glLinkProgram(programHandle);
 
 	// Check for problems

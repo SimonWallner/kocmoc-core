@@ -50,13 +50,11 @@ GLuint ImageLoader::loadImage(std::string filename)
 					 ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE,
 					 ilGetData()); /* Texture specification */
 		
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		//if (useAF)
-		//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, (GLint)maxAnisotropy);
 		
-//		glGenerateMipmap(GL_TEXTURE_2D);		
+		glGenerateMipmap(GL_TEXTURE_2D);		
 		
 		// unbind texture
 		glBindTexture(GL_TEXTURE_2D, 0);

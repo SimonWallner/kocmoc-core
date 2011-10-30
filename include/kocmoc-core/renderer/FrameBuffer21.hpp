@@ -57,6 +57,8 @@ namespace kocmoc
 			private:
 				RenderMesh21* renderMesh;
 				
+				GLuint bloomHandle;
+				
 				void setFBOTexture();
 				void createQuad();
 				void check();

@@ -5,6 +5,7 @@
 varying vec2 uv;
 
 uniform sampler2D sDiffuse;
+uniform sampler2D sBloom;
 uniform ivec2 dimension;
 uniform float angleOfView;
 
@@ -31,12 +32,18 @@ void main(void)
 	c += texture2D(sDiffuse, finalUV + msaaOffset * vec2(-1.0f, 1.0f));
 	c += texture2D(sDiffuse, finalUV + msaaOffset * vec2(1.0f, -1.0f));
 	c += texture2D(sDiffuse, finalUV + msaaOffset * vec2(-1.0f, -1.0f));
+	color = c / 4.0f;	
 
-	color = c / 4.0f;
+	// sample bloom target
+	vec4 b = texture2D(sBloom, finalUV + msaaOffset);
+	b += texture2D(sBloom, finalUV + msaaOffset * vec2(-1.0f, 1.0f));
+	b += texture2D(sBloom, finalUV + msaaOffset * vec2(1.0f, -1.0f));
+	b += texture2D(sBloom, finalUV + msaaOffset * vec2(-1.0f, -1.0f));
+	color += b / 4.0f;
 
 	// === vignetting ===
-	float attenuation = 0.8f;
-	float power = 1.5;
+	float attenuation = 0.75f;
+	float power = 1.4;
 
 	float delta = distance((uv - vec2(0.5, 0.5)) / vec2(1, aspectRatio), vec2(0, 0)) * 2.0f;
 	float darkening = 1 - pow(delta, power) * attenuation;

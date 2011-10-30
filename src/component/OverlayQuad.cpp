@@ -62,6 +62,8 @@ void OverlayQuad::init()
 	
 	string mediaPath = props->getString(types::symbolize("core-media-path"));
 	
-	Shader* shader = new Shader(mediaPath + "shaders/overlay.vert", mediaPath + "shaders/overlay.frag");
+	if (shader == NULL)
+		shader = new Shader(mediaPath + "shaders/overlay.vert", mediaPath + "shaders/overlay.frag");
+	
 	renderMesh = new RenderMesh21(triMesh, shader);
 }

@@ -36,10 +36,10 @@ FrameBuffer21::FrameBuffer21(int _frameWidth, int _frameHeight, int _gateWidth, 
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, frameWidth, frameHeight);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthbufferHandle);
 
-	// create and bind texture
+	// create and bind colour texture
 	glGenTextures(1, &textureHandle);
 	glBindTexture(GL_TEXTURE_2D, textureHandle);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, frameWidth, frameHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, frameWidth, frameHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -47,6 +47,20 @@ FrameBuffer21::FrameBuffer21(int _frameWidth, int _frameHeight, int _gateWidth, 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 	
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureHandle, 0);
+	
+	
+	// create and bind bloom texture
+	glGenTextures(1, &bloomHandle);
+	glBindTexture(GL_TEXTURE_2D, bloomHandle);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, frameWidth, frameHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+		
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, bloomHandle, 0);
+
 
 	check();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -133,7 +147,10 @@ void FrameBuffer21::setupShader(util::Properties* props)
 
 		if ((location = shader->getUniformLocation("angleOfView")) >= 0)
 			glUniform1f(location, angleOfView);
-
+		
+		location = shader->getUniformLocation("sBloom");
+		if (location >= 0)
+			glUniform1i(location, 1);
 	}
 	shader->unbind();
 }
@@ -141,19 +158,19 @@ void FrameBuffer21::setupShader(util::Properties* props)
 
 void FrameBuffer21::drawFBO()
 {
-	shader->bind();
 	setFBOTexture();
+	shader->bind();
 	renderMesh->draw(NULL, glm::mat4(1));
-
 	shader->unbind();
 }
 
 
 void FrameBuffer21::setFBOTexture()
 {
-	if(textureHandle != 0)
-	{
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, textureHandle);
-	}
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, textureHandle);
+	
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, bloomHandle);
+//	glGenerateMipmap(GL_TEXTURE_2D);
 }
