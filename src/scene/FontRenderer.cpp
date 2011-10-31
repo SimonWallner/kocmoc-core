@@ -112,31 +112,34 @@ GLint FontRenderer::render(string text, GLint existingHandle)
 	
 	
 	// create blank image
-	Image<unsigned char > image(penX, maxHeight);
+//	Image<unsigned char > image(penX, maxHeight);
+	Image<unsigned char	> image(20, 20);
 	image.clear(128);
 	
+//	image.fillRect(0, 0, 10, 10, 100);
 	image.fillRect(10, 10, 10, 10, 200);
+//	image.fillRect(10, 0, 10, 10, 50);
 	
-	// render string into image
-	FT_Vector origin;
-	origin.x = 0;
-	origin.y = 0;
-	
-	for (size_t i = 0; i < text.length(); i++)
-	{
-		FT_Error error = FT_Glyph_To_Bitmap(&glyphs[i],
-											FT_RENDER_MODE_NORMAL,
-											&origin,
-											true);
-		if (error) // ignore errors for now.
-			continue;
-		
-		FT_BitmapGlyph glyphBitmap = (FT_BitmapGlyph)glyphs[i];
-		
-		writeToImage(glyphBitmap, image, pos[i].x, pos[i].y);
-		
-		FT_Done_Glyph(glyphs[i]);
-	}
+//	// render string into image
+//	FT_Vector origin;
+//	origin.x = 0;
+//	origin.y = 0;
+//	
+//	for (size_t i = 0; i < text.length(); i++)
+//	{
+//		FT_Error error = FT_Glyph_To_Bitmap(&glyphs[i],
+//											FT_RENDER_MODE_NORMAL,
+//											&origin,
+//											true);
+//		if (error) // ignore errors for now.
+//			continue;
+//		
+//		FT_BitmapGlyph glyphBitmap = (FT_BitmapGlyph)glyphs[i];
+//		
+//		writeToImage(glyphBitmap, image, pos[i].x, pos[i].y);
+//		
+//		FT_Done_Glyph(glyphs[i]);
+//	}
 	
 	// convert image to texture
 	// return handle
@@ -174,6 +177,7 @@ GLint FontRenderer::toTexture(Image<unsigned char >& image)
 			
 	glBindTexture(GL_TEXTURE_2D, handle);
 	
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glTexImage2D(GL_TEXTURE_2D, // target
 				 0,				// level
 				 GL_LUMINANCE,		// internal format

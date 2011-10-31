@@ -91,7 +91,7 @@ namespace kocmoc
 				 */
 				void clear(T clearValue)
 				{
-					for (unsigned int i; i < width * height; i++)
+					for (unsigned int i = 0; i < (width * height); i++)
 					{
 						data[i] = clearValue;
 					}
