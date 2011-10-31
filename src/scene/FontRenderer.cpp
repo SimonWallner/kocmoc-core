@@ -19,7 +19,7 @@ using kocmoc::core::types::uint;
  * http://www.freetype.org/freetype2/docs/tutorial/step1.html
  */
 
-FontRenderer::FontRenderer(util::Properties* props)
+FontRenderer::FontRenderer(util::Properties* props, unsigned int size)
 {
 	FT_Error error;
 	
@@ -43,7 +43,7 @@ FontRenderer::FontRenderer(util::Properties* props)
 	error = FT_Set_Pixel_Sizes(
 							   face,   /* handle to face object */
 							   0,      /* pixel_width           */
-							   100 );   /* pixel_height          */
+							   size );   /* pixel_height          */
 	if (error)
 		std::cout << "setting the pixel size failed!" << std::endl;
 	
@@ -60,7 +60,7 @@ FontRenderer::FontRenderer(util::Properties* props)
 	en = face->glyph->metrics.width >> 6;
 }
 
-GLint FontRenderer::render(string text, GLint existingHandle)
+Tex FontRenderer::render(string text, GLint existingHandle)
 {	
 	// compute string AABB
 	const char* cText = text.c_str();
@@ -94,9 +94,6 @@ GLint FontRenderer::render(string text, GLint existingHandle)
 			penX += delta.x >> 6;
 		}
 		
-		/* store current pen position */
-		pos[i] = penX;
-		
 		/* load glyph image into the slot without rendering */
 		FT_Error error = FT_Load_Glyph(face, glyphIndex, FT_LOAD_DEFAULT);
 		if (error)
@@ -106,16 +103,11 @@ GLint FontRenderer::render(string text, GLint existingHandle)
 		error = FT_Get_Glyph(face->glyph, &glyphs[i]);
 		if (error)
 			continue;  /* ignore errors, jump to next glyph */
-		
-		
-		FT_BBox bbox;
-		FT_Glyph_Get_CBox(glyphs[i], FT_GLYPH_BBOX_PIXELS, &bbox);
-		
-//		penX += (bbox.xMax - bbox.xMin);
-//		penX += glyphs[i]->advance.x >> 6;
-//		maxHeight = max<int>(maxHeight, (bbox.yMax - bbox.yMin));
 
 		FT_Glyph_Metrics metrics = face->glyph->metrics;
+		
+		/* store current pen position */
+		pos[i] = penX + (metrics.horiBearingX >> 6);
 		
 		penX += metrics.horiAdvance >> 6;
 		
@@ -128,7 +120,7 @@ GLint FontRenderer::render(string text, GLint existingHandle)
 	
 	
 	// create blank image
-	Image<unsigned char > image(penX, maxDescender + maxBearingY);
+	Image<unsigned char > image(penX, maxDescender + maxBearingY + 2);
 	image.clear(0);
 	
 	
@@ -148,7 +140,7 @@ GLint FontRenderer::render(string text, GLint existingHandle)
 		
 		FT_BitmapGlyph glyphBitmap = (FT_BitmapGlyph)glyphs[i];
 		
-		writeToImage(glyphBitmap, image, pos[i], maxDescender);
+		writeToImage(glyphBitmap, image, pos[i], maxDescender + 1);
 		
 		FT_Done_Glyph(glyphs[i]);
 	}
@@ -158,7 +150,7 @@ GLint FontRenderer::render(string text, GLint existingHandle)
 	
 	UNUSED existingHandle;	
 	
-	return toTexture(image);
+	return Tex(toTexture(image), image.width, image.height);
 
 }
 

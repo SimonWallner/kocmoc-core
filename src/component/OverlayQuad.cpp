@@ -20,7 +20,15 @@ void OverlayQuad::onRender(RenderPass pass, Camera* camera)
 	{
 		glm::mat4 transform = glm::gtx::transform::translate(position.x, position.y, 0.0f)
 			* glm::gtx::transform::scale(scale.x, scale.y, 1.0f);
-		renderMesh->draw(camera, transform);
+		
+		// FIXME: ugly hack, should put texture into mesh or 'ting...
+		if (texture)
+		{
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, texture);
+			renderMesh->draw(camera, transform);
+			glBindTexture(GL_TEXTURE_2D, 0);
+		}
 	}
 }
 
@@ -50,6 +58,19 @@ void OverlayQuad::init()
 	vertices[10] = 1;
 	vertices[11] = 0;
 	
+	float* uv = new float[8];
+	uv[0] = 0;
+	uv[1] = 0;
+	
+	uv[2] = 1;
+	uv[3] = 0;
+	
+	uv[4] = 1;
+	uv[5] = 1;
+	
+	uv[6] = 0;
+	uv[7] = 1;
+	
 	unsigned int* indices = new unsigned int[6];
 	indices[0] = 0;
 	indices[1] = 1;
@@ -58,7 +79,7 @@ void OverlayQuad::init()
 	indices[4] = 3;
 	indices[5] = 0;
 	
-	TriangleMesh* triMesh = new TriangleMesh(6, indices, 4, vertices);
+	TriangleMesh* triMesh = new TriangleMesh(6, indices, 4, vertices, NULL, uv);
 	
 	string mediaPath = props->getString(types::symbolize("core-media-path"));
 	

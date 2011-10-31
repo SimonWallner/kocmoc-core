@@ -18,13 +18,29 @@ namespace kocmoc
 	{
 		namespace scene
 		{
+			/*
+			 * struct to hold the return value of render
+			 */
+			struct Tex
+			{
+				Tex(GLint _handle, unsigned int _width, unsigned int _height)
+					: handle(_handle)
+					, width(_width)
+					, height(_height)
+				{}
+				
+				const GLint handle;
+				const unsigned int width;
+				const unsigned int height;
+			};
+			
 			/**
 			 * Use freetype to create textures form a given string.
 			 */
 			class FontRenderer
 			{
 			public:
-				FontRenderer(util::Properties* props);
+				FontRenderer(util::Properties* props, unsigned int size = 100);
 				
 				/**
 				 * Update the texture with the given text.
@@ -33,7 +49,7 @@ namespace kocmoc
 				 * @param existinHandle and existing texture handle to which
 				 *			the text should be rendered.
 				 */
-				GLint render(std::string text, GLint existingHandle = -1);
+				Tex render(std::string text, GLint existingHandle = -1);
 				
 			private:
 				FT_Library library;
