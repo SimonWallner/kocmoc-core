@@ -43,11 +43,21 @@ FontRenderer::FontRenderer(util::Properties* props)
 	error = FT_Set_Pixel_Sizes(
 							   face,   /* handle to face object */
 							   0,      /* pixel_width           */
-							   200 );   /* pixel_height          */
+							   100 );   /* pixel_height          */
 	if (error)
 		std::cout << "setting the pixel size failed!" << std::endl;
 	
 	isKerningSupported = FT_HAS_KERNING(face);
+	
+	// computing em and en
+	FT_UInt emIndex = FT_Get_Char_Index(face, 'M');
+	FT_UInt enIndex = FT_Get_Char_Index(face, 'N');
+	
+	FT_Load_Glyph(face, emIndex, FT_LOAD_DEFAULT);
+	em = face->glyph->metrics.width >> 6;
+
+	FT_Load_Glyph(face, enIndex, FT_LOAD_DEFAULT);
+	en = face->glyph->metrics.width >> 6;
 }
 
 GLint FontRenderer::render(string text, GLint existingHandle)
@@ -58,12 +68,19 @@ GLint FontRenderer::render(string text, GLint existingHandle)
 	int* pos = new int[text.length()];
 	
 	int penX = 0;
-	int penY = 0;
-	int maxHeight = 0;
+	int maxDescender = 0;
+	int maxBearingY = 0;
 	
 	FT_UInt previousGlyphIndex = 0;
 	for (size_t i = 0; i < text.length(); i++)
 	{
+		if (cText[i] == ' ')
+		{
+			penX += en/2;
+			continue;
+		}
+		
+		
 		FT_UInt glyphIndex = FT_Get_Char_Index(face, cText[i]);
 		
 		/* retrieve kerning distance and move pen position */
@@ -94,17 +111,24 @@ GLint FontRenderer::render(string text, GLint existingHandle)
 		FT_BBox bbox;
 		FT_Glyph_Get_CBox(glyphs[i], FT_GLYPH_BBOX_PIXELS, &bbox);
 		
-		penX += (bbox.xMax - bbox.xMin);
+//		penX += (bbox.xMax - bbox.xMin);
 //		penX += glyphs[i]->advance.x >> 6;
-		maxHeight = max<int>(maxHeight, (bbox.yMax - bbox.yMin));
-		penY = 100;
+//		maxHeight = max<int>(maxHeight, (bbox.yMax - bbox.yMin));
+
+		FT_Glyph_Metrics metrics = face->glyph->metrics;
 		
+		penX += metrics.horiAdvance >> 6;
+		
+		int descender = metrics.height - metrics.horiBearingY;
+		maxDescender = max(maxDescender, descender >> 6);
+		maxBearingY = max<int>(maxBearingY, metrics.horiBearingY >> 6);
+
 		previousGlyphIndex = glyphIndex;
 	}
 	
 	
 	// create blank image
-	Image<unsigned char > image(penX, maxHeight * 2);
+	Image<unsigned char > image(penX, maxDescender + maxBearingY);
 	image.clear(0);
 	
 	
@@ -124,7 +148,7 @@ GLint FontRenderer::render(string text, GLint existingHandle)
 		
 		FT_BitmapGlyph glyphBitmap = (FT_BitmapGlyph)glyphs[i];
 		
-		writeToImage(glyphBitmap, image, pos[i], penY);
+		writeToImage(glyphBitmap, image, pos[i], maxDescender);
 		
 		FT_Done_Glyph(glyphs[i]);
 	}
@@ -139,7 +163,7 @@ GLint FontRenderer::render(string text, GLint existingHandle)
 }
 
 void FontRenderer::writeToImage(FT_BitmapGlyph& bitmapGlyph, Image<unsigned char>& image,
-						   const uint penX, const uint penY)
+						   const uint penX, const uint baseline)
 {
 	const FT_Bitmap& bitmap = bitmapGlyph->bitmap;
 	int top = bitmapGlyph->top;
@@ -147,17 +171,14 @@ void FontRenderer::writeToImage(FT_BitmapGlyph& bitmapGlyph, Image<unsigned char
 	// copy line by line
 	for (int l = 0; l < bitmap.rows; l++)
 	{
-		unsigned int targetIndex = image.getIndex(penX, ((bitmap.rows - l) - 1) + (penY - (bitmap.rows - top)));
+		unsigned int targetIndex = image.getIndex(penX, ((bitmap.rows - l) - 1) + (baseline - (bitmap.rows - top)));
 		unsigned int sourceIndex = bitmap.width * l;
 		
 		for (int i = 0; i < bitmap.width; i++)
 		{
-			image.data[targetIndex + i] = bitmap.buffer[sourceIndex + i];
+			image.data[targetIndex + i] = image.data[targetIndex + i] + bitmap.buffer[sourceIndex + i];
 		}
 	}
-
-	// do stuff
-	UNUSED penY;
 }
 
 GLint FontRenderer::toTexture(Image<unsigned char >& image)

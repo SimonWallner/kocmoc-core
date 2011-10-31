@@ -40,11 +40,13 @@ namespace kocmoc
 				FT_Face face;
 				bool isKerningSupported;
 				
+				int em, en;
+				
 				/**
 				 * write the bitmap to the image
 				 */
 				void writeToImage(FT_BitmapGlyph& bitmapGlyph, Image<unsigned char >& image,
-								  types::uint penX, types::uint penY);
+								  types::uint penX, types::uint baseline);
 				
 				/**
 				 * convert the image to a texture
