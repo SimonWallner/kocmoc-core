@@ -55,7 +55,7 @@ GLint FontRenderer::render(string text, GLint existingHandle)
 	// compute string AABB
 	const char* cText = text.c_str();
 	FT_Glyph* glyphs = new FT_Glyph[text.length()];
-	FT_Vector* pos = new FT_Vector[text.length()];
+	int* pos = new int[text.length()];
 	
 	int penX = 0;
 	int penY = 0;
@@ -78,8 +78,7 @@ GLint FontRenderer::render(string text, GLint existingHandle)
 		}
 		
 		/* store current pen position */
-		pos[i].x = penX;
-		pos[i].y = penY;
+		pos[i] = penX;
 		
 		/* load glyph image into the slot without rendering */
 		FT_Error error = FT_Load_Glyph(face, glyphIndex, FT_LOAD_DEFAULT);
@@ -96,14 +95,16 @@ GLint FontRenderer::render(string text, GLint existingHandle)
 		FT_Glyph_Get_CBox(glyphs[i], FT_GLYPH_BBOX_PIXELS, &bbox);
 		
 		penX += (bbox.xMax - bbox.xMin);
+//		penX += glyphs[i]->advance.x >> 6;
 		maxHeight = max<int>(maxHeight, (bbox.yMax - bbox.yMin));
+		penY = 100;
 		
 		previousGlyphIndex = glyphIndex;
 	}
 	
 	
 	// create blank image
-	Image<unsigned char > image(penX, maxHeight);
+	Image<unsigned char > image(penX, maxHeight * 2);
 	image.clear(0);
 	
 	
@@ -123,7 +124,7 @@ GLint FontRenderer::render(string text, GLint existingHandle)
 		
 		FT_BitmapGlyph glyphBitmap = (FT_BitmapGlyph)glyphs[i];
 		
-		writeToImage(glyphBitmap, image, pos[i].x, pos[i].y);
+		writeToImage(glyphBitmap, image, pos[i], penY);
 		
 		FT_Done_Glyph(glyphs[i]);
 	}
@@ -141,11 +142,12 @@ void FontRenderer::writeToImage(FT_BitmapGlyph& bitmapGlyph, Image<unsigned char
 						   const uint penX, const uint penY)
 {
 	const FT_Bitmap& bitmap = bitmapGlyph->bitmap;
+	int top = bitmapGlyph->top;
 	
 	// copy line by line
 	for (int l = 0; l < bitmap.rows; l++)
 	{
-		unsigned int targetIndex = image.getIndex(penX, (bitmap.rows - l) - 1);
+		unsigned int targetIndex = image.getIndex(penX, ((bitmap.rows - l) - 1) + (penY - (bitmap.rows - top)));
 		unsigned int sourceIndex = bitmap.width * l;
 		
 		for (int i = 0; i < bitmap.width; i++)
