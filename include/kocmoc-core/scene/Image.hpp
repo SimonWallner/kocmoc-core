@@ -16,6 +16,18 @@ namespace kocmoc
 			class Image
 			{
 			public:
+				
+				/**
+				 * The flattened image data array
+				 */
+				T* data;
+				
+				/**
+				 * image width and height
+				 */
+				const unsigned int width;
+				const unsigned int height;
+				
 				/**
 				 * Create a new Image with the given dimensions
 				 * Creation allocates memory.
@@ -45,6 +57,11 @@ namespace kocmoc
 				}
 				
 				/**
+				 * set a value of a certain pixel with the given index.
+				 */
+
+				
+				/**
 				 * Get the value at the specified position
 				 * Make sure it is in bound!
 				 */
@@ -61,13 +78,38 @@ namespace kocmoc
 				 */
 				T* raw(void) {return data;}
 				
-			private:
-				T* data;
-				types::uint width, height;
-				
+				/**
+				 * get the index of a certain pixel
+				 */
 				inline types::uint getIndex(types::uint x, types::uint y)
 				{
 					return width * y + x;
+				}
+				
+				/**
+				 * clear the image with the given value
+				 */
+				void clear(T clearValue)
+				{
+					for (unsigned int i; i < width * height; i++)
+					{
+						data[i] = clearValue;
+					}
+				}
+				
+				void fillRect(unsigned int x, unsigned int y,
+							  unsigned int width, unsigned int height,
+							  unsigned char value)
+				{
+					// for each line
+					for (unsigned int l = 0; l < height; l++)
+					{
+						unsigned int index = getIndex(x, y + l);
+						for (unsigned int j = 0; j < width; j++)
+						{
+							data[index + j] = value;
+						}
+					}
 				}
 			};
 		}

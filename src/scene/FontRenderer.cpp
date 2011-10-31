@@ -104,15 +104,18 @@ GLint FontRenderer::render(string text, GLint existingHandle)
 		FT_BBox bbox;
 		FT_Glyph_Get_CBox(glyphs[i], FT_GLYPH_BBOX_SUBPIXELS, &bbox);
 		
-		penX += (bbox.xMax - bbox.xMin);
-		maxHeight = max<int>(maxHeight, (bbox.yMax - bbox.yMin));
+		penX += (bbox.xMax - bbox.xMin)/16;
+		maxHeight = max<int>(maxHeight, (bbox.yMax - bbox.yMin))/16;
 		
 		previousGlyphIndex = glyphIndex;
 	}
 	
 	
 	// create blank image
-	Image<char > image(penX, maxHeight);
+	Image<unsigned char > image(penX, maxHeight);
+	image.clear(128);
+	
+	image.fillRect(10, 10, 10, 10, 200);
 	
 	// render string into image
 	FT_Vector origin;
@@ -138,18 +141,57 @@ GLint FontRenderer::render(string text, GLint existingHandle)
 	// convert image to texture
 	// return handle
 	
-
 	UNUSED existingHandle;	
-	return 0;
+	
+	return toTexture(image);
+
 }
 
-void FontRenderer::writeToImage(FT_BitmapGlyph& bitmapGlyph, Image<char>& image,
-						   uint penX, uint penY)
+void FontRenderer::writeToImage(FT_BitmapGlyph& bitmapGlyph, Image<unsigned char>& image,
+						   const uint penX, const uint penY)
 {
+	FT_Bitmap bitmap = bitmapGlyph->bitmap;
+	
+	// copy line by line
+	for (int l = 0; l < bitmap.rows; l++)
+	{
+		unsigned int index = image.getIndex(penX, l);
+		
+		for (unsigned int i = index; i < index + bitmap.width; i++)
+		{
+			image.data[i] = bitmap.buffer[bitmap.width * l + i];
+		}
+	}
+
 	// do stuff
-	UNUSED penX;
 	UNUSED penY;
-	UNUSED image;
-	UNUSED bitmapGlyph;
 }
 
+GLint FontRenderer::toTexture(Image<unsigned char >& image)
+{
+	GLuint handle;
+	glGenTextures(1, &handle);
+			
+	glBindTexture(GL_TEXTURE_2D, handle);
+	
+	glTexImage2D(GL_TEXTURE_2D, // target
+				 0,				// level
+				 GL_LUMINANCE,		// internal format
+				 image.width,	// width
+				 image.height,	// height
+				 0,				// border
+				 GL_LUMINANCE,		// format
+				 GL_UNSIGNED_BYTE, // type
+				 image.data);	// data
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	
+	glGenerateMipmap(GL_TEXTURE_2D);		
+	
+	// unbind texture
+	glBindTexture(GL_TEXTURE_2D, 0);
+	
+	return handle;
+}

@@ -43,8 +43,13 @@ namespace kocmoc
 				/**
 				 * write the bitmap to the image
 				 */
-				void writeToImage(FT_BitmapGlyph& bitmapGlyph, Image<char >& image,
+				void writeToImage(FT_BitmapGlyph& bitmapGlyph, Image<unsigned char >& image,
 								  types::uint penX, types::uint penY);
+				
+				/**
+				 * convert the image to a texture
+				 */
+				GLint toTexture(Image<unsigned char >& image);
 			};
 		}
 	}
