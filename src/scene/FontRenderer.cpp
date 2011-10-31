@@ -40,19 +40,10 @@ FontRenderer::FontRenderer(util::Properties* props)
 	else if (error)
 		std::cout << "failed to open font: " << fontPath << std::endl;
 	
-	error = FT_Set_Char_Size(
-							 face,    /* handle to face object           */
-							 0,       /* char_width in 1/64th of points  */
-							 16*64,   /* char_height in 1/64th of points */
-							 300,     /* horizontal device resolution    */
-							 300 );   /* vertical device resolution      */
-	if (error)
-		std::cout << "setting the char size failed!" << std::endl;
-	
 	error = FT_Set_Pixel_Sizes(
 							   face,   /* handle to face object */
 							   0,      /* pixel_width           */
-							   16 );   /* pixel_height          */
+							   200 );   /* pixel_height          */
 	if (error)
 		std::cout << "setting the pixel size failed!" << std::endl;
 	
@@ -102,44 +93,40 @@ GLint FontRenderer::render(string text, GLint existingHandle)
 		
 		
 		FT_BBox bbox;
-		FT_Glyph_Get_CBox(glyphs[i], FT_GLYPH_BBOX_SUBPIXELS, &bbox);
+		FT_Glyph_Get_CBox(glyphs[i], FT_GLYPH_BBOX_PIXELS, &bbox);
 		
-		penX += (bbox.xMax - bbox.xMin)/16;
-		maxHeight = max<int>(maxHeight, (bbox.yMax - bbox.yMin))/16;
+		penX += (bbox.xMax - bbox.xMin);
+		maxHeight = max<int>(maxHeight, (bbox.yMax - bbox.yMin));
 		
 		previousGlyphIndex = glyphIndex;
 	}
 	
 	
 	// create blank image
-//	Image<unsigned char > image(penX, maxHeight);
-	Image<unsigned char	> image(20, 20);
-	image.clear(128);
+	Image<unsigned char > image(penX, maxHeight);
+	image.clear(0);
 	
-//	image.fillRect(0, 0, 10, 10, 100);
-	image.fillRect(10, 10, 10, 10, 200);
-//	image.fillRect(10, 0, 10, 10, 50);
 	
-//	// render string into image
-//	FT_Vector origin;
-//	origin.x = 0;
-//	origin.y = 0;
-//	
-//	for (size_t i = 0; i < text.length(); i++)
-//	{
-//		FT_Error error = FT_Glyph_To_Bitmap(&glyphs[i],
-//											FT_RENDER_MODE_NORMAL,
-//											&origin,
-//											true);
-//		if (error) // ignore errors for now.
-//			continue;
-//		
-//		FT_BitmapGlyph glyphBitmap = (FT_BitmapGlyph)glyphs[i];
-//		
-//		writeToImage(glyphBitmap, image, pos[i].x, pos[i].y);
-//		
-//		FT_Done_Glyph(glyphs[i]);
-//	}
+	// render string into image
+	FT_Vector origin;
+	origin.x = 0;
+	origin.y = 0;
+	
+	for (size_t i = 0; i < text.length(); i++)
+	{
+		FT_Error error = FT_Glyph_To_Bitmap(&glyphs[i],
+											FT_RENDER_MODE_NORMAL,
+											&origin,
+											true); // destroy original glyph
+		if (error) // ignore errors for now.
+			continue;
+		
+		FT_BitmapGlyph glyphBitmap = (FT_BitmapGlyph)glyphs[i];
+		
+		writeToImage(glyphBitmap, image, pos[i].x, pos[i].y);
+		
+		FT_Done_Glyph(glyphs[i]);
+	}
 	
 	// convert image to texture
 	// return handle
@@ -153,16 +140,17 @@ GLint FontRenderer::render(string text, GLint existingHandle)
 void FontRenderer::writeToImage(FT_BitmapGlyph& bitmapGlyph, Image<unsigned char>& image,
 						   const uint penX, const uint penY)
 {
-	FT_Bitmap bitmap = bitmapGlyph->bitmap;
+	const FT_Bitmap& bitmap = bitmapGlyph->bitmap;
 	
 	// copy line by line
 	for (int l = 0; l < bitmap.rows; l++)
 	{
-		unsigned int index = image.getIndex(penX, l);
+		unsigned int targetIndex = image.getIndex(penX, (bitmap.rows - l) - 1);
+		unsigned int sourceIndex = bitmap.width * l;
 		
-		for (unsigned int i = index; i < index + bitmap.width; i++)
+		for (int i = 0; i < bitmap.width; i++)
 		{
-			image.data[i] = bitmap.buffer[bitmap.width * l + i];
+			image.data[targetIndex + i] = bitmap.buffer[sourceIndex + i];
 		}
 	}
 
