@@ -1,6 +1,10 @@
 #ifndef KOCMOC_CORE_TIME_TIMER_HPP
 #define KOCMOC_CORE_TIME_TIMER_HPP
 
+#include <kocmoc-core/gl.h>
+
+#define KOCMOC_CORE_TIMER_AVERAGE_LENGTH 100
+
 namespace kocmoc
 {
 	namespace core
@@ -13,12 +17,12 @@ namespace kocmoc
 				/**
 				 * Create a new timer and start it instantly.
 				 */
-				Timer(void);
+				Timer(GLFWwindow windowHandle);
 				
 				/**
 				 * tick the timer.
 				 */
-				void tick(void);
+				void tick();
 				
 				/**
 				 * Get the elapsed time between the last two ticks.
@@ -26,16 +30,26 @@ namespace kocmoc
 				 * constructor schould take care of the first) should have happended
 				 * in advance.
 				 */
-				float getDeltaT(void) {return deltaT;}
+				float getDeltaT() {return deltaT;}
 				
 				/**
 				 * Get the time at the last tick
 				 */
-				float getLastT(void) {return lastT;}
+				float getLastT() {return lastT;}
+				
+				/**
+				 * print the timer
+				 */
+				void print();
 					
 			private:
 				double lastT;
 				double deltaT;
+				
+				GLFWwindow windowHandle;
+				
+				double frameTimes[KOCMOC_CORE_TIMER_AVERAGE_LENGTH];
+				unsigned int counter;
 			};
 		}
 	}

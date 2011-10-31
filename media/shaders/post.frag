@@ -40,7 +40,7 @@ void main(void)
 	bloom += texture2D(sBloom, finalUV + msaaOffset * vec2(-1.0f, 1.0f));
 	bloom += texture2D(sBloom, finalUV + msaaOffset * vec2(1.0f, -1.0f));
 	bloom += texture2D(sBloom, finalUV + msaaOffset * vec2(-1.0f, -1.0f));
-	color += bloom / 4.0f;
+	// color += bloom / 4.0f;
 
 	// === vignetting ===
 	float attenuation = 0.75f;
