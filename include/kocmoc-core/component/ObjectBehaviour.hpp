@@ -10,6 +10,7 @@
 #define KOCMOC_COMPONENT_OBJECT_BEHAVIOUR_HPP
 
 #include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 #include <kocmoc-core/componentSystem/Component.hpp>
 
@@ -25,12 +26,13 @@ namespace kocmoc
 				
 				ObjectBehaviour();
 
+
 				void onUpdate(float deltaT) {
 					UNUSED deltaT;
 				}
 
 				glm::vec3 position;
-				
+				glm::quat rotation;
 			};
 		}
 	}

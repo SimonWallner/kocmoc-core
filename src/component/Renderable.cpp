@@ -11,14 +11,20 @@
 
 #include <iostream>
 #include <glm/gtx/transform.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 #include <kocmoc-core/gl.h>
 #include <kocmoc-core/renderer/RenderMesh.hpp>
 
 using namespace kocmoc::core::component;
+
 using std::string;
+
 using kocmoc::core::scene::Camera;
+
 using glm::mat4;
+using glm::gtx::quaternion::toMat4;
+using glm::gtx::transform::translate;
 
 Renderable::Renderable()
 {}
@@ -27,11 +33,12 @@ void Renderable::onRender(renderer::RenderPass pass, Camera* camera)
 {
 	if (pass == kocmoc::core::renderer::RP_NORMAL)
 	{
+		mat4 modelMatrix = translate(objectBehaviour->position) * toMat4(objectBehaviour->rotation);
+		
 		for (RenderMeshList::const_iterator ci = renderMeshList.begin();
 			 ci != renderMeshList.end();
 			 ci++)
 		{
-			mat4 modelMatrix = glm::gtx::transform::translate(objectBehaviour->position);
 			(*ci)->draw(camera, modelMatrix);
 		}
 	}

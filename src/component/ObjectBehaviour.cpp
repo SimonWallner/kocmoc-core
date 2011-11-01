@@ -12,4 +12,5 @@ using namespace kocmoc::core::component;
 
 ObjectBehaviour::ObjectBehaviour()
 	: position(glm::vec3(0, 0, 0))
+	, rotation(glm::quat(0, glm::vec3(1, 0, 0)))
 {}
