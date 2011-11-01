@@ -1,5 +1,5 @@
-#ifndef KOCMOC_CORE_COMPONENT_POINT_SPRITE
-#define KOCMOC_CORE_COMPONENT_POINT_SPRITE
+#ifndef KOCMOC_CORE_SCENE_QUAD_HPP
+#define KOCMOC_CORE_SCENE_QUAD_HPP
 
 #include <kocmoc-core/componentSystem/Component.hpp>
 #include <kocmoc-core/renderer/Shader.hpp>
@@ -7,22 +7,21 @@
 #include <kocmoc-core/gl.h>
 
 #include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 namespace kocmoc
 {
 	namespace core
 	{
-		namespace component
+		namespace scene
 		{
-			class PointSprite : public componentSystem::Component
+			/**
+			 * a single textured quad
+			 */
+			class Quad : public componentSystem::Component
 			{
 			public:
-				PointSprite(renderer::Shader* _shader, GLint _textureHandle)
-					: shader(_shader)
-					, textureHandle(_textureHandle)
-					, position(glm::vec3(0))
-					, size(glm::vec2(1))
-				{}
+				Quad(renderer::Shader* shader, GLint textureHandle);
 				
 				void setPosition(glm::vec3 newPos)
 				{
@@ -34,14 +33,19 @@ namespace kocmoc
 					size = newSize;
 				}
 				
-				void init();
-				void onRender(renderer::RenderPass pass, scene::Camera* camera);
+				void setRotation(glm::quat newRot)
+				{
+					rotation = newRot;
+				}
+				
+				void draw(scene::Camera* camera);
 				
 			private:
-				renderer::Shader* shader;
 				GLint textureHandle;
+				
 				glm::vec3 position;
 				glm::vec2 size;
+				glm::quat rotation;
 				
 				renderer::RenderMesh* renderMesh;
 			};

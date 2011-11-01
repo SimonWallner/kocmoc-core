@@ -1,32 +1,37 @@
-#include <kocmoc-core/Component/PointSprite.hpp>
+#include <kocmoc-core/scene/Quad.hpp>
 
 #include <string>
 #include <glm/gtx/transform.hpp>
+#include <glm/gtx/quaternion.hpp>
 
-using namespace kocmoc::core::component;
 using namespace kocmoc::core::renderer;
 using namespace kocmoc::core::scene;
 
-void PointSprite::onRender(RenderPass pass, Camera *camera)
-{
-	if (pass == RP_NORMAL)
-	{		
-		glm::mat4 transform = glm::gtx::transform::translate(position.x, position.y + 3.0f, position.z)
-			* glm::gtx::transform::scale(size.x, size.y, 1.0f);
-		
-		// FIXME: ugly hack, should put texture into mesh or 'ting...
-		if (textureHandle)
-		{
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, textureHandle);
-			renderMesh->draw(camera, transform);
-			glBindTexture(GL_TEXTURE_2D, 0);
-		}
+using glm::gtx::quaternion::toMat4;
 
+void Quad::draw(Camera *camera)
+{	
+	glm::mat4 transform = glm::gtx::transform::translate(position.x, position.y, position.z)
+		* toMat4(rotation)
+		* glm::gtx::transform::translate(0.0f, 3.0f, 0.0f)
+		* glm::gtx::transform::scale(size.x, size.y, 1.0f);
+
+	
+	// FIXME: ugly hack, should put texture into mesh or 'ting...
+	if (textureHandle)
+	{
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureHandle);
+		renderMesh->draw(camera, transform);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 }
 
-void PointSprite::init()
+Quad::Quad(Shader* shader, GLint _textureHandle)
+	: textureHandle(_textureHandle)
+	, position(glm::vec3(0))
+	, size(glm::vec2(1))
+	, rotation(glm::quat(0, glm::vec3(1, 0, 0)))
 {
 	float* vertices = new float[12];
 	/*
