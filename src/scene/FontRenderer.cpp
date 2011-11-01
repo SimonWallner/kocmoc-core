@@ -19,8 +19,11 @@ using kocmoc::core::types::uint;
  * http://www.freetype.org/freetype2/docs/tutorial/step1.html
  */
 
-FontRenderer::FontRenderer(util::Properties* props, unsigned int size)
+FontRenderer::FontRenderer(util::Properties* props, unsigned int size,
+						   unsigned int _border)
+: border(_border)
 {
+	
 	FT_Error error;
 	
 	error = FT_Init_FreeType(&library);
@@ -67,7 +70,7 @@ Tex FontRenderer::render(string text, GLint existingHandle)
 	FT_Glyph* glyphs = new FT_Glyph[text.length()];
 	int* pos = new int[text.length()];
 	
-	int penX = 0;
+	int penX = border;
 	int maxDescender = 0;
 	int maxBearingY = 0;
 	
@@ -120,7 +123,8 @@ Tex FontRenderer::render(string text, GLint existingHandle)
 	
 	
 	// create blank image
-	Image<unsigned char > image(penX, maxDescender + maxBearingY + 2);
+	Image<unsigned char > image(penX + border * 2,
+								maxDescender + maxBearingY + border * 2);
 	image.clear(0);
 	
 	
@@ -131,6 +135,12 @@ Tex FontRenderer::render(string text, GLint existingHandle)
 	
 	for (size_t i = 0; i < text.length(); i++)
 	{
+		// FIXME: code duplication.
+		if (cText[i] == ' ')
+		{
+			continue;
+		}
+		
 		FT_Error error = FT_Glyph_To_Bitmap(&glyphs[i],
 											FT_RENDER_MODE_NORMAL,
 											&origin,
@@ -140,7 +150,7 @@ Tex FontRenderer::render(string text, GLint existingHandle)
 		
 		FT_BitmapGlyph glyphBitmap = (FT_BitmapGlyph)glyphs[i];
 		
-		writeToImage(glyphBitmap, image, pos[i], maxDescender + 1);
+		writeToImage(glyphBitmap, image, pos[i], maxDescender + border);
 		
 		FT_Done_Glyph(glyphs[i]);
 	}
@@ -192,6 +202,7 @@ GLint FontRenderer::toTexture(Image<unsigned char >& image)
 				 image.data);	// data
 	
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	

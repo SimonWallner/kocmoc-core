@@ -40,7 +40,8 @@ namespace kocmoc
 			class FontRenderer
 			{
 			public:
-				FontRenderer(util::Properties* props, unsigned int size = 100);
+				FontRenderer(util::Properties* props, unsigned int size = 100,
+							 unsigned int border = 1);
 				
 				/**
 				 * Update the texture with the given text.
@@ -52,6 +53,8 @@ namespace kocmoc
 				Tex render(std::string text, GLint existingHandle = -1);
 				
 			private:
+				unsigned int border;
+				
 				FT_Library library;
 				FT_Face face;
 				bool isKerningSupported;

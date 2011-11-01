@@ -90,9 +90,9 @@ namespace kocmoc
 				 */
 				bool prepared;
 
-				GLuint vertexShader;
-				GLuint fragmentShader;
-				GLuint programHandle;
+				GLint vertexShader;
+				GLint fragmentShader;
+				GLint programHandle;
 
 				std::string vertexShaderName;
 				std::string fragmentShaderName;
