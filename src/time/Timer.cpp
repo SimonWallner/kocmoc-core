@@ -1,8 +1,11 @@
 #include <kocmoc-core/time/Timer.hpp>
+#include <kocmoc-core/math/math.hpp>
 
 #include <iostream>
 
 using namespace kocmoc::core::time;
+
+using kocmoc::core::math::max;
 
 Timer::Timer(GLFWwindow _windowHandle)
 	: lastT(glfwGetTime())
@@ -26,13 +29,24 @@ void Timer::tick()
 
 void Timer::print()
 {
-	float sum = 0;
+	float sum = 0.0f;
+	float peak = 0.0f;
 	for (unsigned int i = 0; i < KOCMOC_CORE_TIMER_AVERAGE_LENGTH; i++)
+	{
 		sum += frameTimes[i];
+		peak = max<float>(peak, frameTimes[i]);
+	}
 	
 	float average = sum / KOCMOC_CORE_TIMER_AVERAGE_LENGTH;
 	
+	float std = 0.0f;
+	for (unsigned int i = 0; i < KOCMOC_CORE_TIMER_AVERAGE_LENGTH; i++)
+		std += pow(average - frameTimes[i], 2.0f);
+	
+	std /= KOCMOC_CORE_TIMER_AVERAGE_LENGTH;
+	
+	
 	char buff[50];
-	sprintf(buff, "sputnik | %4.3f ms | %4.2f fps",  average * 1000, 1 / average);
+	sprintf(buff, "sputnik | %4.3fms (max: %4.3fms, std: %4.3f) | %4.2ffps",  average * 1000, peak * 1000, sqrt(std) * 1000, 1 / average);
 	glfwSetWindowTitle(windowHandle, buff);
 }
