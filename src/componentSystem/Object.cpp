@@ -59,3 +59,18 @@ void Object::initComponents()
 		it->second->init();
 	}
 }
+
+void Object::dump()
+{
+	std::cout << "==================== object dump ===================" << std::endl;
+	for (ComponentMultimap::iterator it = components.begin();
+		 it != components.end();
+		 it++)
+	{
+//		std::cout << it->first << " (" << &(it->first) << ") | " << it->second << std::endl;
+		printf("%40s (%p) | %p", it->first, it->first,  (void*)it->second);
+	}
+	
+	std::cout << std::flush;
+
+}

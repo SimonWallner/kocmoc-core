@@ -2,6 +2,7 @@
 
 # set compiler flags
 add_definitions(-Wall -Wextra -pedantic -Werror -Winit-self -Wno-long-long)
+add_definitions(-g -O0)
 # later add  -Weffc++ -Wdouble-promotion -Wshadow -Wc++0x-compat -Wfloat-equal -Wmissing-include-dirs
 
 

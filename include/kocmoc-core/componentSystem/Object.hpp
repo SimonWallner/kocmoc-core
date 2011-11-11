@@ -13,6 +13,8 @@
 #include <map>
 #include <string>
 #include <typeinfo>
+#include <iostream>
+#include <cassert>
 
 #include <kocmoc-core/types/Symbol.hpp>
 #include <kocmoc-core/util/Properties.hpp>
@@ -58,14 +60,22 @@ namespace kocmoc
 				template <class T>
 				T* getComponent()
 				{
-					ComponentMultimap::iterator it = components.find(types::symbolize(typeid(T).name()));
+					types::Symbol needle = types::symbolize(typeid(T).name());
+					ComponentMultimap::iterator it = components.find(needle);
 					if (it != components.end())
 					{
 						Component* c = it->second;
 						return dynamic_cast<T*>(c);
 					}
 					else
+					{
+						std::cout << "failed to retrieve component: " << std::endl;
+						printf("needle: %p\n", needle);
+						std::cout << "map length: " << components.size() << std::endl;
+						dump();
+						assert(false);
 						return NULL;
+					}
 				}
 				
 				/**
@@ -120,6 +130,8 @@ namespace kocmoc
 				ComponentList messageReceivers;
 				ComponentList updateReceivers;
 				ComponentList renderReceivers;
+				
+				void dump();
 			};
 		}
 	}
