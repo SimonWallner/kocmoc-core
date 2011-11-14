@@ -69,6 +69,57 @@ namespace kocmoc
 				res.y = sin(rad) * r;
 				return res;
 			}
+			
+			/**
+			 * decay constant for exponential decay
+			 * @param half-life time
+			 * @return lambda
+			 */
+			inline float decayConst(float halfLife)
+			{
+				return log(2.0f) / halfLife;
+			}
+			
+			/**
+			 * exponential decay with half-life lambda and time t
+			 * @lambda half-life constant
+			 * @t delta t
+			 * @return ration of N0/N
+			 */
+			inline float decay(float lambda, float t)
+			{
+				return exp(-lambda * t);
+			}
+			
+			/**
+			 * compute the delta v vector resulting of a force applied
+			 * to an object of mass m in unit time
+			 *
+			 * @param F force in newton
+			 * @param m mass in kg
+			 * @return delta v 
+			 */
+			inline glm::vec3 applyForce(glm::vec3 F, float m)
+			{
+				return F / m; 
+			}
+			
+			/**
+			 * compute the plane-ray intersection point
+			 * @param x0 point on the plane
+			 * @param n plane normal vector
+			 * @param r0 point on the ray
+			 * @param v ray direction
+			 * @return intersection point
+			 * 
+			 * @note http://cgafaq.info/wiki/Ray_Plane_Intersection
+			 */
+			inline glm::vec3 planeRayIntersection(glm::vec3 x0, glm::vec3 n,
+									   glm::vec3 r0, glm::vec3 v)
+			{
+				float t = -glm::dot(n, (r0 - x0)) / glm::dot(n, v);
+				return r0 + v * t;
+			}
 		}		
 	}
 }

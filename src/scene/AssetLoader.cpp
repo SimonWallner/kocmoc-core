@@ -183,12 +183,12 @@ Renderable* AssetLoader::load(const string modelName, const string shaderPath)
 AssetLoader::AssetLoader()
 	:imageLoader(new ImageLoader)
 {
-	// Create a logger instance 
-	DefaultLogger::create("", Logger::VERBOSE);
-	DefaultLogger::get()->attachStream(LogStream::createDefaultStream(aiDefaultLogStream_STDOUT));
-	
-	// Now I am ready for logging my stuff
-	DefaultLogger::get()->info("logging starts here...");	
+//	// Create a logger instance 
+//	DefaultLogger::create("", Logger::VERBOSE);
+//	DefaultLogger::get()->attachStream(LogStream::createDefaultStream(aiDefaultLogStream_STDOUT));
+//	
+//	// Now I am ready for logging my stuff
+//	DefaultLogger::get()->info("logging starts here...");	
 	
 }
 

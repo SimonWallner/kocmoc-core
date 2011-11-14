@@ -32,12 +32,42 @@ void InputManager::registerAnalogEventListener(Symbol name, AnalogEventListener*
 
 void InputManager::bindKeyToButtonEvent(int key, Symbol name)
 {
-	buttonEventKeyBindings.insert(KeyBindingPair(key, name));
+	bool found = false;
+
+	// fetch bindings
+	std::pair<KeyButtonEventBindings::const_iterator, KeyButtonEventBindings::const_iterator> bounds =
+	buttonEventKeyBindings.equal_range(key);
+	
+	for (KeyButtonEventBindings::const_iterator ci = bounds.first;
+		 ci != bounds.second;
+		 ci++)
+	{
+		if (ci->second == name)
+			found = true;
+	}
+	
+	if (found != true)
+		buttonEventKeyBindings.insert(KeyBindingPair(key, name));
 }
 
 void InputManager::bindAnalogEvent(int eventConstant, Symbol name)
 {
-	analogEventBindigs.insert(AnalogBindingPair(eventConstant, name));
+	bool found = false;
+	
+	// fetch bindings
+	std::pair<AnalogEventBindings::const_iterator, AnalogEventBindings::const_iterator> bounds =
+	buttonEventKeyBindings.equal_range(eventConstant);
+	
+	for (AnalogEventBindings::const_iterator ci = bounds.first;
+		 ci != bounds.second;
+		 ci++)
+	{
+		if (ci->second == name)
+			found = true;
+	}
+	
+	if (found != true)
+		analogEventBindigs.insert(AnalogBindingPair(eventConstant, name));
 }
 
 void InputManager::poll(void)

@@ -80,6 +80,8 @@ namespace kocmoc
 
 				/** get the cameras eye position */
 				const glm::vec3 getPosition() {return eyePosition;}
+				
+				const glm::vec3 getViewVector() {return targetVector;}
 
 
 				/**

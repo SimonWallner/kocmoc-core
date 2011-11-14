@@ -18,4 +18,8 @@ ObjectBehaviour::ObjectBehaviour()
 	: position(glm::vec3(0, 0, 0))
 	, rotation(angleAxis(0.0f, 0.0f, 0.0f, 1.0f))
 	, scale(glm::vec3(1, 1, 1))
+	, speed(glm::vec3(0))
+	, lambda(math::decayConst(2.0f))
+	, mass(1.0f)
+	, drag(glm::vec3(0))
 {}

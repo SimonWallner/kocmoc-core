@@ -13,6 +13,7 @@
 #include <glm/gtc/quaternion.hpp>
 
 #include <kocmoc-core/componentSystem/Component.hpp>
+#include <kocmoc-core/math/math.hpp>
 
 namespace kocmoc
 {
@@ -27,13 +28,27 @@ namespace kocmoc
 				ObjectBehaviour();
 
 
-				void onUpdate(float deltaT) {
-					UNUSED deltaT;
+				void onUpdate(float deltaT, float t)
+				{
+					// apply drag
+					speed += math::applyForce(drag, mass) * deltaT;
+					
+					// damping, exp decay
+					speed *= math::decay(lambda, deltaT);
+					
+					// update position
+					position += speed * deltaT;
+					
+					UNUSED t;
 				}
 
 				glm::vec3 position;
 				glm::quat rotation;
 				glm::vec3 scale;
+				glm::vec3 speed;
+				float lambda;
+				float mass;
+				glm::vec3 drag;
 			};
 		}
 	}
