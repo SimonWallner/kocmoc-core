@@ -23,3 +23,20 @@ ObjectBehaviour::ObjectBehaviour()
 	, mass(1.0f)
 	, drag(glm::vec3(0))
 {}
+
+void ObjectBehaviour::onUpdate(float deltaT, float t)
+{
+	// apply drag
+	speed += math::applyForce(drag, mass) * deltaT;
+	
+	// damping, exp decay
+	speed *= math::decay(lambda, deltaT);
+	
+	// update position
+	position += speed * deltaT;
+	
+	// reset draging force
+	drag = glm::vec3(0);
+	
+	UNUSED t;
+}

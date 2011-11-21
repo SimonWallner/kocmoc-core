@@ -27,20 +27,7 @@ namespace kocmoc
 				
 				ObjectBehaviour();
 
-
-				void onUpdate(float deltaT, float t)
-				{
-					// apply drag
-					speed += math::applyForce(drag, mass) * deltaT;
-					
-					// damping, exp decay
-					speed *= math::decay(lambda, deltaT);
-					
-					// update position
-					position += speed * deltaT;
-					
-					UNUSED t;
-				}
+				void onUpdate(float deltaT, float t);
 
 				glm::vec3 position;
 				glm::quat rotation;
