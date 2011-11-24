@@ -89,7 +89,8 @@ bool util::parser::parseConfigXMLFileIntoProperties(string path, Properties* pro
 				 element != NULL;
 				 element = element->NextSiblingElement("float"))
 			{
-				float value = atof(element->Attribute("value"));
+				float value = 0;
+				value = atof(element->Attribute("value"));
 				props->add(symbolize(element->Attribute("name")), value);
 			}
 			
@@ -97,7 +98,8 @@ bool util::parser::parseConfigXMLFileIntoProperties(string path, Properties* pro
 				 element != NULL;
 				 element = element->NextSiblingElement("bool"))
 			{
-				float value = atof(element->Attribute("value"));
+				float value = false;
+				value = atof(element->Attribute("value"));
 				props->add(symbolize(element->Attribute("name")), (bool)value);
 			}
 		}

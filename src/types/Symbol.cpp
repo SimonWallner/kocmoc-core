@@ -24,7 +24,7 @@ Symbol kocmoc::core::types::symbolize(const char* string)
 	else
 	{
 		//if not, copy string and insert it into symbols map at symbolLowerBound
-		char* copy = new char[strlen(string)];
+		char* copy = new char[strlen(string) + 1];
 		strcpy(copy, string);
 		return *symbols.insert(symbolLowerBound, copy);
 	}

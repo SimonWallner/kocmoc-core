@@ -88,9 +88,9 @@ void Shader::destroy()
 {
 	if (prepared)
 	{
-		glDeleteProgram(programHandle);
 		glDeleteShader(vertexShader);
 		glDeleteShader(fragmentShader);
+		glDeleteProgram(programHandle);
 	}
 
 	prepared = false;

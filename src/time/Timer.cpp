@@ -14,6 +14,10 @@ Timer::Timer(GLFWwindow _windowHandle)
 	, counter(0)
 {
 	tick();
+	for (unsigned int i = 0; i < KOCMOC_CORE_TIMER_AVERAGE_LENGTH; i++)
+	{
+		frameTimes[i] = 0.0f;
+	}
 }
 
 void Timer::tick()
