@@ -70,7 +70,8 @@ namespace kocmoc
 					else
 					{
 						std::cout << "failed to retrieve component: " << std::endl;
-						printf("needle: %p\n", needle);
+//						printf("needle: %p\n", needle);
+						std::cout << "needle: " << needle << std::endl;
 						std::cout << "map length: " << components.size() << std::endl;
 						dump();
 						assert(false);

@@ -67,8 +67,8 @@ void Object::dump()
 		 it != components.end();
 		 it++)
 	{
-//		std::cout << it->first << " (" << &(it->first) << ") | " << it->second << std::endl;
-		printf("%40s (%p) | %p", it->first, it->first,  (void*)it->second);
+		std::cout << it->first << " (" << &(it->first) << ") | " << it->second << std::endl;
+//		printf("%40s (%p) | %p", it->first, it->first,  (void*)it->second);
 	}
 	
 	std::cout << std::flush;

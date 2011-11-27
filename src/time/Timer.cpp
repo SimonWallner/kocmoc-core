@@ -50,7 +50,9 @@ void Timer::print()
 	std /= KOCMOC_CORE_TIMER_AVERAGE_LENGTH;
 	
 	
-	char buff[50];
-	sprintf(buff, "sputnik | %4.3fms (max: %4.3fms, std: %4.3f) | %4.2ffps",  average * 1000, peak * 1000, sqrt(std) * 1000, 1 / average);
+	unsigned int bSize = 150;
+	char* buff = new char[bSize];
+	snprintf(buff, bSize, "sputnik | %4.3fms (max: %4.3fms, std: %4.3f) | %4.2ffps",  average * 1000, peak * 1000, sqrt(std) * 1000, 1 / average);
 	glfwSetWindowTitle(windowHandle, buff);
+	delete [] buff;
 }

@@ -73,42 +73,42 @@ GLuint ImageLoader::loadImage(std::string filename)
 
 void ImageLoader::screenShot()
 {
-	// init
-	ilutRenderer(ILUT_OPENGL);
-
-	ILuint image;
-
-	ilGenImages(1, &image);
-	ilBindImage(image);
-
-	ilutGLScreen();
-
-//	ILenum error = ilGetError();
-
-	time_t t = time(0);
-	struct tm * now = localtime(&t);
-
-	char buffer[50];
-	
-	sprintf(buffer, "screenshot_%d_%d_%d-%d-%d-%d.png",
-	now->tm_year + 1900,
-	now->tm_mon + 1,
-	now->tm_mday,
-	now->tm_hour,
-	now->tm_min,
-	now->tm_sec);
-
-
-	if(ilSave(IL_PNG, buffer))
-		cout << "screenshot taken! (" << buffer << ")" << std::endl;
-	else 
-	{
-		std::cout << "failed to take screenshot: ";
-		if (ilGetError() == IL_COULD_NOT_OPEN_FILE)
-			std::cout << "could not open file '" << buffer << "' for writing";
-
-		std::cout << std::endl;
-	}
-
-	ilDeleteImage(image);
+//	// init
+//	ilutRenderer(ILUT_OPENGL);
+//
+//	ILuint image;
+//
+//	ilGenImages(1, &image);
+//	ilBindImage(image);
+//
+//	ilutGLScreen();
+//
+////	ILenum error = ilGetError();
+//
+//	time_t t = time(0);
+//	struct tm * now = localtime(&t);
+//
+//	char buffer[50];
+//	
+//	sprintf(buffer, "screenshot_%d_%d_%d-%d-%d-%d.png",
+//	now->tm_year + 1900,
+//	now->tm_mon + 1,
+//	now->tm_mday,
+//	now->tm_hour,
+//	now->tm_min,
+//	now->tm_sec);
+//
+//
+//	if(ilSave(IL_PNG, buffer))
+//		cout << "screenshot taken! (" << buffer << ")" << std::endl;
+//	else 
+//	{
+//		std::cout << "failed to take screenshot: ";
+//		if (ilGetError() == IL_COULD_NOT_OPEN_FILE)
+//			std::cout << "could not open file '" << buffer << "' for writing";
+//
+//		std::cout << std::endl;
+//	}
+//
+//	ilDeleteImage(image);
 }
