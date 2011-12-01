@@ -101,9 +101,12 @@ void FilmCamera::tumble(float horizontal, float vertical)
 
 		
 	// then vertically
-//	s = glm::normalize(glm::cross(targetVector, upVector));
-	targetVector = glm::normalize(targetVector + vertical * upVector);
-	upVector = glm::normalize(glm::cross(s, targetVector));
+	float eps = 0.9;
+	if ((vertical > 0 && targetVector.y < eps) || (vertical < 0 && targetVector.y > -eps))
+	{
+		targetVector = glm::normalize(targetVector + vertical * upVector);
+		upVector = glm::normalize(glm::cross(s, targetVector));
+	}
 }
 
 void FilmCamera::dolly(vec3 direction)
