@@ -4,6 +4,7 @@
 #include <map>
 #include <IL/il.h>
 #include <kocmoc-core/gl.h>
+#include <kocmoc-core/types/Symbol.hpp>
 
 namespace kocmoc
 {
@@ -48,6 +49,9 @@ namespace kocmoc
 				 *		a sequence.
 				 */
 				void screenShot(void);
+				
+				typedef std::map<types::Symbol, GLuint > ImageCache;
+				ImageCache cache;
 			};
 		}
 	}

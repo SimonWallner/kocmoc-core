@@ -23,6 +23,13 @@ ImageLoader::ImageLoader(void)
 
 GLuint ImageLoader::loadImage(std::string filename)
 {
+	types::Symbol fileNameSymbol = types::symbolize(filename.c_str());
+	ImageCache::const_iterator ci = cache.find(fileNameSymbol);
+	if (ci != cache.end())
+	{
+		return ci->second;
+	}
+	
 	GLuint handle;
 	glGenTextures(1, &handle); /* Texture name generation */
 	std::string fullPath = filename;
@@ -62,6 +69,7 @@ GLuint ImageLoader::loadImage(std::string filename)
 		ilDeleteImages(1, &texid);
 		
 		cout << "texture: '" << filename << "' loaded successfully" << std::endl;
+		cache[fileNameSymbol] = handle;
 		return handle;
 	} else
 	{
