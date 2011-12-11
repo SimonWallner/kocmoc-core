@@ -26,6 +26,12 @@ ObjectBehaviour::ObjectBehaviour()
 
 void ObjectBehaviour::onUpdate(float deltaT, float t)
 {
+//	// add air resistance
+//	float v = glm::length(speed);
+//	float cW = 1.0f;
+//	float resistance = pow(v, 2) * deltaT * cW;
+//	drag -= speed * resistance;
+	
 	// apply drag
 	speed += math::applyForce(drag, mass) * deltaT;
 	
