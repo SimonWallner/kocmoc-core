@@ -22,6 +22,10 @@ FrameBuffer21::FrameBuffer21(int _frameWidth, int _frameHeight, int _gateWidth, 
 	, frameHeight(_frameHeight * 2)
 	, gateWidth(_gateWidth * 2)
 	, gateHeight(_gateHeight * 2)
+//	: frameWidth(_frameWidth)
+//	, frameHeight(_frameHeight)
+//	, gateWidth(_gateWidth)
+//	, gateHeight(_gateHeight)
 	, windowWidth(_windowWidth)
 	, windowHeight(_windowHeight)
 	, angleOfView(_angleOfView)
@@ -105,6 +109,11 @@ void FrameBuffer21::createQuad()
 	GLfloat topY = (float)(gateHeight / 2) / windowHeight;
 	GLfloat bottomX = (float)(gateWidth / 2) / windowWidth;
 	GLfloat bottomY = -(float)(gateHeight / 2) / windowHeight;
+	
+//	GLfloat topX = -(float)(gateWidth) / windowWidth;
+//	GLfloat topY = (float)(gateHeight) / windowHeight;
+//	GLfloat bottomX = (float)(gateWidth) / windowWidth;
+//	GLfloat bottomY = -(float)(gateHeight) / windowHeight;
 
 	float horizontalScale = (float)gateWidth / frameWidth;
 	float horizontalOffset = (1 - horizontalScale) / 2.0f;
