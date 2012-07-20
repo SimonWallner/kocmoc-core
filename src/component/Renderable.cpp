@@ -23,9 +23,9 @@ using std::string;
 using kocmoc::core::scene::Camera;
 
 using glm::mat4;
-using glm::gtx::quaternion::toMat4;
-using glm::gtx::transform::translate;
-using glm::gtx::transform::scale;
+using glm::toMat4;
+using glm::translate;
+using glm::scale;
 
 Renderable::Renderable()
 {}

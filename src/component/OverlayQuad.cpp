@@ -18,8 +18,8 @@ void OverlayQuad::onRender(RenderPass pass, Camera* camera)
 {
 	if (pass == renderer::RP_OVERLAY)
 	{
-		glm::mat4 transform = glm::gtx::transform::translate(position.x, position.y, 0.0f)
-			* glm::gtx::transform::scale(scale.x, scale.y, 1.0f);
+		glm::mat4 transform = glm::translate(position.x, position.y, 0.0f)
+			* glm::scale(scale.x, scale.y, 1.0f);
 		
 		// FIXME: ugly hack, should put texture into mesh or 'ting...
 		if (texture)

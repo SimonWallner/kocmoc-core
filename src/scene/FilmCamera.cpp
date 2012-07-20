@@ -14,7 +14,7 @@ using glm::vec3;
 using glm::vec4;
 using glm::mat4;
 
-using glm::gtc::matrix_transform::translate;
+using glm::translate;
 
 FilmCamera::FilmCamera(vec3 _eyePosition, vec3 _targetPosition, vec3 _upVector)	
 	: nearPlane(-0.1f)
@@ -76,7 +76,7 @@ void FilmCamera::updateMatrixes()
 	vec3 u = glm::normalize(glm::cross(s, targetVector));
 
 	untranslatedViewMatrix = mat4(vec4(s, 0), vec4(u, 0), vec4(-targetVector, 0), vec4(0, 0, 0, 1.0f));
-	untranslatedViewMatrix = glm::core::function::matrix::transpose(untranslatedViewMatrix);
+	untranslatedViewMatrix = glm::transpose(untranslatedViewMatrix);
 	viewMatrix = translate(untranslatedViewMatrix, -eyePosition);
 		
 	// as found in hearn & baker
@@ -134,7 +134,7 @@ void FilmCamera::setFocalLength(float length)
 void FilmCamera::rotate(float radians)
 {
 	// rotate up vector
-	mat4 rotation = glm::gtx::transform::rotate(radians, targetVector);
+	mat4 rotation = glm::rotate(radians, targetVector);
 	vec4 res = rotation * vec4(upVector, 1.0f);
 	upVector = vec3(res);
 	// std::cout << "up vector: " << upVector.x << " | "<< upVector.y << " | "<< upVector.z << std::endl;

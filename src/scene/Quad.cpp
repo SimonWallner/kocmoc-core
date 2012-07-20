@@ -7,14 +7,14 @@
 using namespace kocmoc::core::renderer;
 using namespace kocmoc::core::scene;
 
-using glm::gtx::quaternion::toMat4;
+using glm::toMat4;
 
 void Quad::draw(Camera *camera)
 {	
-	glm::mat4 transform = glm::gtx::transform::translate(position.x, position.y, position.z)
+	glm::mat4 transform = glm::translate(position.x, position.y, position.z)
 		* toMat4(rotation)
-		* glm::gtx::transform::translate(0.0f, 3.0f, 0.0f)
-		* glm::gtx::transform::scale(size.x, size.y, 1.0f);
+		* glm::translate(0.0f, 3.0f, 0.0f)
+		* glm::scale(size.x, size.y, 1.0f);
 
 	
 	// FIXME: ugly hack, should put texture into mesh or 'ting...

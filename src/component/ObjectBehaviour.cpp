@@ -12,7 +12,7 @@
 
 using namespace kocmoc::core::component;
 
-using glm::gtx::quaternion::angleAxis;
+using glm::angleAxis;
 
 ObjectBehaviour::ObjectBehaviour()
 	: position(glm::vec3(0, 0, 0))

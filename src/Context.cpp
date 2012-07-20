@@ -33,7 +33,7 @@ Context::Context(util::Properties* _props)
 	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 2);
 	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 1);
 	glfwOpenWindowHint(GLFW_DEPTH_BITS, 32);
-	glfwOpenWindowHint(GLFW_WINDOW_NO_RESIZE, GL_TRUE);
+	glfwOpenWindowHint(GLFW_WINDOW_RESIZABLE, GL_FALSE);
 	
     windowHandle = glfwOpenWindow(width, height, windowMode, "sputnik", NULL);
     if (!windowHandle)

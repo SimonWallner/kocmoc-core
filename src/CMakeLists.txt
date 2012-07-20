@@ -53,7 +53,7 @@ include_directories(
 	${PROJECT_SOURCE_DIR}/src
 	${PROJECT_BINARY_DIR}/include
 	${PROJECT_SOURCE_DIR}/external/glfw/include
-	${PROJECT_SOURCE_DIR}/external/glm/include
+	${PROJECT_SOURCE_DIR}/external/glm
 	${GLEW_INCLUDE_PATH}
 	${IL_INCLUDE_DIR}
 	${ASSIMP_INCLUDE_DIR}
