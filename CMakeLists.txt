@@ -14,10 +14,9 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)  #static libraries
 
 # -- get git revision number (SHA1) ------------------------------------------
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
-include(GetGitRevisionDescription)
-get_git_head_revision(GIT_REFSPEC KOCMOC_CORE_GIT_SHA1)
-
-message(STATUS "KOCMOC-CORE revision hash is: ${KOCMOC_CORE_GIT_SHA1}")
+# include(GetGitRevisionDescription)
+# get_git_head_revision(GIT_REFSPEC KOCMOC_CORE_GIT_SHA1)
+# message(STATUS "KOCMOC-CORE revision hash is: ${GIT_REFSPEC} ${KOCMOC_CORE_GIT_SHA1}")
 
 
 
@@ -63,7 +62,7 @@ if(NOT DEFINED KOCMOC_CORE_CONFIG_TARGET_LOCATION)
 	message(WARNING "the variable KOCMOC_CORE_CONFIG_TARGET_LOCATION is not set. Now go and define it!")
 endif()
 
-message(STATUS "configuring files...")
+# message(STATUS "configuring files...")
 set(KOCMOC_CORE_MEDIA_PATH ${PROJECT_SOURCE_DIR}/media/)
 configure_file(media/kocmoc-core-config.xml.in ${KOCMOC_CORE_CONFIG_TARGET_LOCATION})
 
