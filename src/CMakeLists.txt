@@ -82,7 +82,7 @@ list(APPEND INCLUDE_HEADER_FILES "${PROJECT_BINARY_DIR}/include/kocmoc-core/vers
 add_library(kocmoc-core ${SOURCE_FILES} ${HEADER_FILES} ${INCLUDE_C_HEADER_FILES} ${INCLUDE_HEADER_FILES})
 
 set (TARGET_LINK_LIBRARIES kocmoc-core
-	libglfwStatic
+	glfw
 	${COCOA_FRAMEWORK}
 	${OPENGL_gl_LIBRARY}
 	${GLEW_LIBRARY}
