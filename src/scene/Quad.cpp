@@ -2,7 +2,11 @@
 
 #include <string>
 #include <glm/gtx/transform.hpp>
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 #include <glm/gtx/quaternion.hpp>
+#pragma GCC diagnostic pop
 
 using namespace kocmoc::core::renderer;
 using namespace kocmoc::core::scene;

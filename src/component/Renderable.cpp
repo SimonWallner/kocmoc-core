@@ -10,8 +10,12 @@
 #include <kocmoc-core/component/Renderable.hpp>
 
 #include <iostream>
+
 #include <glm/gtx/transform.hpp>
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 #include <glm/gtx/quaternion.hpp>
+#pragma GCC diagnostic pop
 
 #include <kocmoc-core/gl.h>
 #include <kocmoc-core/renderer/RenderMesh.hpp>

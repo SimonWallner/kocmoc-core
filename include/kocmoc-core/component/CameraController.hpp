@@ -25,7 +25,7 @@ namespace kocmoc
 			public:
 				CameraController(scene::FilmCamera* _camera, input::InputManager* inputManager);
 
-				void onUpdate(const float deltaT);
+				void onUpdate(const float deltaT, const float t);
 				
 			private:
 				class InputCallback : public core::input::ButtonEventListener, public core::input::AnalogEventListener

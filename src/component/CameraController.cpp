@@ -38,8 +38,9 @@ CameraController::CameraController(FilmCamera* _camera, InputManager* inputManag
 //	inputManager->bindAnalogEvent(ANALOG_EVENT_MOUSE_DELTA_Y, mouseTumbleV);
 }
 
-void CameraController::onUpdate(const float deltaT)
+void CameraController::onUpdate(const float deltaT, const float t)
 {
+	UNUSED t;
 	lastDeltaT = deltaT;
 }
 

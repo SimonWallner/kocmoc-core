@@ -8,7 +8,10 @@
 
 #include <kocmoc-core/component/ObjectBehaviour.hpp>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 #include <glm/gtx/quaternion.hpp>
+#pragma GCC diagnostic pop
 
 using namespace kocmoc::core::component;
 
