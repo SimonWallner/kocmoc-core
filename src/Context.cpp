@@ -35,7 +35,8 @@ Context::Context(util::Properties* _props)
 	glfwOpenWindowHint(GLFW_DEPTH_BITS, 32);
 	glfwOpenWindowHint(GLFW_WINDOW_RESIZABLE, GL_FALSE);
 	
-    windowHandle = glfwOpenWindow(width, height, windowMode, "sputnik", NULL);
+    windowHandle = glfwOpenWindow(width, height, windowMode,
+								  props->getString(types::symbolize("window-title")).c_str(), NULL);
     if (!windowHandle)
     {
         std::cout << "Failed to open GLFW window" << std::endl;
@@ -105,6 +106,10 @@ void Context::swapBuffers()
 	glfwSwapBuffers();
 	glFlush(); // only needed for gDebugger debugging.
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void Context::pollEvents()
+{
 	glfwPollEvents();
 }
 

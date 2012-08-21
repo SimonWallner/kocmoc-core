@@ -19,24 +19,26 @@ namespace kocmoc {
 				 */
 				Context(util::Properties* props);
 
-				~Context(void);
+				~Context();
 
 				/**
 				 * Print a bunch of usefull informations
 				 */
-				void getInfo(void);
+				void getInfo();
 				
-				GLFWwindow getWindowHandle(void);
+				GLFWwindow getWindowHandle();
 				
-				void swapBuffers(void);
+				void swapBuffers();
 				
-				bool isAlive(void);
+				void pollEvents();
+				
+				bool isAlive();
 			
 			private:
 				
-				void setGLStates(void);
+				void setGLStates();
 				
-				void getError(void);
+				void getError();
 				
 				GLFWwindow windowHandle;
 				util::Properties* props;
@@ -44,6 +46,5 @@ namespace kocmoc {
 		}
 	}
 }
-
 
 #endif
