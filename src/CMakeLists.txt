@@ -7,8 +7,9 @@ add_definitions(-g -O0 -fstack-protector-all)
 
 
 # ----------------- find stuff -------------------------
-# find cocoa framework
+# find mac related frameworks
 find_library(COCOA_FRAMEWORK Cocoa)
+find_library(IOKIT NAMES IOKit)
 
 
 find_package(OpenGL REQUIRED)
@@ -84,6 +85,7 @@ add_library(kocmoc-core ${SOURCE_FILES} ${HEADER_FILES} ${INCLUDE_C_HEADER_FILES
 set (TARGET_LINK_LIBRARIES kocmoc-core
 	glfw
 	${COCOA_FRAMEWORK}
+	${IOKIT}
 	${OPENGL_gl_LIBRARY}
 	${GLEW_LIBRARY}
 	${IL_LIBRARIES}
