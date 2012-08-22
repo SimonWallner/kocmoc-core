@@ -5,10 +5,10 @@
 #include <list>
 
 // wrap, wrap
+#pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
-#include <assimp/assimp.hpp>
-#include <assimp/aiPostProcess.h>
-#pragma GCC diagnostic error "-Wunused-parameter"
+#include <assimp/Importer.hpp>
+#pragma GCC diagnostic pop
 
 #include <kocmoc-core/exception/ResourceNotFoundException.hpp>
 #include <kocmoc-core/scene/ImageLoader.hpp>

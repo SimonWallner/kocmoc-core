@@ -12,9 +12,10 @@
 
 #include <kocmoc-core/gl.h>
 
-#include <assimp/aiScene.h>
-#include <assimp/DefaultLogger.h>
-#include <assimp/LogStream.h>
+#include <assimp/scene.h>
+#include <assimp/DefaultLogger.hpp>
+#include <assimp/LogStream.hpp>
+#include <assimp/postprocess.h>
 
 #include <kocmoc-core/component/Renderable.hpp>
 #include <kocmoc-core/util/util.hpp>
@@ -53,10 +54,7 @@ Renderable* AssetLoader::load(const string modelName, const string shaderPath)
 	const aiScene* scene = importer.ReadFile(absolutePath,
 											 aiProcess_Triangulate
 											 | aiProcess_SortByPType
-//											 | aiProcess_CalcTangentSpace
 											 | aiProcess_ImproveCacheLocality
-//											 | aiProcess_FlipWindingOrder
-//											 | aiProcess_GenUVCoords
 											 );
 
 	
