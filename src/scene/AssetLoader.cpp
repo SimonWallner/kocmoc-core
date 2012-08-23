@@ -15,7 +15,10 @@
 #include <assimp/scene.h>
 #include <assimp/DefaultLogger.hpp>
 #include <assimp/LogStream.hpp>
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnewline-eof"
 #include <assimp/postprocess.h>
+#pragma GCC diagnostic pop
 
 #include <kocmoc-core/component/Renderable.hpp>
 #include <kocmoc-core/util/util.hpp>
@@ -42,6 +45,17 @@ void AssetLoader::addResourcePath(const string path)
 	resourcePaths.push_back(path);
 }
 
+void exploreNode(aiNode* node, string lead = "")
+{
+	std::cout << lead + "name: " << node->mName.C_Str() << std::endl;
+	std::cout << lead + "children: " << node->mNumChildren << std::endl;
+	std::cout << lead + "meshes: " << node->mNumMeshes << std::endl;
+	for (unsigned int i = 0; i < node->mNumChildren; i++)
+	{
+		exploreNode(node->mChildren[i], lead + "--- ");
+	}
+}
+
 Renderable* AssetLoader::load(const string modelName, const string shaderPath)
 {
 	Renderable* renderable = new Renderable();
@@ -64,6 +78,11 @@ Renderable* AssetLoader::load(const string modelName, const string shaderPath)
 	}
 	else
 	{
+		aiNode* root = scene->mRootNode;
+		exploreNode(root);
+		
+		
+		
 		if (scene->HasMeshes())
 		{
 			for (uint i = 0; i < scene->mNumMeshes; i++)
