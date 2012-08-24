@@ -20,14 +20,18 @@
 #include <assimp/postprocess.h>
 #pragma GCC diagnostic pop
 
+#include <kocmoc-core/scene/TriangleMesh.hpp>
+#include <kocmoc-core/scene/AssimpLoggerStream.hpp>
+
 #include <kocmoc-core/component/Renderable.hpp>
 #include <kocmoc-core/util/util.hpp>
 #include <kocmoc-core/types/types.h>
-#include <kocmoc-core/scene/TriangleMesh.hpp>
 #include <kocmoc-core/renderer/Shader.hpp>
 #include <kocmoc-core/util/util.hpp>
 
 #include <kocmoc-core/renderer/RenderMesh21.hpp>
+
+#include <kocmoc-core/scene/AssimpLoggerStream.hpp>
 
 using namespace kocmoc::core::scene;
 using namespace Assimp;
@@ -45,14 +49,34 @@ void AssetLoader::addResourcePath(const string path)
 	resourcePaths.push_back(path);
 }
 
-void exploreNode(aiNode* node, string lead = "")
+//void exploreNode(aiNode* node, string lead = "")
+//{
+//	std::cout << lead + "name: " << node->mName.C_Str() << std::endl;
+//	std::cout << lead + "children: " << node->mNumChildren << std::endl;
+//	std::cout << lead + "meshes: " << node->mNumMeshes << std::endl;
+//	for (unsigned int i = 0; i < node->mNumChildren; i++)
+//	{
+//		exploreNode(node->mChildren[i], lead + "--- ");
+//	}
+//}
+
+void exploreMaterials(const aiScene* scene)
 {
-	std::cout << lead + "name: " << node->mName.C_Str() << std::endl;
-	std::cout << lead + "children: " << node->mNumChildren << std::endl;
-	std::cout << lead + "meshes: " << node->mNumMeshes << std::endl;
-	for (unsigned int i = 0; i < node->mNumChildren; i++)
+	std::cout << "exploring materials" << std::endl;
+	for (unsigned int i = 0; i < scene->mNumMaterials; i++)
 	{
-		exploreNode(node->mChildren[i], lead + "--- ");
+		aiMaterial* material = scene->mMaterials[i];
+		aiString str;
+		material->Get(AI_MATKEY_NAME, str);
+		std::cout << str.C_Str() << std::endl;
+		
+		for (unsigned int j = 0; j < material->mNumProperties; j++)
+		{
+			
+			std::cout << "material " << i << ": " << material->mProperties[j]->mKey.C_Str()
+				<< " with raw data: " << material->mProperties[j]->mData << std::endl;
+		}
+		std::cout << std::endl;
 	}
 }
 
@@ -78,9 +102,9 @@ Renderable* AssetLoader::load(const string modelName, const string shaderPath)
 	}
 	else
 	{
-		aiNode* root = scene->mRootNode;
-		exploreNode(root);
-		
+//		aiNode* root = scene->mRootNode;
+//		exploreNode(root);
+		exploreMaterials(scene);
 		
 		
 		if (scene->HasMeshes())
@@ -200,8 +224,10 @@ Renderable* AssetLoader::load(const string modelName, const string shaderPath)
 AssetLoader::AssetLoader()
 	:imageLoader(new ImageLoader)
 {
-//	// Create a logger instance 
-//	DefaultLogger::create("", Logger::VERBOSE);
+	DefaultLogger::create("", Logger::VERBOSE);
+	DefaultLogger::get()->attachStream(new AssimpLoggerStream(), 0xFFFFFF); // all messages
+	
+//	// Create a logger instance
 //	DefaultLogger::get()->attachStream(LogStream::createDefaultStream(aiDefaultLogStream_STDOUT));
 //	
 //	// Now I am ready for logging my stuff
