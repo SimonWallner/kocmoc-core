@@ -36,7 +36,7 @@ Context::Context(util::Properties* _props)
 	glfwOpenWindowHint(GLFW_DEPTH_BITS, 32);
 	glfwOpenWindowHint(GLFW_WINDOW_RESIZABLE, GL_FALSE);
 	
-    windowHandle = glfwCreateWindow(width, height, windowMode,
+    windowHandle = glfwOpenWindow(width, height, windowMode,
 								  props->getString(types::symbolize("window-title")).c_str(), NULL);
     if (!windowHandle)
     {
