@@ -4,3 +4,6 @@
 [submodule "external/glm"]
 	path = external/glm
 	url = git://github.com/Groovounet/glm.git
+[submodule "external/objectif-lune"]
+	path = external/objectif-lune
+	url = git@github.com:SimonWallner/objectif-lune.git
