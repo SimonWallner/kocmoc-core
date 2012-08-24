@@ -1,4 +1,4 @@
-#include <iostream>
+#include <sstream>
 
 #include <kocmoc-core/gl.h>
 /**
@@ -10,6 +10,7 @@
 #include <kocmoc-core/renderer/Context.hpp>
 
 #include <kocmoc-core/version.hpp>
+#include <objectif-lune/Singleton.hpp>
 
 
 using namespace kocmoc::core::renderer;
@@ -17,7 +18,7 @@ using namespace kocmoc::core::renderer;
 Context::Context(util::Properties* _props)
 	: props(_props)
 {
-	std::cout << "creating context now..." << std::endl;
+	objectifLune::Singleton::Get()->debug("creating context now...");
 	
 	float width = props->getFloat(types::symbolize("width"));
 	float height = props->getFloat(types::symbolize("height"));
@@ -26,7 +27,7 @@ Context::Context(util::Properties* _props)
 	
     if(!glfwInit())
     {
-		std::cout << "Failed to initialize GLFW" << std::endl;
+		objectifLune::Singleton::Get()->fatal("Failed to initialize GLFW");
         exit(EXIT_FAILURE);
     }
 	
@@ -35,11 +36,12 @@ Context::Context(util::Properties* _props)
 	glfwOpenWindowHint(GLFW_DEPTH_BITS, 32);
 	glfwOpenWindowHint(GLFW_WINDOW_RESIZABLE, GL_FALSE);
 	
-    windowHandle = glfwOpenWindow(width, height, windowMode,
+    windowHandle = glfwCreateWindow(width, height, windowMode,
 								  props->getString(types::symbolize("window-title")).c_str(), NULL);
     if (!windowHandle)
     {
-        std::cout << "Failed to open GLFW window" << std::endl;
+        objectifLune::Singleton::Get()->fatal("Failed to open GLFW window");
+		glfwTerminate();
         exit(EXIT_FAILURE);
     }
 	glfwSetWindowPos(windowHandle, 0, 0);
@@ -47,33 +49,37 @@ Context::Context(util::Properties* _props)
 	GLenum err = glewInit();
 	if (err != GLEW_OK)
 	{
-		std::cout << "failed ton initialize GLEW" << std::endl;
+		objectifLune::Singleton::Get()->fatal("failed to initialize GLEW");
 		exit(EXIT_FAILURE);
 	}
 	
 	if (GLEW_EXT_framebuffer_sRGB)
 	{
-		std::cout << "sRGB framebuffer available" << std::endl;
+		objectifLune::Singleton::Get()->info("sRGB framebuffer available");
 	}
 	
-	std::cout << "glew version: " << glewGetString(GLEW_VERSION) << std::endl;
+	std::stringstream sstr;
+	sstr << "glew version: " << glewGetString(GLEW_VERSION);
+	objectifLune::Singleton::Get()->info(sstr.str());
 	
 	setGLStates();
 }
 
 Context::~Context(void)
 {
-	std::cout << "terminating context" << std::endl;
+	objectifLune::Singleton::Get()->info("terminating context");
 	glfwTerminate();
 }
 
 void Context::getInfo(void)
 {
-	std::cout << "------------------------ GL Info ------------------------" << std::endl;
-	std::cout << "OpenGL " << glGetString(GL_VERSION) << ", GLSL " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
-	std::cout << "Vendor: " << glGetString(GL_VENDOR) << std::endl;
-	std::cout << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
-	std::cout << "------------------------/ GL Info -----------------------" << std::endl;
+	std::stringstream sstr;
+	sstr << "------------------------ GL Info ------------------------" << std::endl;
+	sstr << "OpenGL " << glGetString(GL_VERSION) << ", GLSL " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+	sstr << "Vendor: " << glGetString(GL_VENDOR) << std::endl;
+	sstr << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
+	sstr << "------------------------/ GL Info -----------------------" << std::endl;
+	objectifLune::Singleton::Get()->info(sstr.str());
 }
 
 GLFWwindow Context::getWindowHandle()
@@ -113,38 +119,33 @@ void Context::pollEvents()
 	glfwPollEvents();
 }
 
-bool Context::isAlive()
-{
-	return glfwIsWindow(windowHandle);
-}
-
 void Context::getError()
 {
 	GLenum err = glGetError();
 	switch (err) {
 		case GL_NO_ERROR:
-			std::cout << "no error" << std::endl;
+			objectifLune::Singleton::Get()->info("no error");
 			break;
 		case GL_INVALID_ENUM:
-			std::cout << "invalid enum" << std::endl;
+			objectifLune::Singleton::Get()->error("invalid enum");
 			break;
 		case GL_INVALID_VALUE:
-			std::cout << "invalid value" << std::endl;
+			objectifLune::Singleton::Get()->error("invalid value");
 			break;
 		case GL_INVALID_OPERATION:
-			std::cout << "invalid operation" << std::endl;
+			objectifLune::Singleton::Get()->error("invalid operation");
 			break;
 		case GL_STACK_OVERFLOW:
-			std::cout << "stack overflow" << std::endl;
+			objectifLune::Singleton::Get()->error("stack overflow");
 			break;
 		case GL_STACK_UNDERFLOW:
-			std::cout << "stack underflow" << std::endl;
+			objectifLune::Singleton::Get()->error("stack underflow");
 			break;
 		case GL_OUT_OF_MEMORY:
-			std::cout << "out of memory" << std::endl;
+			objectifLune::Singleton::Get()->error("out of memory");
 			break;
 		case GL_TABLE_TOO_LARGE:
-			std::cout << "table too large" << std::endl;
+			objectifLune::Singleton::Get()->error("table too large");
 			break;
 			
 		default:

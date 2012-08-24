@@ -31,8 +31,6 @@ namespace kocmoc {
 				void swapBuffers();
 				
 				void pollEvents();
-				
-				bool isAlive();
 			
 			private:
 				
