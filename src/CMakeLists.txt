@@ -62,6 +62,8 @@ include_directories(
 	${FREETYPE_INCLUDE_DIR_ft2build}
 	${FREETYPE_INCLUDE_DIR_freetype2}
 	# ${Boost_INCLUDE_DIR}
+	${PROJECT_SOURCE_DIR}/external/objectif-lune/server/include
+	# ${PROJECT_SOURCE_DIR}/external/objectif-lune/server/external/websocketpp/src
 )
 
 link_directories(
@@ -94,6 +96,7 @@ set (TARGET_LINK_LIBRARIES kocmoc-core
 	${ASSIMP_LIBRARY_RELEASE}
 	${TINYXML_LIBRARIES}
 	${FREETYPE_LIBRARY}
+	objectif-lune
 )
 # link to assimp release right now, since the debug lib is not found
 # if it is present, ASSIMP_LIBRARY should work again.

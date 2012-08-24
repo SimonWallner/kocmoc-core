@@ -33,6 +33,8 @@
 
 #include <kocmoc-core/scene/AssimpLoggerStream.hpp>
 
+#include <objectif-lune/Singleton.hpp>
+
 using namespace kocmoc::core::scene;
 using namespace Assimp;
 
@@ -86,8 +88,8 @@ Renderable* AssetLoader::load(const string modelName, const string shaderPath)
 	Shader* shader;
 	RenderMesh21* renderMesh;
 	
-	string absolutePath = findAbsolutePathInResources(modelName);	
-	std::cout << "trying to load asset: " << absolutePath << std::endl;
+	string absolutePath = findAbsolutePathInResources(modelName);
+	objectifLune::Singleton::Get()->info("trying to load asset: " + absolutePath);
 	
 	const aiScene* scene = importer.ReadFile(absolutePath,
 											 aiProcess_Triangulate
@@ -98,7 +100,7 @@ Renderable* AssetLoader::load(const string modelName, const string shaderPath)
 	
 	if (!scene) // error
 	{
-		std::cout << "Assimp asset loading error" << importer.GetErrorString() << std::endl;
+		objectifLune::Singleton::Get()->error("Assimp asset loading error" + std::string(importer.GetErrorString()));
 	}
 	else
 	{
