@@ -130,23 +130,8 @@ void InputManager::poll(void)
 	mouseX = newMouseX;
 	mouseY = newMouseY;
 	
-	// poll all controller
-
 	
-	/*
-	 * Button assignment 360 gamepad
-	 * B0: A
-	 * B1: B
-	 * B2: X
-	 * B3: Y
-	 * B4: left bumper
-	 * B5: right bumper
-	 * B6: back
-	 * B7: start
-	 * B8: left stick
-	 * B9: right stick
-	 */
-	
+	// poll all gamepads
 	for (int i = GLFW_JOYSTICK_1; i <= GLFW_JOYSTICK_LAST; i++)
 	{
 		if (glfwGetJoystickParam(i, GLFW_PRESENT) == GL_TRUE)
@@ -217,8 +202,6 @@ void InputManager::poll(void)
 				notifyButtonListeners(BUTTON_EVENT_XBOX_BACK, ButtonEvent(ButtonEvent::HELD));
 			
 			delete [] buttons;
-			
-			notifyButtonListeners(BUTTON_EVENT_XBOX_BACK, ButtonEvent(ButtonEvent::HELD));
 		}
 	}
 }

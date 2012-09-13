@@ -87,4 +87,5 @@ void OverlayQuad::init()
 		shader = new Shader(mediaPath + "shaders/overlay.vert", mediaPath + "shaders/overlay.frag");
 	
 	renderMesh = new RenderMesh21(triMesh, shader);
+	renderMesh->prepare();
 }
