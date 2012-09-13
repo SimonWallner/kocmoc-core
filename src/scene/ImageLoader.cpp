@@ -5,11 +5,10 @@
 #include <IL/ilut.h>
 
 #include <sstream>
-#include <iostream>
+
+#include <objectif-lune/Singleton.hpp>
 
 using namespace kocmoc::core::scene;
-using std::cout;
-using std::endl;
 
 ImageLoader::ImageLoader(void)
 {
@@ -68,12 +67,14 @@ GLuint ImageLoader::loadImage(std::string filename)
 		// remove loaded image from memory
 		ilDeleteImages(1, &texid);
 		
-		cout << "texture: '" << filename << "' loaded successfully" << std::endl;
+		objectifLune::Singleton::Get()->debug("texture: '" + filename + "' loaded successfully");
 		cache[fileNameSymbol] = handle;
 		return handle;
 	} else
 	{
-		cout << "failed ot load image: " << filename << " '" << iluErrorString(error) << "'" << endl;
+		std::stringstream sstr;
+		sstr << "failed ot load image: " << filename << " '" << iluErrorString(error) << "'";
+		objectifLune::Singleton::Get()->warn(sstr.str());
 		return -1;
 	}
 }

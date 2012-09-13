@@ -1,5 +1,7 @@
 #include <kocmoc-core/util/Properties.hpp>
 
+#include <objectif-lune/Singleton.hpp>
+#include <sstream>
 #include <iostream>
 
 using namespace kocmoc::core::util;
@@ -46,36 +48,42 @@ const string Properties::getString(const Symbol name) const
 		return ci->second;
 	else
 	{
-		std::cout << "could not find property: '" << name << "'" << std::endl;
+		std::stringstream sstr;
+		sstr << "could not find property: '" << name << "'" << std::endl;
+		objectifLune::Singleton::Get()->warn(sstr.str());
 		return "UNDEFINED";
 	}
 }
 
 void Properties::dumpCache() const
 {
-	std::cout << "dumping cache..." << std::endl;
+	std::stringstream sstr;
+	sstr << "dumping property cache..." << std::endl;
 	
-	std::cout << "float values:" << std::endl;
+	sstr << "float values:" << std::endl;
 	for (PropertiesFloatCache::const_iterator ci = floatCache.begin();
 		 ci != floatCache.end();
 		 ci++)
 	{
-		std::cout << "\t" << ci->first << " - " << ci->second << std::endl;
+		sstr << "\t" << ci->first << " - " << ci->second << std::endl;
 	}
 	
-	std::cout << "bool values:" << std::endl;
+	sstr << "bool values:" << std::endl;
 	for (PropertiesBoolCache::const_iterator ci = boolCache.begin();
 		 ci != boolCache.end();
 		 ci++)
 	{
-		std::cout << "\t" << ci->first << " - " << ci->second << std::endl;
+		sstr << "\t" << ci->first << " - " << ci->second << std::endl;
 	}
 	
-	std::cout << "string values:" << std::endl;
+	sstr << "string values:" << std::endl;
 	for (PropertiesStringCache::const_iterator ci = stringCache.begin();
 		 ci != stringCache.end();
 		 ci++)
 	{
-		std::cout << "\t" << ci->first << " - " << ci->second << std::endl;
+		sstr << "\t" << ci->first << " - " << ci->second << std::endl;
 	}
+	
+	std::cout << sstr.str();
+	objectifLune::Singleton::Get()->debug(sstr.str());
 }
