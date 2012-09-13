@@ -10,8 +10,6 @@
 #include <assimp/Importer.hpp>
 #pragma GCC diagnostic pop
 
-#include <kocmoc-core/exception/ResourceNotFoundException.hpp>
-#include <kocmoc-core/scene/ImageLoader.hpp>
 
 namespace kocmoc
 {
@@ -21,35 +19,29 @@ namespace kocmoc
 		{
 			class Renderable;
 		}
+	
 		
 		namespace scene
 		{
+			class Scene;
+			class ImageLoader;
+			
 			class AssetLoader
 			{
 			public:
 				AssetLoader(void);
 				~AssetLoader(void);
 				
-				void addResourcePath(const std::string path);
+								
+//				component::Renderable* load(const std::string NodelName, const std::string shaderPath);
 				
-				component::Renderable* load(const std::string NodelName, const std::string shaderPath);
+				void loadToScene(const std::string relativeScenePath, Scene* scene);
 				
 			private:
-				typedef std::list<std::string> ResourcePathList;
 				
 				ImageLoader* imageLoader;
-				ResourcePathList resourcePaths;
 				
 				Assimp::Importer importer;
-				
-				/**
-				 * Try to find a given file in all the resource paths.
-				 * @param the name of the file as a path relative to the existin
-				 *		resource paths.
-				 * @return the absolute path to the asset
-				 * @throws 
-				 */
-				std::string findAbsolutePathInResources(const std::string name) const throw(exception::ResourceNotFoundException);
 			};
 		}
 	}
