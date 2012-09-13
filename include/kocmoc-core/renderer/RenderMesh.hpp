@@ -71,7 +71,7 @@ namespace kocmoc
 				 * @param camera the camera that is used for drawing
 				 * @param modelMatrix
 				 */
-				virtual void draw(scene::Camera *camera, glm::mat4 modelMatrix) = 0;
+				virtual void draw(scene::Camera *camera, glm::mat4 modelMatrix) const = 0;
 				
 				/**
 				 * Draw multiple instances of this render mesh.
@@ -82,7 +82,7 @@ namespace kocmoc
 				 * @param modelMatrix
 				 * @param instanceCount number of instances to draw.
 				 */
-				virtual void drawInstanced(scene::Camera *camera, glm::mat4 modelMatrix, unsigned int instanceCount) = 0;
+				virtual void drawInstanced(scene::Camera *camera, glm::mat4 modelMatrix, unsigned int instanceCount) const = 0;
 
 				types::uint getVertexCount(void) const
 				{

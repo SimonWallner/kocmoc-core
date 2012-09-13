@@ -19,6 +19,11 @@ namespace kocmoc
 		{
 			class Renderable;
 		}
+		
+		namespace resources
+		{
+			class ResourceManager;
+		}
 	
 		
 		namespace scene
@@ -29,8 +34,9 @@ namespace kocmoc
 			class AssetLoader
 			{
 			public:
-				AssetLoader(void);
-				~AssetLoader(void);
+				AssetLoader(const resources::ResourceManager* resourceManager);
+				
+				~AssetLoader();
 				
 								
 //				component::Renderable* load(const std::string NodelName, const std::string shaderPath);
@@ -40,6 +46,8 @@ namespace kocmoc
 			private:
 				
 				ImageLoader* imageLoader;
+				
+				const resources::ResourceManager* resourceManager;
 				
 				Assimp::Importer importer;
 			};

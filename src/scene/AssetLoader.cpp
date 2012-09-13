@@ -22,6 +22,7 @@
 
 #include <kocmoc-core/component/Renderable.hpp>
 #include <kocmoc-core/types/types.h>
+#include <kocmoc-core/resources/ResourceManager.hpp>
 
 #include <kocmoc-core/util/util.hpp>
 #include <kocmoc-core/util/util.hpp>
@@ -33,6 +34,7 @@
 #include <kocmoc-core/scene/ImageLoader.hpp>
 #include <kocmoc-core/scene/TriangleMesh.hpp>
 #include <kocmoc-core/scene/AssimpLoggerStream.hpp>
+#include <kocmoc-core/scene/Scene.hpp>
 
 #include <objectif-lune/Singleton.hpp>
 
@@ -44,6 +46,7 @@ using std::string;
 using kocmoc::core::component::Renderable;
 using kocmoc::core::types::uint;
 using kocmoc::core::scene::TriangleMesh;
+using kocmoc::core::renderer::RenderMesh;
 using kocmoc::core::renderer::RenderMesh21;
 using kocmoc::core::renderer::Shader;
 
@@ -224,8 +227,9 @@ void exploreMaterials(const aiScene* scene)
 //	return renderable;
 //}
 
-AssetLoader::AssetLoader()
-	:imageLoader(new ImageLoader)
+AssetLoader::AssetLoader(const resources::ResourceManager* _resourceManager)
+	: imageLoader(new ImageLoader)
+	, resourceManager(_resourceManager)
 {
 	DefaultLogger::create("", Logger::VERBOSE);
 	DefaultLogger::get()->attachStream(new AssimpLoggerStream(), 0xFFFFFF); // all messages
@@ -245,5 +249,95 @@ AssetLoader::~AssetLoader()
 	
 	delete imageLoader;
 }
+
+void AssetLoader::loadToScene(const std::string relativeScenePath, Scene* scene)
+{
+	string absolutePath = resourceManager->getAbsolutePath(relativeScenePath);
+	objectifLune::Singleton::Get()->info("trying to load asset: " + absolutePath);
+
+	const aiScene* aiScene = importer.ReadFile(absolutePath,
+											 aiProcess_Triangulate
+											 | aiProcess_SortByPType
+											 | aiProcess_ImproveCacheLocality
+											 );
+	if (!aiScene)	 //error
+	{
+		objectifLune::Singleton::Get()->error("Assimp asset loading error" + std::string(importer.GetErrorString()));
+	}
+	else
+	{
+//		aiNode* root = scene->mRootNode;
+//		exploreNode(root);
+//		exploreMaterials(scene);
+
+		if (aiScene->HasMeshes())
+		{
+			objectifLune::Singleton::Get()->debug("meshes in scene: " + aiScene->mNumMeshes);
+
+			for (uint i = 0; i < aiScene->mNumMeshes; i++)
+			{
+				aiMesh* mesh = aiScene->mMeshes[i];
+				if (mesh->mPrimitiveTypes == aiPrimitiveType_TRIANGLE)
+				{
+					uint vertexCount = mesh->mNumVertices;
+					uint vertexIndexCount = mesh->mNumFaces * 3;
+
+					uint* indices = new uint[vertexIndexCount];
+					for (uint j = 0; j < mesh->mNumFaces; j++)
+					{
+						indices[j*3  ] = mesh->mFaces[j].mIndices[0];
+						indices[j*3+1] = mesh->mFaces[j].mIndices[1];
+						indices[j*3+2] = mesh->mFaces[j].mIndices[2];
+					}
+
+					float* positions = new float[vertexCount * 3];
+					for (uint j = 0; j < vertexCount; j++)
+					{
+						positions[j*3  ] = mesh->mVertices[j].x;
+						positions[j*3+1] = mesh->mVertices[j].y;
+						positions[j*3+2] = mesh->mVertices[j].z;
+					}
+
+					float* normals = NULL;
+					if (mesh->HasNormals())
+					{
+						normals = new float[vertexCount * 3];
+						for (uint j = 0; j < vertexCount; j++)
+						{
+							normals[j*3  ] = mesh->mNormals[j].x;
+							normals[j*3+1] = mesh->mNormals[j].y;
+							normals[j*3+2] = mesh->mNormals[j].z;
+						}
+					}
+
+					float* uvs = NULL;
+					if (mesh->HasTextureCoords(0))
+					{
+						uvs = new float[vertexCount * 2];
+						for (uint j = 0; j < vertexCount; j++)
+						{
+							uvs[j*2  ] = mesh->mTextureCoords[0][j].x;
+							uvs[j*2+1] = mesh->mTextureCoords[0][j].y;
+						}
+					}
+
+					TriangleMesh* triangleMesh = new TriangleMesh(vertexIndexCount,
+																 indices,
+																 vertexCount,
+																 positions,
+																 normals,
+																 uvs);
+
+					Shader* shader = resourceManager->getShader("base.vert", "base.frag");
+
+					RenderMesh* renderMesh = new RenderMesh21(triangleMesh, shader);
+					scene->addMesh(renderMesh);
+				}
+			}
+		}
+		objectifLune::Singleton::Get()->debug("Loading completed!");
+	}
+}
+
 
 

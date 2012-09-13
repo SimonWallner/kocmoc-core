@@ -1,18 +1,16 @@
 #include <kocmoc-core/renderer/Shader.hpp>
 
 #include <fstream>
-#include <iostream>
 #include <cassert>
 
 #include <kocmoc-core/renderer/RenderMesh.hpp>
 #include <kocmoc-core/util/util.hpp>
 
+#include <objectif-lune/Singleton.hpp>
+
 using namespace kocmoc::core::renderer;
 
 using std::string;
-using std::cerr;
-using std::cout;
-using std::endl;
 
 Shader::Shader(const std::string &_vertexShaderName, const std::string &_fragmentShaderName)
 	: prepared(false)
@@ -78,7 +76,10 @@ void Shader::reload()
 {
 	if(prepared)
 	{
-		std::cout << "--- reloading shader: [" << vertexShaderName << "/" << fragmentShaderName << "]" << std::endl;
+		objectifLune::Singleton::Get()->info("--- reloading shader: '"
+											 + vertexShaderName
+											 + "', '" + fragmentShaderName
+											 + "'");
 		destroy();
 		prepare();
 	}
@@ -102,7 +103,7 @@ GLuint Shader::compile (GLenum type, const std::string &source)
 	const GLuint shaderHandle = glCreateShader(type);
 
 	if (shaderHandle == 0) {
-		cerr << "Could not create shader object." << endl;
+		objectifLune::Singleton::Get()->warn("Could not create shader object.");
 		return 0;
 	}
 
@@ -120,8 +121,9 @@ GLuint Shader::compile (GLenum type, const std::string &source)
 
 	if (status != GL_TRUE)
 	{
-		cout << "Shader compilation failed: (" << vertexShaderName << ", "
-			 << fragmentShaderName << ")" << endl;
+		objectifLune::Singleton::Get()->warn("Shader compilation failed: '"
+											 + vertexShaderName + "', '"
+											 + fragmentShaderName + "' ");
 		dumpShaderLog(shaderHandle);
 	}
 
@@ -151,7 +153,7 @@ void Shader::link(void)
 
 	if (status != GL_TRUE)
 	{
-		cout << "Shader linking failed." << endl;
+		objectifLune::Singleton::Get()->warn("Shader linking failed.");
 		dumpProgramLog(programHandle);
 
 		glDeleteProgram(programHandle);
@@ -168,7 +170,7 @@ void Shader::dumpProgramLog(GLuint programHandle)
 	glGetProgramInfoLog(programHandle, LOG_BUFFER_SIZE, &length,logBuffer);
 
 	if (length > 0) {
-		cout << logBuffer << endl;
+		objectifLune::Singleton::Get()->debug(logBuffer);
 	}
 }
 
@@ -181,7 +183,7 @@ void Shader::dumpShaderLog(GLuint shader)
 	glGetShaderInfoLog(shader, LOG_BUFFER_SIZE, &length,logBuffer);
 
 	if (length > 0) {
-		cout << logBuffer << endl;
+		objectifLune::Singleton::Get()->debug(logBuffer);
 	}
 }
 

@@ -15,6 +15,7 @@ namespace kocmoc
 		
 		namespace scene
 		{
+			class Camera;
 			class FilmCamera;
 			class ResourceManager;
 			
@@ -25,9 +26,11 @@ namespace kocmoc
 				
 				void update();
 
-				void render();
+				void render() const;
 				
 				void addMesh(renderer::RenderMesh* mesh);
+				
+				Camera* getCamera() const;
 				
 			private:
 				

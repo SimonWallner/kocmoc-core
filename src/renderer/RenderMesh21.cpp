@@ -8,6 +8,8 @@
 
 #include <kocmoc-core/scene/Camera.hpp>
 
+#include <objectif-lune/Singleton.hpp>
+
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
 using namespace kocmoc::core::renderer;
@@ -72,18 +74,21 @@ void RenderMesh21::prepare(void)
 	prepared = true;
 }
 
-void RenderMesh21::draw(Camera *camera, glm::mat4 modelMatrix)
+void RenderMesh21::draw(Camera *camera, glm::mat4 modelMatrix) const
 {
 	drawInstanced(camera, modelMatrix, 1);
 }
 
 void RenderMesh21::drawInstanced(Camera *camera,
 								 glm::mat4 modelMatrix,
-								 unsigned int instanceCount)
+								 unsigned int instanceCount) const
 {
 	if (!prepared)
-		prepare();
-	
+	{
+		objectifLune::Singleton::Get()->warn("The mesh you try to render is not ready yet! Prepare it first.");
+		return;
+	}
+		
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indicesHandle);
 	glBindBuffer(GL_ARRAY_BUFFER, vboHandle);
 		

@@ -7,6 +7,18 @@
 #define ANALOG_EVENT_MOUSE_ABSOLUTE_X	2
 #define ANALOG_EVENT_MOUSE_ABSOLUTE_Y	3
 
+#define ANALOG_EVENT_LEFT_STICK_X		4
+#define ANALOG_EVENT_LEFT_STICK_Y		5
+#define ANALOG_EVENT_RIGHT_STICK_X		6
+#define ANALOG_EVENT_RIGHT_STICK_Y		7
+
+#define BUTTON_EVENT_XBOX_A				8
+#define BUTTON_EVENT_XBOX_B				9
+#define BUTTON_EVENT_XBOX_X				9
+#define BUTTON_EVENT_XBOX_Y				9
+#define BUTTON_EVENT_XBOX_START			10
+#define BUTTON_EVENT_XBOX_BACK			11
+
 
 #include <map>
 
@@ -24,6 +36,7 @@ namespace kocmoc
 			class ButtonEventListener;
 			class AnalogEventListener;
 			struct AnalogEvent;
+			struct ButtonEvent;
 			
 			/**
 			 * The Input Manager handles input from all devices.
@@ -60,6 +73,12 @@ namespace kocmoc
 				void bindKeyToButtonEvent(int key, types::Symbol name);
 				
 				/**
+				 * Bind a gamepad key to a button event
+				 * use constants defined above.
+				 */
+				void bindButtonToButtonEvent(int key, types::Symbol name);
+				
+				/**
 				 * Bind an analog event. An event can be bound to multiple names.
 				 */
 				void bindAnalogEvent(int analogEventSymbolicConstant, types::Symbol name);
@@ -70,7 +89,7 @@ namespace kocmoc
 				void poll(void);
 				
 				/**
-				 * dump the bindings to std::out
+				 * dump the bindings over objectif-lune
 				 */
 				virtual void dumpBindings(void);
 				
@@ -79,6 +98,9 @@ namespace kocmoc
 				typedef std::pair<types::Symbol, ButtonEventListener* > ButtonEventPair;
 				typedef std::multimap<int, types::Symbol> KeyButtonEventBindings;
 				typedef std::pair<int, types::Symbol > KeyBindingPair;
+				
+				typedef std::multimap<int, types::Symbol> ButtonButtonEventBindings;
+				typedef std::pair<int, types::Symbol > ButtonBindingPair;
 				
 				typedef std::multimap<types::Symbol, AnalogEventListener* > AnalogEventListenerMultiMap;
 				typedef std::pair<types::Symbol, AnalogEventListener* > AnalogEventPair;
@@ -92,11 +114,15 @@ namespace kocmoc
 				GLFWwindow windowHandle;
 				
 				KeyButtonEventBindings buttonEventKeyBindings;
+				ButtonButtonEventBindings buttonEventButtonBindings;
 				AnalogEventBindings analogEventBindigs;
 				
 				int mouseX, mouseY;
 				
-				void notifyAnalogListeners(int AnalogEventSymbolicConstant, const AnalogEvent& event);
+				float gamepadDeadZone;
+				
+				void notifyAnalogListeners(int analogEventSymbolicConstant, const AnalogEvent& event);
+				void notifyButtonListeners(int buttonEventSymbolicConstant, const ButtonEvent& event) const;
 			};
 		}
 	}

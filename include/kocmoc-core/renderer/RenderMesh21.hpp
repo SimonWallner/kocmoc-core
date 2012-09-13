@@ -35,9 +35,9 @@ namespace kocmoc
 				
 				void prepare();
 				
-				void draw(scene::Camera *camera, glm::mat4 modelMatrix);
+				void draw(scene::Camera *camera, glm::mat4 modelMatrix) const;
 				void drawInstanced(scene::Camera *camera, glm::mat4 modelMatrix,
-								   unsigned int instanceCount);
+								   unsigned int instanceCount) const;
 				
 				void setShaderParam(std::string name, glm::vec3 value);
 				void setShaderParam(std::string name, int value);

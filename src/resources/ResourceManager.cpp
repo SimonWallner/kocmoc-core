@@ -2,8 +2,10 @@
 
 #include <kocmoc-core/util/util.hpp>
 #include <objectif-lune/Singleton.hpp>
+#include <kocmoc-core/renderer/Shader.hpp>
 
-using namespace kocmoc::core::resources;
+using namespace kocmoc::core;
+using namespace resources;
 
 using std::string;
 
@@ -26,7 +28,8 @@ bool ResourceManager::resourceExists(const string relativeResourceName) const
 	return false;
 }
 
-string ResourceManager::getAbsolutePath(const string relativePath) const throw(exception::ResourceNotFoundException)
+string ResourceManager::getAbsolutePath(const string relativePath) const
+	throw(exception::ResourceNotFoundException)
 {
 	for (ResourcePathVector::const_iterator ci = resourcePaths.begin();
 		 ci != resourcePaths.end();
@@ -37,7 +40,39 @@ string ResourceManager::getAbsolutePath(const string relativePath) const throw(e
 			return absolutePath;
 	}
 	
-	objectifLune::Singleton::Get()->warn("Resource with relative path: '" + relativePath + "' could not be found!");
+	objectifLune::Singleton::Get()->warn("Resource with relative path: '"
+										 + relativePath + "' could not be found!");
 	exception::ResourceNotFoundException e;
 	throw e;
+}
+
+renderer::Shader* ResourceManager::getShader(const std::string vertexShaderRelativePath,
+							const std::string fragmentShaderRelativePath) const
+{
+	string key = vertexShaderRelativePath + fragmentShaderRelativePath;
+	
+	// note: caching based on files is nonsensical, 'cause shaders carry a state
+	// i.e. have their uniforms set over lifetime.
+	
+	renderer::Shader* shader = new renderer::Shader(vertexShaderRelativePath,
+													vertexShaderRelativePath);
+	
+	shaders.push_back(shader);
+	return shader;
+}
+
+void ResourceManager::reloadShaders()
+{
+	objectifLune::Singleton::Get()->info("reloading all shaders");
+	for (ShaderVector::iterator it = shaders.begin(); it != shaders.end(); it++)
+	{
+		(*it)->reload();
+	}
+}
+
+string ResourceManager::readFile(const string relativePath) const
+	throw(exception::ResourceNotFoundException)
+{
+	string absolutePath = getAbsolutePath(relativePath);
+	return util::read_file(absolutePath);
 }

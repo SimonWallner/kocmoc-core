@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 #include <kocmoc-core/exception/ResourceNotFoundException.hpp>
 
@@ -10,6 +11,11 @@ namespace kocmoc
 {
 	namespace core
 	{
+		namespace renderer
+		{
+			class Shader;
+		}
+		
 		namespace resources
 		{
 			/**
@@ -48,13 +54,31 @@ namespace kocmoc
 				 * @throws ResourceNotFoundException if the resource can not be
 				 *		known paths.
 				 */
-				std::string getAbsolutePath(const std::string relativePath) const throw(exception::ResourceNotFoundException);
+				std::string getAbsolutePath(const std::string relativePath) const
+					throw(exception::ResourceNotFoundException);
+				
+				
+				/**
+				 * read the given file into the string
+				 */
+				std::string readFile(const std::string relativePath) const
+					throw(exception::ResourceNotFoundException);
+				
+				/**
+				 * Get the shader constructed from the given shader files
+				 */
+				renderer::Shader* getShader(const std::string vertexShaderRelativePath,
+											const std::string fragmentShaderRelativePath) const;
+				
+				void reloadShaders();
 
 				
 			private:
 				typedef std::vector<std::string > ResourcePathVector;
+				typedef std::vector<renderer::Shader* > ShaderVector;
 				
 				ResourcePathVector resourcePaths;
+				mutable ShaderVector shaders;
 			};
 		}
 	}
