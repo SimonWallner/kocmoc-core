@@ -120,7 +120,7 @@ void InputManager::poll(void)
 	// poll mouse
 	int newMouseX;
 	int newMouseY;
-	glfwGetMousePos(windowHandle, &newMouseX, &newMouseY);
+	glfwGetCursorPos(windowHandle, &newMouseX, &newMouseY);
 	
 	notifyAnalogListeners(ANALOG_EVENT_MOUSE_ABSOLUTE_X, AnalogEvent(newMouseX));
 	notifyAnalogListeners(ANALOG_EVENT_MOUSE_ABSOLUTE_Y, AnalogEvent(newMouseY));
@@ -149,7 +149,7 @@ void InputManager::poll(void)
 			 */
 
 			GLfloat *pos = new GLfloat[numAxes];
-			glfwGetJoystickPos(i, pos, numAxes);
+			glfwGetJoystickAxes(i, pos, numAxes);
 			
 			if (abs(pos[0]) > gamepadDeadZone) // left stick right
 				notifyAnalogListeners(ANALOG_EVENT_LEFT_STICK_X, AnalogEvent(pos[0]));

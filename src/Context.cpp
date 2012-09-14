@@ -1,13 +1,7 @@
-#include <sstream>
-
-#include <kocmoc-core/gl.h>
-/**
- * this is bullshit!
- * can't include the header to this file as the first include since glew does
- * not allow any other gl includes to happen before it.
- * *sigh* #fail
- */
 #include <kocmoc-core/renderer/Context.hpp>
+
+#include <sstream>
+#include <iostream>
 
 #include <kocmoc-core/version.hpp>
 #include <objectif-lune/Singleton.hpp>
@@ -31,12 +25,12 @@ Context::Context(util::Properties* _props)
         exit(EXIT_FAILURE);
     }
 	
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 2);
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 1);
-	glfwOpenWindowHint(GLFW_DEPTH_BITS, 32);
-	glfwOpenWindowHint(GLFW_WINDOW_RESIZABLE, GL_FALSE);
+//	glfwWindowHint(GLFW_OPENGL_VERSION_MAJOR, 2);
+//	glfwWindowHint(GLFW_OPENGL_VERSION_MINOR, 1);
+//	glfwWindowHint(GLFW_DEPTH_BITS, 32);
+	glfwWindowHint(GLFW_WINDOW_RESIZABLE, GL_FALSE);
 	
-    windowHandle = glfwOpenWindow(width, height, windowMode,
+    windowHandle = glfwCreateWindow(width, height, windowMode,
 								  props->getString(types::symbolize("window-title")).c_str(), NULL);
     if (!windowHandle)
     {
@@ -46,21 +40,21 @@ Context::Context(util::Properties* _props)
     }
 	glfwSetWindowPos(windowHandle, 0, 0);
 	
-	GLenum err = glewInit();
-	if (err != GLEW_OK)
-	{
-		objectifLune::Singleton::Get()->fatal("failed to initialize GLEW");
-		exit(EXIT_FAILURE);
-	}
-	
-	if (GLEW_EXT_framebuffer_sRGB)
-	{
-		objectifLune::Singleton::Get()->info("sRGB framebuffer available");
-	}
-	
-	std::stringstream sstr;
-	sstr << "glew version: " << glewGetString(GLEW_VERSION);
-	objectifLune::Singleton::Get()->info(sstr.str());
+//	GLenum err = glewInit();
+//	if (err != GLEW_OK)
+//	{
+//		objectifLune::Singleton::Get()->fatal("failed to initialize GLEW");
+//		exit(EXIT_FAILURE);
+//	}
+//	
+//	if (GLEW_EXT_framebuffer_sRGB)
+//	{
+//		objectifLune::Singleton::Get()->info("sRGB framebuffer available");
+//	}
+//	
+//	std::stringstream sstr;
+//	sstr << "glew version: " << glewGetString(GLEW_VERSION);
+//	objectifLune::Singleton::Get()->info(sstr.str());
 	
 	setGLStates();
 }
@@ -73,13 +67,20 @@ Context::~Context(void)
 
 void Context::getInfo(void)
 {
+	int major = glfwGetWindowParam(windowHandle, GLFW_OPENGL_VERSION_MAJOR);
+    int minor = glfwGetWindowParam(windowHandle, GLFW_OPENGL_VERSION_MINOR);
+    int revision = glfwGetWindowParam(windowHandle, GLFW_OPENGL_REVISION);
+		
 	std::stringstream sstr;
 	sstr << "------------------------ GL Info ------------------------" << std::endl;
-	sstr << "OpenGL " << glGetString(GL_VERSION) << ", GLSL " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
-	sstr << "Vendor: " << glGetString(GL_VENDOR) << std::endl;
-	sstr << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
+	sstr << "GL Version reported by glfw: " << major << "." << minor << "." << revision << std::endl;
+//	sstr << "OpenGL: " << glGetString(GL_VERSION) << std::endl;
+//	sstr << "GLSL: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+//	sstr << "Vendor: " << glGetString(GL_VENDOR) << std::endl;
+//	sstr << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
 	sstr << "------------------------/ GL Info -----------------------" << std::endl;
 	objectifLune::Singleton::Get()->info(sstr.str());
+	std::cout << sstr.str();
 }
 
 GLFWwindow Context::getWindowHandle()
@@ -109,7 +110,7 @@ void Context::setGLStates()
 
 void Context::swapBuffers()
 {
-	glfwSwapBuffers();
+	glfwSwapBuffers(windowHandle);
 	glFlush(); // only needed for gDebugger debugging.
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

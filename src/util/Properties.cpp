@@ -2,7 +2,6 @@
 
 #include <objectif-lune/Singleton.hpp>
 #include <sstream>
-#include <iostream>
 
 using namespace kocmoc::core::util;
 using kocmoc::core::types::Symbol;
@@ -65,7 +64,7 @@ void Properties::dumpCache() const
 		 ci != floatCache.end();
 		 ci++)
 	{
-		sstr << "\t" << ci->first << " - " << ci->second << std::endl;
+		sstr << "\t" << ci->first << ": '" << ci->second << "'" << std::endl;
 	}
 	
 	sstr << "bool values:" << std::endl;
@@ -73,7 +72,7 @@ void Properties::dumpCache() const
 		 ci != boolCache.end();
 		 ci++)
 	{
-		sstr << "\t" << ci->first << " - " << ci->second << std::endl;
+		sstr << "\t" << ci->first << ": '" << ci->second << "'" << std::endl;
 	}
 	
 	sstr << "string values:" << std::endl;
@@ -81,9 +80,8 @@ void Properties::dumpCache() const
 		 ci != stringCache.end();
 		 ci++)
 	{
-		sstr << "\t" << ci->first << " - " << ci->second << std::endl;
+		sstr << "\t" << ci->first << ": '" << ci->second << "'" << std::endl;
 	}
 	
-	std::cout << sstr.str();
 	objectifLune::Singleton::Get()->debug(sstr.str());
 }

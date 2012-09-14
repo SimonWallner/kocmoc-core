@@ -3,12 +3,15 @@
 #include <fstream>
 #include <iostream>
 #include <cstdlib>
+#include <sstream>
 
 #define TIXML_USE_STL 
 #include <tinyxml.h>
 
 #include <kocmoc-core/types/Symbol.hpp>
 #include <kocmoc-core/util/Properties.hpp>
+
+#include <objectif-lune/Singleton.hpp>
 
 using namespace kocmoc::core;
 
@@ -62,13 +65,16 @@ string util::getFileName(string const &path)
 
 bool util::parser::parseConfigXMLFileIntoProperties(string path, Properties* props)
 {
-	std::cout << "trying to parse: '" << path << "'" << std::endl;
+	objectifLune::Singleton::Get()->info("trying to parse: '" + path + "'");
 	
 	TiXmlDocument doc(path.c_str());
 	if (!doc.LoadFile())
 	{
-		std::cout << "failed to load xml file: " << path << " - " << doc.ErrorDesc() << std::endl;
-		std::cout << "error row: " << doc.ErrorRow() << " col: " << doc.ErrorCol() << std::endl;
+		objectifLune::Singleton::Get()->error("failed to load xml file: '" + path
+											  + "' - " + doc.ErrorDesc());
+		std::stringstream sstr;
+		sstr <<  "error row: " << doc.ErrorRow() << " col: " << doc.ErrorCol();
+		objectifLune::Singleton::Get()->debug(sstr.str());
 		return false;
 	}
 	else
