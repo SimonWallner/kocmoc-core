@@ -31,11 +31,11 @@ bool Shader::prepare()
 	fragmentShaderSource = util::read_file(fragmentShaderName);
 
 	// Compile the shaders
-	vertexShader = compile(GL_VERTEX_SHADER, vertexShaderSource);
+	vertexShader = compile(GL_VERTEX_SHADER, vertexShaderSource, vertexShaderName);
 	if (vertexShader == 0)
 		return false;
 
-	fragmentShader = compile(GL_FRAGMENT_SHADER, fragmentShaderSource);
+	fragmentShader = compile(GL_FRAGMENT_SHADER, fragmentShaderSource, fragmentShaderName);
 	if (fragmentShader == 0)
 		return false;
 
@@ -97,7 +97,7 @@ void Shader::destroy()
 	prepared = false;
 }
 
-GLuint Shader::compile (GLenum type, const std::string &source)
+GLuint Shader::compile (GLenum type, const std::string &source, const std::string name)
 {
 	// Create shader object
 	const GLuint shaderHandle = glCreateShader(type);
@@ -122,8 +122,7 @@ GLuint Shader::compile (GLenum type, const std::string &source)
 	if (status != GL_TRUE)
 	{
 		objectifLune::Singleton::Get()->warn("Shader compilation failed: '"
-											 + vertexShaderName + "', '"
-											 + fragmentShaderName + "' ");
+											 + name + "'");
 		dumpShaderLog(shaderHandle);
 	}
 

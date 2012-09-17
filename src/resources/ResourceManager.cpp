@@ -54,8 +54,8 @@ renderer::Shader* ResourceManager::getShader(const std::string vertexShaderRelat
 	// note: caching based on files is nonsensical, 'cause shaders carry a state
 	// i.e. have their uniforms set over lifetime.
 	
-	renderer::Shader* shader = new renderer::Shader(vertexShaderRelativePath,
-													vertexShaderRelativePath);
+	renderer::Shader* shader = new renderer::Shader(getAbsolutePath(vertexShaderRelativePath),
+													getAbsolutePath(fragmentShaderRelativePath));
 	
 	shaders.push_back(shader);
 	return shader;

@@ -97,7 +97,7 @@ namespace kocmoc
 				std::string vertexShaderName;
 				std::string fragmentShaderName;
 
-				GLuint compile(GLenum type, const std::string &source);
+				GLuint compile(GLenum type, const std::string &source, const std::string name);
 				void link (void);
 
 				void dumpShaderLog(GLuint shader);

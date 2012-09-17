@@ -331,6 +331,7 @@ void AssetLoader::loadToScene(const std::string relativeScenePath, Scene* scene)
 					Shader* shader = resourceManager->getShader("base.vert", "base.frag");
 
 					RenderMesh* renderMesh = new RenderMesh21(triangleMesh, shader);
+					renderMesh->prepare();
 					scene->addMesh(renderMesh);
 				}
 			}
