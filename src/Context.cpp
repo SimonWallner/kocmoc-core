@@ -90,20 +90,27 @@ GLFWwindow Context::getWindowHandle()
 
 void Context::setGLStates()
 {
-//	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 //	glClearColor(0.442047, 0.387623, 0.361867, 1.0f); // tinted gray
 //	glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // pitch black
 //	glClearColor(0.0000398107f, 0.2474041117391f, 0.562703f, 1.0f); // blue
-//	glEnable(GL_FRAMEBUFFER_SRGB_EXT);
+	glClearColor(0.470440f, 0.404541f, 0.284452f, 1.0f); // sand
+	glEnable(GL_FRAMEBUFFER_SRGB_EXT);
+	
 //	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 //	glPointSize(2.0f);
 //	glLineWidth(2.0f);
 	
-//	glEnable(GL_CULL_FACE);
-//	glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 	
 //	glEnable(GL_BLEND);
 //	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
+	if (props->getBool(types::symbolize("vsync")))
+		glfwSwapInterval(1);
+	else
+		glfwSwapInterval(0);
 	
 	getError();
 }
@@ -111,7 +118,7 @@ void Context::setGLStates()
 void Context::swapBuffers()
 {
 	glfwSwapBuffers(windowHandle);
-//	glFlush(); // only needed for gDebugger debugging.
+	glFlush(); // only needed for gDebugger debugging.
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

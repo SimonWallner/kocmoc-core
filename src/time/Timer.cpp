@@ -52,7 +52,7 @@ void Timer::print()
 	
 	std /= KOCMOC_CORE_TIMER_AVERAGE_LENGTH;
 	
-//	
+	
 //	unsigned int bSize = 150;
 //	char* buff = new char[bSize];
 //	snprintf(buff, bSize, "sputnik | %4.3fms (max: %4.3fms, std: %4.3f) | %4.2ffps",
@@ -63,5 +63,8 @@ void Timer::print()
 	objectifLune::Singleton::Get()->scalar(name + " average", average * 1000);
 	objectifLune::Singleton::Get()->scalar(name + " peak", peak * 1000);
 	objectifLune::Singleton::Get()->scalar(name + " fps", 1 / average);
-	objectifLune::Singleton::Get()->data(lastT, name, deltaT * 1000);
+
+	// adding +0 so that xcode does not crash...???
+	objectifLune::Singleton::Get()->data(lastT + 0, name, deltaT * 1000);
+	
 }
