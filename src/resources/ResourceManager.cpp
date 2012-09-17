@@ -12,7 +12,7 @@ using std::string;
 void ResourceManager::addResourcePath(const string path)
 {
 	resourcePaths.push_back(path);
-	objectifLune::Singleton::Get()->info("Resource Path '" + path + "' was added.");
+	objectifLune::Singleton::Get()->debug("Resource Path added: '" + path + "'");
 }
 
 bool ResourceManager::resourceExists(const string relativeResourceName) const
@@ -40,8 +40,8 @@ string ResourceManager::getAbsolutePath(const string relativePath) const
 			return absolutePath;
 	}
 	
-	objectifLune::Singleton::Get()->warn("Resource with relative path: '"
-										 + relativePath + "' could not be found!");
+	objectifLune::Singleton::Get()->warn("Resource with relative path could not be found: '"
+										 + relativePath + "'");
 	exception::ResourceNotFoundException e;
 	throw e;
 }

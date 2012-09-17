@@ -25,9 +25,9 @@ Context::Context(util::Properties* _props)
         exit(EXIT_FAILURE);
     }
 	
-//	glfwWindowHint(GLFW_OPENGL_VERSION_MAJOR, 2);
-//	glfwWindowHint(GLFW_OPENGL_VERSION_MINOR, 1);
-//	glfwWindowHint(GLFW_DEPTH_BITS, 32);
+	glfwWindowHint(GLFW_OPENGL_VERSION_MAJOR, 2);
+	glfwWindowHint(GLFW_OPENGL_VERSION_MINOR, 1);
+	glfwWindowHint(GLFW_DEPTH_BITS, 32);
 	glfwWindowHint(GLFW_WINDOW_RESIZABLE, GL_FALSE);
 	
     windowHandle = glfwCreateWindow(width, height, windowMode,
@@ -38,23 +38,24 @@ Context::Context(util::Properties* _props)
 		glfwTerminate();
         exit(EXIT_FAILURE);
     }
+	glfwMakeContextCurrent(windowHandle);
 	glfwSetWindowPos(windowHandle, 0, 0);
 	
-//	GLenum err = glewInit();
-//	if (err != GLEW_OK)
-//	{
-//		objectifLune::Singleton::Get()->fatal("failed to initialize GLEW");
-//		exit(EXIT_FAILURE);
-//	}
-//	
-//	if (GLEW_EXT_framebuffer_sRGB)
-//	{
-//		objectifLune::Singleton::Get()->info("sRGB framebuffer available");
-//	}
-//	
-//	std::stringstream sstr;
-//	sstr << "glew version: " << glewGetString(GLEW_VERSION);
-//	objectifLune::Singleton::Get()->info(sstr.str());
+	GLenum err = glewInit();
+	if (err != GLEW_OK)
+	{
+		objectifLune::Singleton::Get()->fatal("failed to initialize GLEW");
+		exit(EXIT_FAILURE);
+	}
+	
+	if (GLEW_EXT_framebuffer_sRGB)
+	{
+		objectifLune::Singleton::Get()->info("sRGB framebuffer available");
+	}
+	
+	std::stringstream sstr;
+	sstr << "glew version: " << glewGetString(GLEW_VERSION);
+	objectifLune::Singleton::Get()->info(sstr.str());
 	
 	setGLStates();
 }
@@ -74,13 +75,12 @@ void Context::getInfo(void)
 	std::stringstream sstr;
 	sstr << "------------------------ GL Info ------------------------" << std::endl;
 	sstr << "GL Version reported by glfw: " << major << "." << minor << "." << revision << std::endl;
-//	sstr << "OpenGL: " << glGetString(GL_VERSION) << std::endl;
-//	sstr << "GLSL: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
-//	sstr << "Vendor: " << glGetString(GL_VENDOR) << std::endl;
-//	sstr << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
+	sstr << "OpenGL: " << glGetString(GL_VERSION) << std::endl;
+	sstr << "GLSL: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+	sstr << "Vendor: " << glGetString(GL_VENDOR) << std::endl;
+	sstr << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
 	sstr << "------------------------/ GL Info -----------------------" << std::endl;
 	objectifLune::Singleton::Get()->info(sstr.str());
-	std::cout << sstr.str();
 }
 
 GLFWwindow Context::getWindowHandle()
@@ -90,20 +90,20 @@ GLFWwindow Context::getWindowHandle()
 
 void Context::setGLStates()
 {
-	glEnable(GL_DEPTH_TEST);
+//	glEnable(GL_DEPTH_TEST);
 //	glClearColor(0.442047, 0.387623, 0.361867, 1.0f); // tinted gray
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // pitch black
+//	glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // pitch black
 //	glClearColor(0.0000398107f, 0.2474041117391f, 0.562703f, 1.0f); // blue
-	glEnable(GL_FRAMEBUFFER_SRGB_EXT);
+//	glEnable(GL_FRAMEBUFFER_SRGB_EXT);
 //	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	glPointSize(2.0f);
-	glLineWidth(2.0f);
+//	glPointSize(2.0f);
+//	glLineWidth(2.0f);
 	
 //	glEnable(GL_CULL_FACE);
 //	glCullFace(GL_BACK);
 	
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//	glEnable(GL_BLEND);
+//	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
 	getError();
 }
@@ -111,7 +111,7 @@ void Context::setGLStates()
 void Context::swapBuffers()
 {
 	glfwSwapBuffers(windowHandle);
-	glFlush(); // only needed for gDebugger debugging.
+//	glFlush(); // only needed for gDebugger debugging.
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -125,28 +125,28 @@ void Context::getError()
 	GLenum err = glGetError();
 	switch (err) {
 		case GL_NO_ERROR:
-			objectifLune::Singleton::Get()->info("no error");
+			objectifLune::Singleton::Get()->trace("GL ERROR: no error");
 			break;
 		case GL_INVALID_ENUM:
-			objectifLune::Singleton::Get()->error("invalid enum");
+			objectifLune::Singleton::Get()->error("GL ERROR: invalid enum");
 			break;
 		case GL_INVALID_VALUE:
-			objectifLune::Singleton::Get()->error("invalid value");
+			objectifLune::Singleton::Get()->error("GL ERROR: invalid value");
 			break;
 		case GL_INVALID_OPERATION:
-			objectifLune::Singleton::Get()->error("invalid operation");
+			objectifLune::Singleton::Get()->error("GL ERROR: invalid operation");
 			break;
 		case GL_STACK_OVERFLOW:
-			objectifLune::Singleton::Get()->error("stack overflow");
+			objectifLune::Singleton::Get()->error("GL ERROR: stack overflow");
 			break;
 		case GL_STACK_UNDERFLOW:
-			objectifLune::Singleton::Get()->error("stack underflow");
+			objectifLune::Singleton::Get()->error("GL ERROR: stack underflow");
 			break;
 		case GL_OUT_OF_MEMORY:
-			objectifLune::Singleton::Get()->error("out of memory");
+			objectifLune::Singleton::Get()->error("GL ERROR: out of memory");
 			break;
 		case GL_TABLE_TOO_LARGE:
-			objectifLune::Singleton::Get()->error("table too large");
+			objectifLune::Singleton::Get()->error("GL ERROR: table too large");
 			break;
 			
 		default:
