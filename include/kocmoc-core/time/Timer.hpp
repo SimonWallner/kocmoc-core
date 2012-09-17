@@ -1,6 +1,8 @@
 #ifndef KOCMOC_CORE_TIME_TIMER_HPP
 #define KOCMOC_CORE_TIME_TIMER_HPP
 
+#include <string>
+
 #include <kocmoc-core/gl.h>
 
 #define KOCMOC_CORE_TIMER_AVERAGE_LENGTH 100
@@ -17,7 +19,7 @@ namespace kocmoc
 				/**
 				 * Create a new timer and start it instantly.
 				 */
-				Timer(GLFWwindow windowHandle);
+				Timer(GLFWwindow windowHandle, std::string name);
 				
 				/**
 				 * tick the timer.
@@ -50,6 +52,8 @@ namespace kocmoc
 				
 				double frameTimes[KOCMOC_CORE_TIMER_AVERAGE_LENGTH];
 				unsigned int counter;
+				
+				std::string name;
 			};
 		}
 	}
