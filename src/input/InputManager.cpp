@@ -140,12 +140,13 @@ void InputManager::poll(void)
 			unsigned int numAxes = glfwGetJoystickParam(i, GLFW_AXES);
 			
 			/*
-			 * 360 gamepad assignment: (direction given for positive values)
+			 * 360 gamepad assignment: (direction given for positive values) / OSX Mountain Lion, glfw3 pre
 			 * - [0]: left stick right
 			 * - [1]: left stick up
-			 * - [2]: left trigger (right trigger is [-1, 0]
-			 * - [3]: right stick down(!)
-			 * - [4]: right stick right
+			 * - [2]: right stick up
+			 * - [3]: right stick right
+			 * - [4]: left trigger [-1, 1]
+			 * - [5]: right trigger [1, -1]
 			 */
 
 			GLfloat *pos = new GLfloat[numAxes];
@@ -157,49 +158,72 @@ void InputManager::poll(void)
 			if (abs(pos[1]) > gamepadDeadZone) // left stick up
 				notifyAnalogListeners(ANALOG_EVENT_LEFT_STICK_Y, AnalogEvent(pos[1]));
 			
-			if (abs(pos[3]) > gamepadDeadZone) // right stick down
-				notifyAnalogListeners(ANALOG_EVENT_RIGHT_STICK_X, AnalogEvent(-pos[3]));
+			if (abs(pos[2]) > gamepadDeadZone) // right stick up
+				notifyAnalogListeners(ANALOG_EVENT_RIGHT_STICK_X, AnalogEvent(pos[3]));
 			
-			if (abs(pos[4]) > gamepadDeadZone) // right stick right
+			if (abs(pos[3]) > gamepadDeadZone) // right stick right
 				notifyAnalogListeners(ANALOG_EVENT_RIGHT_STICK_Y, AnalogEvent(pos[4]));
+			
+			if (abs(pos[4]) > gamepadDeadZone) // left trigger
+				notifyAnalogListeners(ANALOG_EVENT_RIGHT_STICK_Y, AnalogEvent((pos[4] / 2.0) + 0.5f));
+			
+			if (abs(pos[5]) > gamepadDeadZone) // right stick right
+				notifyAnalogListeners(ANALOG_EVENT_RIGHT_STICK_Y, AnalogEvent((pos[4] / -2.0f) + 0.5f));
+			
+//			for (unsigned int i = 0; i < numAxes; i++)
+//			{
+//				std::cout << "axis " << i << ": " << (pos[i]) << std::endl;
+//			}
+//			std::cout << "===================" << std::endl;
 			
 			delete [] pos;
 			
 			
 			/*
-			 * Button assignment 360 gamepad
-			 * B0: A
-			 * B1: B
-			 * B2: X
-			 * B3: Y
-			 * B4: left bumper
-			 * B5: right bumper
-			 * B6: back
-			 * B7: start
-			 * B8: left stick
-			 * B9: right stick
+			 * Button assignment 360 gamepad / OSX Mountain Lion, glfw3 pre
+			 * [0]: d-up
+			 * [1]: d-down
+			 * [2]: d-left
+			 * [3]: d-right
+			 * [4]: start
+			 * [5]: back
+			 * [6]: left stick
+			 * [7]: right stick
+			 * [8]: bumper left
+			 * [9]: bumper right
+			 * [10]: XBox 
+			 * [11]: A
+			 * [12]: B
+			 * [13]: X
+			 * [14]: Y
 			 */
 
 			unsigned char *buttons = new unsigned char[numButtons];
 			glfwGetJoystickButtons(i, buttons, numButtons);
 			
-			if (buttons[0] == GLFW_PRESS)
+			if (buttons[11] == GLFW_PRESS)
 				notifyButtonListeners(BUTTON_EVENT_XBOX_A, ButtonEvent(ButtonEvent::HELD));
 			
-			if (buttons[1] == GLFW_PRESS)
+			if (buttons[12] == GLFW_PRESS)
 				notifyButtonListeners(BUTTON_EVENT_XBOX_B, ButtonEvent(ButtonEvent::HELD));
 			
-			if (buttons[2] == GLFW_PRESS)
+			if (buttons[13] == GLFW_PRESS)
 				notifyButtonListeners(BUTTON_EVENT_XBOX_X, ButtonEvent(ButtonEvent::HELD));
 			
-			if (buttons[3] == GLFW_PRESS)
+			if (buttons[14] == GLFW_PRESS)
 				notifyButtonListeners(BUTTON_EVENT_XBOX_Y, ButtonEvent(ButtonEvent::HELD));
 			
-			if (buttons[7] == GLFW_PRESS)
+			if (buttons[6] == GLFW_PRESS)
 				notifyButtonListeners(BUTTON_EVENT_XBOX_START, ButtonEvent(ButtonEvent::HELD));
 			
-			if (buttons[6] == GLFW_PRESS)
+			if (buttons[5] == GLFW_PRESS)
 				notifyButtonListeners(BUTTON_EVENT_XBOX_BACK, ButtonEvent(ButtonEvent::HELD));
+			
+//			for (unsigned int i = 0; i < numButtons; i++)
+//			{
+//				std::cout << "button " << i << ": " << (buttons[i] == GLFW_PRESS) << std::endl;
+//			}
+//			std::cout << "===================" << std::endl;
 			
 			delete [] buttons;
 		}

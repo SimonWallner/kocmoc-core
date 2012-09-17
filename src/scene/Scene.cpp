@@ -18,6 +18,8 @@ Scene::Scene()
 
 void Scene::render() const
 {
+	 camera->updateMatrixes();
+	
 	// setup shader and load camera matrix
 	
 	// render meshes
