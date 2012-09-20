@@ -7,10 +7,14 @@
 #include <kocmoc-core/input/AnalogEventListener.hpp>
 #include <kocmoc-core/compiler.h>
 
+#include <kocmoc-core/math/math.hpp>
+
 #include <objectif-lune/Singleton.hpp>
 
-using namespace kocmoc::core::input;
+using namespace kocmoc::core;
+using namespace input;
 using kocmoc::core::types::Symbol;
+
 
 InputManager::InputManager(GLFWwindow _windowHandle)
 	: windowHandle(_windowHandle)
@@ -141,6 +145,7 @@ void InputManager::poll(void)
 			
 			/*
 			 * 360 gamepad assignment: (direction given for positive values) / OSX Mountain Lion, glfw3 pre
+			 * with extra gamepad driver
 			 * - [0]: left stick right
 			 * - [1]: left stick up
 			 * - [2]: right stick up
@@ -152,22 +157,22 @@ void InputManager::poll(void)
 			GLfloat *pos = new GLfloat[numAxes];
 			glfwGetJoystickAxes(i, pos, numAxes);
 			
-			if (abs(pos[0]) > gamepadDeadZone) // left stick right
+			if (math::abs(pos[0]) > gamepadDeadZone) // left stick right
 				notifyAnalogListeners(ANALOG_EVENT_LEFT_STICK_X, AnalogEvent(pos[0]));
 			
-			if (abs(pos[1]) > gamepadDeadZone) // left stick up
+			if (math::abs(pos[1]) > gamepadDeadZone) // left stick up
 				notifyAnalogListeners(ANALOG_EVENT_LEFT_STICK_Y, AnalogEvent(pos[1]));
 			
-			if (abs(pos[2]) > gamepadDeadZone) // right stick up
+			if (math::abs(pos[2]) > gamepadDeadZone) // right stick up
 				notifyAnalogListeners(ANALOG_EVENT_RIGHT_STICK_X, AnalogEvent(pos[3]));
 			
-			if (abs(pos[3]) > gamepadDeadZone) // right stick right
+			if (math::abs(pos[3]) > gamepadDeadZone) // right stick right
 				notifyAnalogListeners(ANALOG_EVENT_RIGHT_STICK_Y, AnalogEvent(pos[4]));
 			
-			if (abs(pos[4]) > gamepadDeadZone) // left trigger
+			if (math::abs(pos[4]) > gamepadDeadZone) // left trigger
 				notifyAnalogListeners(ANALOG_EVENT_RIGHT_STICK_Y, AnalogEvent((pos[4] / 2.0) + 0.5f));
 			
-			if (abs(pos[5]) > gamepadDeadZone) // right stick right
+			if (math::abs(pos[5]) > gamepadDeadZone) // right stick right
 				notifyAnalogListeners(ANALOG_EVENT_RIGHT_STICK_Y, AnalogEvent((pos[4] / -2.0f) + 0.5f));
 			
 			for (unsigned int i = 0; i < numAxes; i++)
@@ -180,6 +185,7 @@ void InputManager::poll(void)
 			
 			/*
 			 * Button assignment 360 gamepad / OSX Mountain Lion, glfw3 pre
+			 * with extra gamepad driver
 			 * [0]: d-up
 			 * [1]: d-down
 			 * [2]: d-left

@@ -31,6 +31,17 @@ namespace kocmoc
 				return (v1 < v2 ? v1 : v2);
 			}
 			
+			/**
+			 * could be a branch free abs function found on stackoverflow. 
+			 * not verified.
+			 * http://stackoverflow.com/questions/9772348/get-absolute-value-without-using-abs-function-nor-if-statement
+			 */
+			template <typename T >
+			inline T abs(T a)
+			{
+				return (a * ((a > 0) - (a < 0)));
+			}
+			
 
 			/**
 			 * constrained point to ray distance.
