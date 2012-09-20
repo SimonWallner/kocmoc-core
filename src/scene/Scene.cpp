@@ -36,7 +36,7 @@ void Scene::addMesh(RenderMesh *mesh)
 	meshes.push_back(mesh);
 }
 
-Camera* Scene::getCamera() const
+FilmCamera* Scene::getCamera() const
 {
 	return camera;
 }

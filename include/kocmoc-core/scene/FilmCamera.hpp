@@ -53,10 +53,10 @@ namespace kocmoc
 				 */
 				void setFilterMarginInPixel(int horizontalMargin, int verticalMargin);
 
-				int getFrameWidth();
-				int getFrameHeight();
-				int getGateWidth();
-				int getGateHeight();
+				int getFrameWidth() const;
+				int getFrameHeight() const;
+				int getGateWidth() const;
+				int getGateHeight() const;
 
 				/**
 				 * Set the 35mm equivalent focal length of the lens. This should be
@@ -70,18 +70,19 @@ namespace kocmoc
 				 * @param radians The horizontal AOV in radians.
 				 */
 				void setAngleOfView(float radians);
-				float getAngleOfView() {return angleOfView;}
+				float getAngleOfView() const;
 
 				// override fuctions from camera
-				const glm::mat4 getViewMatrix();
-				const glm::mat4 getProjectionMatrix();
-				const glm::mat4 getUntraslatedViewMatrix();
+				const glm::mat4 getViewMatrix() const;
+				const glm::mat4 getProjectionMatrix() const;
+				const glm::mat4 getUntraslatedViewMatrix() const;
+				
 				void updateMatrixes();
 
 				/** get the cameras eye position */
-				const glm::vec3 getPosition() {return eyePosition;}
+				const glm::vec3 getPosition() const {return eyePosition;}
 				
-				const glm::vec3 getViewVector() {return targetVector;}
+				const glm::vec3 getViewVector() const {return targetVector;}
 
 
 				/**

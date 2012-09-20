@@ -30,7 +30,7 @@ namespace kocmoc
 				
 				void addMesh(renderer::RenderMesh* mesh);
 				
-				Camera* getCamera() const;
+				FilmCamera* getCamera() const;
 				
 			private:
 				

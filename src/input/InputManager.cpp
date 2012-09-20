@@ -170,11 +170,10 @@ void InputManager::poll(void)
 			if (abs(pos[5]) > gamepadDeadZone) // right stick right
 				notifyAnalogListeners(ANALOG_EVENT_RIGHT_STICK_Y, AnalogEvent((pos[4] / -2.0f) + 0.5f));
 			
-//			for (unsigned int i = 0; i < numAxes; i++)
-//			{
-//				std::cout << "axis " << i << ": " << (pos[i]) << std::endl;
-//			}
-//			std::cout << "===================" << std::endl;
+			for (unsigned int i = 0; i < numAxes; i++)
+			{
+				objectifLune::Singleton::Get()->scalar("gamepad axis: " + i, pos[i]);
+			}
 			
 			delete [] pos;
 			

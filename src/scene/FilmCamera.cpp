@@ -48,17 +48,17 @@ FilmCamera::~FilmCamera()
 	// TODO Auto-generated destructor stub
 }
 
-const mat4 FilmCamera::getProjectionMatrix()
+const mat4 FilmCamera::getProjectionMatrix() const
 {
 	return projectionMatrix;
 }
 
-const mat4 FilmCamera::getViewMatrix()
+const mat4 FilmCamera::getViewMatrix() const
 {
 	return viewMatrix;
 }
 
-const mat4 FilmCamera::getUntraslatedViewMatrix()
+const mat4 FilmCamera::getUntraslatedViewMatrix() const
 {
 	return untranslatedViewMatrix;
 }
@@ -70,7 +70,7 @@ void FilmCamera::updateMatrixes()
 	float extendedAOV = (atan(tan(angleOfView/2) * (((float)width + 2*horizontalMargin) / width))) * 2;
 
 	// FIXME: dirty hack, make new camera model with phi, theta orientation
-	upVector = vec3(0, 1, 0);
+//	upVector = vec3(0, 1, 0);
 
 	vec3 s = glm::normalize(glm::cross(targetVector, upVector));
 	vec3 u = glm::normalize(glm::cross(s, targetVector));
@@ -126,6 +126,12 @@ void FilmCamera::setAngleOfView(float radians)
 	angleOfView = radians;
 }
 
+
+float FilmCamera::getAngleOfView() const
+{
+	return angleOfView;
+}
+
 void FilmCamera::setFocalLength(float length)
 {
 	angleOfView = 2 * atan(35.0 / (2 * length));
@@ -152,19 +158,19 @@ void FilmCamera::setFilterMarginInPixel(int _horizontalMargin, int _verticalMarg
 	verticalMargin = _verticalMargin;
 }
 
-int FilmCamera::getFrameWidth() {
+int FilmCamera::getFrameWidth() const {
 	return width + 2 * horizontalMargin;
 }
 
-int FilmCamera::getFrameHeight() {
+int FilmCamera::getFrameHeight() const {
 	return height + 2 * verticalMargin;
 }
 
-int FilmCamera::getGateWidth() {
+int FilmCamera::getGateWidth() const {
 	return width;
 }
 
-int FilmCamera::getGateHeight() {
+int FilmCamera::getGateHeight() const {
 	return height;
 }
 
