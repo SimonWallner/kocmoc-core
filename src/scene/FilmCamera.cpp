@@ -38,7 +38,8 @@ FilmCamera::FilmCamera(vec3 _eyePosition, vec3 _targetPosition, vec3 _upVector)
 
 const glm::quat FilmCamera::getOrientation() const
 {
-	return glm::angleAxis(math::rad2Deg(theta), vec3(1, 0, 0))
+	return glm::angleAxis(-90.0f, vec3(1, 0, 0))
+		* glm::angleAxis(math::rad2Deg(theta), vec3(1, 0, 0))
 		* glm::angleAxis(math::rad2Deg(phi), vec3(0, 0, 1));
 }
 
@@ -111,7 +112,7 @@ void FilmCamera::tumble(float horizontal, float vertical)
 
 void FilmCamera::dolly(vec3 direction)
 {
-	mat3 rotation = glm::toMat3(getOrientation());
+	mat3 rotation = glm::toMat3(glm::inverse(getOrientation()));
 	vec3 delta = rotation * direction;
 	
 	position += delta;
