@@ -16,14 +16,17 @@ namespace kocmoc
 		
 		namespace renderer
 		{
+			class Material;
+			
 			/**
 			 * OpenGL 2.1 implementation of \c RenderMesh interface.
 			 **/
 			class RenderMesh21 : public RenderMesh
 			{
 			public:
-				RenderMesh21(scene::TriangleMesh* triangleMesh, Shader* _shader)
+				RenderMesh21(scene::TriangleMesh* triangleMesh, Shader* _shader, Material* _material = NULL)
 					: RenderMesh(triangleMesh, _shader)
+					, material(_material)
 				{}
 				
 				~RenderMesh21() {}
@@ -60,6 +63,8 @@ namespace kocmoc
 				GLint viewMatrixLocation;
 				GLint projectionMatrixLocation;
 				GLint instanceLocation;
+				
+				Material* material;
 			};
 		}
 	}

@@ -7,6 +7,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <kocmoc-core/scene/Camera.hpp>
+#include <kocmoc-core/renderer/Material.hpp>
 
 #include <objectif-lune/Singleton.hpp>
 
@@ -118,6 +119,9 @@ void RenderMesh21::drawInstanced(Camera *camera,
 	}
 
 
+	if (material)
+		material->primeShader(shader);
+	
 	shader->bind();
 	{
 		// update shader

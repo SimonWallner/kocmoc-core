@@ -29,6 +29,7 @@
 
 #include <kocmoc-core/renderer/Shader.hpp>
 #include <kocmoc-core/renderer/RenderMesh21.hpp>
+#include <kocmoc-core/renderer/Material.hpp>
 
 #include <kocmoc-core/scene/AssimpLoggerStream.hpp>
 #include <kocmoc-core/scene/ImageLoader.hpp>
@@ -49,6 +50,7 @@ using kocmoc::core::scene::TriangleMesh;
 using kocmoc::core::renderer::RenderMesh;
 using kocmoc::core::renderer::RenderMesh21;
 using kocmoc::core::renderer::Shader;
+using kocmoc::core::renderer::Material;
 
 
 void exploreNode(aiNode* node, string lead = "")
@@ -320,6 +322,12 @@ void AssetLoader::loadToScene(const std::string relativeScenePath, Scene* scene)
 							uvs[j*2+1] = mesh->mTextureCoords[0][j].y;
 						}
 					}
+					
+					aiMaterial* aiMaterial = aiScene->mMaterials[mesh->mMaterialIndex];
+					aiColor3D diffuse (0.f,0.f,0.f);
+					aiMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, diffuse);
+					
+					Material* material = new Material(glm::vec3(diffuse.r, diffuse.g, diffuse.b));
 
 					TriangleMesh* triangleMesh = new TriangleMesh(vertexIndexCount,
 																 indices,
@@ -330,7 +338,7 @@ void AssetLoader::loadToScene(const std::string relativeScenePath, Scene* scene)
 
 					Shader* shader = resourceManager->getShader("base.vert", "base.frag");
 
-					RenderMesh* renderMesh = new RenderMesh21(triangleMesh, shader);
+					RenderMesh* renderMesh = new RenderMesh21(triangleMesh, shader, material);
 					renderMesh->prepare();
 					scene->addMesh(renderMesh);
 				}
