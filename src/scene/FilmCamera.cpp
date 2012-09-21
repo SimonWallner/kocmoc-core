@@ -5,14 +5,22 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#include <glm/gtx/quaternion.hpp>
+#pragma GCC diagnostic pop
 
 #include <kocmoc-core/constants.hpp>
+#include <kocmoc-core/math/math.hpp>
+
+#include <kocmoc-core/compiler.h>
 
 using namespace kocmoc::core::scene;
 
 using glm::vec3;
 using glm::vec4;
 using glm::mat4;
+using glm::mat3;
 
 using glm::translate;
 
@@ -24,18 +32,25 @@ FilmCamera::FilmCamera(vec3 _eyePosition, vec3 _targetPosition, vec3 _upVector)
 	, verticalMargin(0)
 {
 	setPosition(_eyePosition);
-	setTargetPosition(_targetPosition);
+	lookAt(_targetPosition);
 	setUpVector(_upVector);
 }
 
-void FilmCamera::setPosition(vec3 position)
+const glm::quat FilmCamera::getOrientation() const
 {
-	eyePosition = position;
+	return glm::angleAxis(math::rad2Deg(theta), vec3(1, 0, 0))
+		* glm::angleAxis(math::rad2Deg(phi), vec3(0, 0, 1));
 }
 
-void FilmCamera::setTargetPosition(vec3 target)
+void FilmCamera::setPosition(vec3 _position)
 {
-	targetVector = glm::normalize(target - eyePosition);
+	position = _position;
+}
+
+
+void FilmCamera::lookAt(vec3 target)
+{
+	UNUSED target;
 }
 
 void FilmCamera::setUpVector(vec3 up)
@@ -64,28 +79,23 @@ const mat4 FilmCamera::getUntraslatedViewMatrix() const
 }
 
 
-void FilmCamera::updateMatrixes() 
+void FilmCamera::updateMatrices()
 {
-	aspectRatio = (float)getFrameWidth()/(float)getFrameHeight();
-	float extendedAOV = (atan(tan(angleOfView/2) * (((float)width + 2*horizontalMargin) / width))) * 2;
-
-	// FIXME: dirty hack, make new camera model with phi, theta orientation
-//	upVector = vec3(0, 1, 0);
-
-	vec3 s = glm::normalize(glm::cross(targetVector, upVector));
-	vec3 u = glm::normalize(glm::cross(s, targetVector));
-
-	untranslatedViewMatrix = mat4(vec4(s, 0), vec4(u, 0), vec4(-targetVector, 0), vec4(0, 0, 0, 1.0f));
-	untranslatedViewMatrix = glm::transpose(untranslatedViewMatrix);
-	viewMatrix = translate(untranslatedViewMatrix, -eyePosition);
-		
+	// view matrix
+	untranslatedViewMatrix = glm::toMat4(getOrientation());
+	viewMatrix = translate(untranslatedViewMatrix, -position);
+	
+	
+	// projection matrix
+	aspectRatio = (float)getFrameWidth() / (float)getFrameHeight();
+	float extendedAOV = (atan(tan(angleOfView / 2) * (((float)width + 2 * horizontalMargin) / width))) * 2;
+	
 	// as found in hearn & baker
 	float x0 = 1.0f/(tan(extendedAOV/2.0f));
 	float y1 = (1.0f/(tan(extendedAOV/2.0f))) * aspectRatio;
 	float z2 = (nearPlane + farPlane)/(nearPlane - farPlane);
 	float w2 = -1.0f;
 	float z3 = (-2.0f * nearPlane * farPlane)/(nearPlane - farPlane);
-
 
 	projectionMatrix = mat4(x0, 0, 0, 0,
 							0, y1, 0, 0, 
@@ -95,29 +105,16 @@ void FilmCamera::updateMatrixes()
 
 void FilmCamera::tumble(float horizontal, float vertical)
 {
-	// first horizontally
-	vec3 s = glm::normalize(glm::cross(targetVector, upVector));
-	targetVector = glm::normalize(targetVector + horizontal * s);
-
-		
-	// then vertically
-	float eps = 0.9;
-	if ((vertical > 0 && targetVector.y < eps) || (vertical < 0 && targetVector.y > -eps))
-	{
-		targetVector = glm::normalize(targetVector + vertical * upVector);
-		upVector = glm::normalize(glm::cross(s, targetVector));
-	}
+	phi += horizontal;
+	theta = math::min(constants::pi/2, math::max(-constants::pi/2, theta + vertical));
 }
 
 void FilmCamera::dolly(vec3 direction)
 {
-	vec3 s = glm::normalize(glm::cross(targetVector, upVector));
+	mat3 rotation = glm::toMat3(getOrientation());
+	vec3 delta = rotation * direction;
 	
-	eyePosition += (direction.x * s);
-	eyePosition += (direction.y * upVector);
-	eyePosition += (direction.z * targetVector);
-
-	//std::cout << "eye position: " << eyePosition.x << "|"<< eyePosition.y << "|"<< eyePosition.z << std::endl;
+	position += delta;
 }
 
 
@@ -125,7 +122,6 @@ void FilmCamera::setAngleOfView(float radians)
 {
 	angleOfView = radians;
 }
-
 
 float FilmCamera::getAngleOfView() const
 {
@@ -136,15 +132,6 @@ void FilmCamera::setFocalLength(float length)
 {
 	angleOfView = 2 * atan(35.0 / (2 * length));
 }
-
-void FilmCamera::rotate(float radians)
-{
-	// rotate up vector
-	mat4 rotation = glm::rotate(radians, targetVector);
-	vec4 res = rotation * vec4(upVector, 1.0f);
-	upVector = vec3(res);
-	// std::cout << "up vector: " << upVector.x << " | "<< upVector.y << " | "<< upVector.z << std::endl;
-} 
 
 void FilmCamera::setGateInPixel(int _width, int _height)
 {
@@ -173,4 +160,3 @@ int FilmCamera::getGateWidth() const {
 int FilmCamera::getGateHeight() const {
 	return height;
 }
-

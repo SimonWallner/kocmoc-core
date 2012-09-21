@@ -36,7 +36,7 @@ namespace kocmoc
 				const glm::mat4 getViewMatrix() const { return viewMatrix; }
 				const glm::mat4 getProjectionMatrix() const { return projectionMatrix; }
 				const glm::mat4 getUntraslatedViewMatrix() const { return glm::mat4(1); }
-				void updateMatrixes();
+				void updateMatrices();
 				
 				void setFocus(glm::vec3 focus);
 				

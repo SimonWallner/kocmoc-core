@@ -61,11 +61,19 @@ namespace kocmoc
 			}
 			
 			/**
-			 * convert degrees into radians
+			 * convert degrees to radians
 			 */
 			inline float deg2Rad(float deg)
 			{
-				return deg * (pi / 180);
+				return deg * (pi / 180.0f);
+			}
+			
+			/**
+			 * convert radians to degrees
+			 */
+			inline float rad2Deg(float radians)
+			{
+				return radians / (pi / 180.0f);
 			}
 			
 			/**

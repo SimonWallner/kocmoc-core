@@ -20,7 +20,7 @@ OrthoCamera::~OrthoCamera(void)
 {
 }
 
-void OrthoCamera::updateMatrixes()
+void OrthoCamera::updateMatrices()
 {
 	vec3 s = glm::normalize(glm::cross(direction, upVector));
 	vec3 u = glm::normalize(glm::cross(s, direction));

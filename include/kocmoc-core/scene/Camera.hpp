@@ -53,7 +53,7 @@ namespace kocmoc
 				 *
 				 * Also updates the untranslated view Matrix.
 				 */
-				virtual void updateMatrixes() = 0;
+				virtual void updateMatrices() = 0;
 			};
 		}
 	}

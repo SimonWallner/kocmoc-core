@@ -7,6 +7,8 @@
 
 #include <kocmoc-core/scene/Camera.hpp>
 
+#include <glm/gtc/quaternion.hpp>
+
 namespace kocmoc
 {
 	namespace core
@@ -30,16 +32,16 @@ namespace kocmoc
 				 * @param upVector the up-vector of the camera
 				 */
 				FilmCamera(glm::vec3 eyePosition, glm::vec3 targetPosition, glm::vec3 upVector);
+				virtual ~FilmCamera();
 
 				void setPosition(glm::vec3 position);
-				void setTargetPosition(glm::vec3 target);
 				void setUpVector(glm::vec3 up);
+				void lookAt(glm::vec3 target);
 
-				virtual ~FilmCamera();
 
 				/**
 				 * Set the film gate in pixel
-				 * Set the film gate to specific size in pixels. This will mostly be the
+				 * Set the film gate to specific size in pixels. This will most likely be the
 				 * final output resolution, or the visual area in a letterboxed output.
 				 * @param width The width of the gate
 				 * @param height The height of the gate
@@ -77,16 +79,18 @@ namespace kocmoc
 				const glm::mat4 getProjectionMatrix() const;
 				const glm::mat4 getUntraslatedViewMatrix() const;
 				
-				void updateMatrixes();
+				/** Update all matrices from the current camera parameters.
+				 * Effects of tumble(), dolly(), ... are only visible after
+				 * this call.
+				 */
+				void updateMatrices();
 
-				/** get the cameras eye position */
-				const glm::vec3 getPosition() const {return eyePosition;}
-				
-				const glm::vec3 getViewVector() const {return targetVector;}
+				const glm::vec3 getPosition() const { return position; }
+				const glm::quat getOrientation() const;
 
 
 				/**
-				 * Tumble the camera around the eye position. input params have no unit!
+				 * Tumble the camera around the eye position. unit = radians
 				 * @param vertical The vertical rotation
 				 * @param horizontal The horizontal rotation
 				 */
@@ -94,31 +98,36 @@ namespace kocmoc
 
 				/**
 				 * translate the camera. i.e. the postion and the target
+				 * The camera uses the standard OpenGL right handed coordinate
+				 * system. 
+				 *
+				 * |+Y
+				 * |
+				 * |
+				 * |  /-Z
+				 * | /
+				 * |/______________ +X
 				 */
 				void dolly(glm::vec3 direction);
 
-				/**
-				 * rotate arround the target vector
-				 * @param ccw rotation in radians
-				 */
-				void rotate(float radians);
-
 			private:
+				/** The position of the camera/eye */
+				glm::vec3 position;
+				glm::vec3 upVector;
+				
+				/** horizontal rotation in radians */
+				float phi;
+				
+				/** vertical rotation in radians */
+				float theta;
+				
+				
 				glm::mat4 viewMatrix;
 
 				/** this is for the skybox and things alike */
-				glm::mat4 untranslatedViewMatrix; 
+				glm::mat4 untranslatedViewMatrix;
 				glm::mat4 projectionMatrix;
 
-				/** The position of the camera/eye */
-				glm::vec3 eyePosition;
-
-				/** the vector looking from the eye towards the target */
-				glm::vec3 targetVector;
-
-				/** The vector starting at the eye towards the up direction
-				 * i.e. the up vector away from the eye */
-				glm::vec3 upVector;
 
 				/** Near plane and far plane as seen from the camera, i.e. negative
 				 * values, as we have a right-handed coordinate system and look down

@@ -18,7 +18,7 @@ Scene::Scene()
 
 void Scene::render() const
 {
-	 camera->updateMatrixes();
+	 camera->updateMatrices();
 	
 	// setup shader and load camera matrix
 	

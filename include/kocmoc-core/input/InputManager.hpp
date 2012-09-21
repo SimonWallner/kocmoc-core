@@ -19,6 +19,10 @@
 #define BUTTON_EVENT_XBOX_START			10
 #define BUTTON_EVENT_XBOX_BACK			11
 
+#define ANALOG_EVENT_LEFT_TRIGGER		12
+#define ANALOG_EVENT_RIGHT_TRIGGER		13
+
+
 
 #include <map>
 
