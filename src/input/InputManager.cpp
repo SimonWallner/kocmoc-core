@@ -175,10 +175,10 @@ void InputManager::poll(void)
 			if (math::abs(pos[5]) > gamepadDeadZone) // right stick right
 				notifyAnalogListeners(ANALOG_EVENT_RIGHT_TRIGGER, AnalogEvent((pos[5] / -2.0f) + 0.5f));
 			
-			for (unsigned int i = 0; i < numAxes; i++)
-			{
-				objectifLune::Singleton::Get()->scalar("gamepad axis: " + i, pos[i]);
-			}
+//			for (unsigned int i = 0; i < numAxes; i++)
+//			{
+//				objectifLune::Singleton::Get()->scalar("gamepad axis: " + i, pos[i]);
+//			}
 			
 			delete [] pos;
 			
@@ -306,5 +306,10 @@ void InputManager::dumpBindings()
 	{
 		std::cout << "\t" << ci->first << " --> " << ci->second << std::endl;
 	}	
+}
+
+void InputManager::captureMouse()
+{
+	glfwSetInputMode(windowHandle, GLFW_CURSOR_MODE, GLFW_CURSOR_CAPTURED);
 }
 

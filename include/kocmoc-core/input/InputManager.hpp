@@ -97,6 +97,9 @@ namespace kocmoc
 				 */
 				virtual void dumpBindings(void);
 				
+				/** capture the mouse cursour */
+				void captureMouse();
+				
 			protected:
 				typedef std::multimap<types::Symbol, ButtonEventListener* > ButtonEventListenerMultiMap;
 				typedef std::pair<types::Symbol, ButtonEventListener* > ButtonEventPair;

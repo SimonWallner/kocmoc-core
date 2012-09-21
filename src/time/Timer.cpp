@@ -66,5 +66,6 @@ void Timer::print()
 
 	// adding +0 so that xcode does not crash...???
 	objectifLune::Singleton::Get()->data(lastT + 0, name, deltaT * 1000);
+	objectifLune::Singleton::Get()->data(lastT, name + " average", average * 1000);
 	
 }
