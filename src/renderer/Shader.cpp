@@ -14,6 +14,7 @@ using std::string;
 
 Shader::Shader(const std::string &_vertexShaderName, const std::string &_fragmentShaderName)
 	: prepared(false)
+	, primed(false)
 	, vertexShaderName(_vertexShaderName)
 	, fragmentShaderName(_fragmentShaderName)
 {}
@@ -95,6 +96,7 @@ void Shader::destroy()
 	}
 
 	prepared = false;
+	primed = false;
 }
 
 GLuint Shader::compile (GLenum type, const std::string &source, const std::string name)
@@ -160,7 +162,7 @@ void Shader::link(void)
 	}
 }
 
-void Shader::dumpProgramLog(GLuint programHandle)
+void Shader::dumpProgramLog(GLuint programHandle) const
 {
 	char logBuffer[LOG_BUFFER_SIZE];
 	GLsizei length;
@@ -173,7 +175,7 @@ void Shader::dumpProgramLog(GLuint programHandle)
 	}
 }
 
-void Shader::dumpShaderLog(GLuint shader)
+void Shader::dumpShaderLog(GLuint shader) const
 {
 	char logBuffer[LOG_BUFFER_SIZE];
 	GLsizei length;

@@ -1,6 +1,6 @@
 #include <kocmoc-core/renderer/ShaderManager.hpp>
 
-#include <iostream>
+#include <objectif-lune/Singleton.hpp>
 
 using namespace kocmoc::core::renderer;
 
@@ -32,30 +32,26 @@ ShaderManager::~ShaderManager(void)
 
 Shader* ShaderManager::load(const string &vertexShaderFile, const string &fragmentShaderFile)
 {
-	string key = vertexShaderFile + fragmentShaderFile;
 
 	// disable caching for now!
 	// TODO: reenable caching, use unique signature of files and semantics
-
-	ShaderCache::const_iterator ci = cache.find(key);
-	if (ci != cache.end()) // cache hit!
-	{
-		//if (_DEBUG)
-		//	cout << " found in cache!" << endl;
-		return ci->second;
-	}
-
-
+	//	string key = vertexShaderFile + fragmentShaderFile;
+	//	ShaderCache::const_iterator ci = cache.find(key);
+	//	if (ci != cache.end()) // cache hit!
+	//	{
+	//		return ci->second;
+	//	}
 
 	Shader *shader = new Shader(vertexShaderFile, fragmentShaderFile);
 
-	cache[key] = shader;
+//	cache[key] = shader;
 	return shader;
 }
 
 void ShaderManager::reloadAll()
 {
-	std::cout << "Reloading all shaders..." << std::endl;
+	objectifLune::Singleton::Get()->debug("Reloading all shaders...");
+	
 	for (ShaderCache::iterator it = cache.begin(); it != cache.end(); it++)
 	{
 		(*it).second->reload();

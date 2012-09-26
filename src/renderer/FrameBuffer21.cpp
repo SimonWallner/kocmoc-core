@@ -1,15 +1,15 @@
 #include <kocmoc-core/renderer/FrameBuffer21.hpp>
 
-#include <iostream>
-
 #include <kocmoc-core/math/math.hpp>
 #include <kocmoc-core/renderer/Shader.hpp>
+
+#include <kocmoc-core/resources/ResourceManager.hpp>
+
+#include <objectif-lune/Singleton.hpp>
 
 using namespace kocmoc::core::renderer;
 using namespace kocmoc::core::scene;
 
-using std::cout;
-using std::endl;
 using kocmoc::core::math::sign;
 using kocmoc::core::math::min;
 using kocmoc::core::math::max;
@@ -17,7 +17,7 @@ using kocmoc::core::math::max;
 FrameBuffer21::FrameBuffer21(int _frameWidth, int _frameHeight, int _gateWidth, int _gateHeight,
 							 int _windowWidth, int _windowHeight,
 							 float _angleOfView,
-							 util::Properties* props)
+							 util::Properties* props, const resources::ResourceManager* _resourceManager)
 	: frameWidth(_frameWidth * 2)
 	, frameHeight(_frameHeight * 2)
 	, gateWidth(_gateWidth * 2)
@@ -29,6 +29,7 @@ FrameBuffer21::FrameBuffer21(int _frameWidth, int _frameHeight, int _gateWidth, 
 	, windowWidth(_windowWidth)
 	, windowHeight(_windowHeight)
 	, angleOfView(_angleOfView)
+	, resourceManager(_resourceManager)
 {
 	// generate fbo
 	glGenFramebuffers(1, &fboHandle);
@@ -51,20 +52,6 @@ FrameBuffer21::FrameBuffer21(int _frameWidth, int _frameHeight, int _gateWidth, 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 	
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureHandle, 0);
-	
-	
-	// create and bind bloom texture
-	glGenTextures(1, &bloomHandle);
-	glBindTexture(GL_TEXTURE_2D, bloomHandle);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, frameWidth, frameHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-	
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-		
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, bloomHandle, 0);
-
 
 	check();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -80,24 +67,21 @@ void FrameBuffer21::check()
 	if (status != GL_FRAMEBUFFER_COMPLETE) {
 		switch(status) {
 			case GL_FRAMEBUFFER_UNSUPPORTED:
-				cout<<"Unsupported framebuffer format"<<endl;
+				objectifLune::Singleton::Get()->error("Unsupported framebuffer format");
 				break;
 			case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
-				cout<<"Framebuffer incomplete, missing attachment"<<endl;
+				objectifLune::Singleton::Get()->error("Framebuffer incomplete, missing attachment");
 				break;
 			case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
-				cout<<"Framebuffer incomplete, missing draw buffer"<<endl;
+				objectifLune::Singleton::Get()->error("Framebuffer incomplete, missing draw buffer");
 				break;
 			case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
-				cout<<"Framebuffer incomplete, missing read buffer"<<endl;
+				objectifLune::Singleton::Get()->error("Framebuffer incomplete, missing read buffer");
 				break;
 			default:
-				cout<<"Unknown Framebuffer error"<<endl;
+				objectifLune::Singleton::Get()->error("Unknown Framebuffer error");
 				break;
 		}
-	}
-	else{
-		cout<<"done"<<endl;
 	}
 }
 
@@ -143,30 +127,34 @@ void FrameBuffer21::createQuad()
 void FrameBuffer21::setupShader(util::Properties* props)
 {
 	std::string mediaPath = props->getString(types::symbolize("core-media-path"));
-	shader = new Shader(mediaPath + "shaders/post.vert", mediaPath + "shaders/post.frag");
+	shader = resourceManager->getShader("post.vert", "post.frag");
 
 	shader->prepare();
-
-	shader->bind();
-	{
-		GLint location;
-		
-		if ((location = shader->getUniformLocation("dimension")) >= 0)
-			glUniform2i(location, gateWidth, gateHeight);
-
-		if ((location = shader->getUniformLocation("angleOfView")) >= 0)
-			glUniform1f(location, angleOfView);
-		
-		location = shader->getUniformLocation("sBloom");
-		if (location >= 0)
-			glUniform1i(location, 1);
-	}
-	shader->unbind();
 }
 
 
 void FrameBuffer21::drawFBO()
 {
+	if (!shader->isPrimed())
+	{
+		shader->bind();
+		{
+			GLint location;
+			
+			if ((location = shader->getUniformLocation("dimension")) >= 0)
+				glUniform2i(location, gateWidth, gateHeight);
+			
+			if ((location = shader->getUniformLocation("angleOfView")) >= 0)
+				glUniform1f(location, angleOfView);
+			
+			location = shader->getUniformLocation("sBloom");
+			if (location >= 0)
+				glUniform1i(location, 1);
+		}
+		shader->unbind();
+		shader->markPrimed();
+	}
+
 	setFBOTexture();
 	shader->bind();
 	renderMesh->draw(NULL, glm::mat4(1));
@@ -178,7 +166,4 @@ void FrameBuffer21::setFBOTexture()
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureHandle);
-	
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, bloomHandle);
 }

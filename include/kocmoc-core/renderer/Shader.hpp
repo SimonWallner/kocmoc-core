@@ -81,7 +81,10 @@ namespace kocmoc
 				 */
 				void reload();
 
-				bool isPrepared(void) const {return prepared;}
+				bool isPrepared() const { return prepared; }
+				
+				bool isPrimed() const { return primed; }
+				void markPrimed() { primed = true; }
 
 			private:
 
@@ -89,6 +92,12 @@ namespace kocmoc
 				 * Most operations can only performed if this property is true
 				 */
 				bool prepared;
+				
+				/**
+				 * Weather someone has set various uniforms or not.
+				 * this is especially usefull after an 'external' shader reload
+				 */
+				bool primed;
 
 				GLint vertexShader;
 				GLint fragmentShader;
@@ -98,13 +107,13 @@ namespace kocmoc
 				std::string fragmentShaderName;
 
 				GLuint compile(GLenum type, const std::string &source, const std::string name);
-				void link (void);
+				void link();
 
-				void dumpShaderLog(GLuint shader);
-				void dumpProgramLog(GLuint programHandle);
+				void dumpShaderLog(GLuint shader) const;
+				void dumpProgramLog(GLuint programHandle) const;
 
 				void create(const std::string &vertexShaderFile, const std::string &fragmentShaderFile);
-				void destroy(void);
+				void destroy();
 			};
 		}
 	}

@@ -9,6 +9,11 @@ namespace kocmoc
 {
 	namespace core
 	{
+		namespace resources
+		{
+			class ResourceManager;
+		}
+		
 		namespace renderer
 		{
 			class FrameBuffer21 : public FrameBuffer
@@ -19,9 +24,10 @@ namespace kocmoc
 				 * The difference between the frame and the gate is the filter
 				 * margin.
 				 *
-				 * @param frameWidth Width of the complete frame.
+				 * @param frameWidth Width of the complete frame. i.e. with margin
 				 * @param frameHeigt Height of the complete frame.
-				 * @param gateWidth Width of the actualy visible area.
+				 * @param gateWidth Width of the actualy visible area. Make the 
+				 *		gate smaller for letterbox rendering.
 				 * @param gateHeight Height of the actual visiible area.
 				 * @param windowWidth
 				 * @param windowHeight
@@ -30,7 +36,7 @@ namespace kocmoc
 				 */
 				FrameBuffer21(int frameWidth, int frameHeight, int gateWidth, int gateHeight,
 							  int windowWidth, int windowHeight, float angleOfView,
-							  util::Properties* props);
+							  util::Properties* props, const resources::ResourceManager* resourceManager);
 				
 				~FrameBuffer21() {}
 				
@@ -57,11 +63,11 @@ namespace kocmoc
 			private:
 				RenderMesh21* renderMesh;
 				
-				GLuint bloomHandle;
-				
 				void setFBOTexture();
 				void createQuad();
 				void check();
+				
+				const resources::ResourceManager* resourceManager;
 			};
 		}
 	}
