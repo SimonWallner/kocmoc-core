@@ -5,6 +5,7 @@
 #include <kocmoc-core/gl.h>
 
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtc/matrix_inverse.hpp>
 
 #include <kocmoc-core/scene/Camera.hpp>
 #include <kocmoc-core/renderer/Material.hpp>
@@ -68,6 +69,7 @@ void RenderMesh21::prepare(void)
 		modelMatrixLocation = shader->getUniformLocation("modelMatrix");
 		viewMatrixLocation = shader->getUniformLocation("viewMatrix");
 		projectionMatrixLocation = shader->getUniformLocation("projectionMatrix");
+		normalMatrixLocation = shader->getUniformLocation("normalMatrix");
 		instanceLocation = shader->getUniformLocation("instance");
 	}
 	shader->unbind();
@@ -127,7 +129,11 @@ void RenderMesh21::drawInstanced(Camera *camera,
 		// update shader
 		
 		if (modelMatrixLocation >= 0)
-			glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+			glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix * transform));
+		
+		if (normalMatrixLocation >= 0)
+			glUniformMatrix4fv(normalMatrixLocation, 1, GL_FALSE,
+							   glm::value_ptr(glm::inverseTranspose(modelMatrix * transform)));
 		
 		if (camera != NULL)
 		{

@@ -9,6 +9,7 @@
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 #include <assimp/Importer.hpp>
 #pragma GCC diagnostic pop
+#include <assimp/scene.h>
 
 
 namespace kocmoc
@@ -44,6 +45,13 @@ namespace kocmoc
 				void loadToScene(const std::string relativeScenePath, Scene* scene);
 				
 			private:
+				
+				/**
+				 * recursivly process a scene node.
+				 * Read the transform, extract the meshes with materials and 
+				 * store them in the scene
+				 */
+				void processNode(const aiScene* aiScene, const aiNode* node, aiMatrix4x4 matrix, Scene* scene);
 				
 				ImageLoader* imageLoader;
 				

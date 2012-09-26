@@ -218,7 +218,7 @@ void InputManager::poll(void)
 			if (buttons[14] == GLFW_PRESS)
 				notifyButtonListeners(BUTTON_EVENT_XBOX_Y, ButtonEvent(ButtonEvent::HELD));
 			
-			if (buttons[6] == GLFW_PRESS)
+			if (buttons[4] == GLFW_PRESS)
 				notifyButtonListeners(BUTTON_EVENT_XBOX_START, ButtonEvent(ButtonEvent::HELD));
 			
 			if (buttons[5] == GLFW_PRESS)
@@ -226,9 +226,12 @@ void InputManager::poll(void)
 			
 //			for (unsigned int i = 0; i < numButtons; i++)
 //			{
-//				std::cout << "button " << i << ": " << (buttons[i] == GLFW_PRESS) << std::endl;
+//				if (buttons[i] == GLFW_PRESS)
+//					objectifLune::Singleton::Get()->scalar("button " + i, 1.0f);
+//				else
+//					objectifLune::Singleton::Get()->scalar("button " + i, 0.0f);
 //			}
-//			std::cout << "===================" << std::endl;
+
 			
 			delete [] buttons;
 		}

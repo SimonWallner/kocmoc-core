@@ -24,9 +24,11 @@ namespace kocmoc
 			class RenderMesh21 : public RenderMesh
 			{
 			public:
-				RenderMesh21(scene::TriangleMesh* triangleMesh, Shader* _shader, Material* _material = NULL)
+				RenderMesh21(scene::TriangleMesh* triangleMesh, Shader* _shader,
+							 Material* _material = NULL, glm::mat4 _transform = glm::mat4())
 					: RenderMesh(triangleMesh, _shader)
 					, material(_material)
+					, transform(_transform)
 				{}
 				
 				~RenderMesh21() {}
@@ -62,9 +64,11 @@ namespace kocmoc
 				GLint modelMatrixLocation;
 				GLint viewMatrixLocation;
 				GLint projectionMatrixLocation;
+				GLint normalMatrixLocation;
 				GLint instanceLocation;
 				
 				Material* material;
+				glm::mat4 transform;
 			};
 		}
 	}

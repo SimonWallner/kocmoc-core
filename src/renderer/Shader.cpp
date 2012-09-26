@@ -76,7 +76,7 @@ void Shader::reload()
 {
 	if(prepared)
 	{
-		objectifLune::Singleton::Get()->info("--- reloading shader: '"
+		objectifLune::Singleton::Get()->debug("--- reloading shader: '"
 											 + vertexShaderName
 											 + "', '" + fragmentShaderName
 											 + "'");
