@@ -31,7 +31,7 @@ FrameBuffer21::FrameBuffer21(int _frameWidth, int _frameHeight, int _gateWidth, 
 	, angleOfView(_angleOfView)
 	, resourceManager(_resourceManager)
 {
-	// generate fbo
+	// generate flaot fbo
 	glGenFramebuffers(1, &fboHandle);
 	glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
 
@@ -44,7 +44,7 @@ FrameBuffer21::FrameBuffer21(int _frameWidth, int _frameHeight, int _gateWidth, 
 	// create and bind colour texture
 	glGenTextures(1, &textureHandle);
 	glBindTexture(GL_TEXTURE_2D, textureHandle);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, frameWidth, frameHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, frameWidth, frameHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -52,6 +52,24 @@ FrameBuffer21::FrameBuffer21(int _frameWidth, int _frameHeight, int _gateWidth, 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 	
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureHandle, 0);
+	
+//	// create and bind log Y texture
+//	glGenTextures(1, &logYTextureHandle);
+//	glBindTexture(GL_TEXTURE_2D, logYTextureHandle);
+//	glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, frameWidth, frameHeight, 0, GL_RED, GL_FLOAT, NULL);
+//	
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+//	
+//	glGenerateMipmap(GL_TEXTURE_2D);
+//	maxMipLevel = (unsigned int)(log(float(((frameWidth > frameHeight) ? frameWidth : frameHeight))) / log(2.0f));
+//	glGetTexLevelParameteriv(GL_TEXTURE_2D, maxMipLevel - 2, GL_TEXTURE_WIDTH, &averageWidth);
+//	glGetTexLevelParameteriv(GL_TEXTURE_2D, maxMipLevel - 2, GL_TEXTURE_HEIGHT, &averageHeight);
+//	
+//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, logYTextureHandle, 0);
+	
 
 	check();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -135,6 +153,23 @@ void FrameBuffer21::setupShader(util::Properties* props)
 
 void FrameBuffer21::drawFBO()
 {
+	glBindTexture(GL_TEXTURE_2D, logYTextureHandle);
+	glGenerateMipmap(GL_TEXTURE_2D);
+	
+	GLfloat* data = new GLfloat[averageWidth * averageHeight];
+	glGetTexImage(GL_TEXTURE_2D, maxMipLevel - 2, GL_ALPHA, GL_FLOAT, data);
+	
+	GLfloat averageLuminance = 0;
+	for (int i = 0; i < averageWidth * averageHeight; i++)
+	{
+		averageLuminance += data[i];
+	}
+	averageLuminance /= (averageWidth * averageHeight);
+	
+	// enforce hard boarders to compensate +- INF fuck-up.
+	averageLuminance = min<float>(max<float>(0, averageLuminance), 10);
+
+	
 	if (!shader->isPrimed())
 	{
 		shader->bind();
@@ -146,10 +181,10 @@ void FrameBuffer21::drawFBO()
 			
 			if ((location = shader->getUniformLocation("angleOfView")) >= 0)
 				glUniform1f(location, angleOfView);
+
+			if ((location = shader->getUniformLocation("averageLuminance")) >= 0)
+				glUniform1f(location, averageLuminance);
 			
-			location = shader->getUniformLocation("sBloom");
-			if (location >= 0)
-				glUniform1i(location, 1);
 		}
 		shader->unbind();
 		shader->markPrimed();

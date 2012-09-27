@@ -1,11 +1,26 @@
 #version 120
 
+#pragma include luminance.glsl
 varying vec2 uv;
 
 uniform sampler2D sDiffuse;
-uniform sampler2D sBloom;
+
 uniform ivec2 dimension;
 uniform float angleOfView;
+uniform float averageLuminance;
+
+const float HDRcontrast = 6.0f;
+const float HDRbias = 1.0f;
+
+vec4 tonemap(vec4 hdr)
+{
+	vec3 c = hdr.rgb;
+	float low = exp(averageLuminance - HDRbias - HDRcontrast/2.0f);
+	float high = exp(averageLuminance - HDRbias + HDRcontrast/2.0f);
+
+	vec3 ldr = (hdr.rgb - low) / (high - low);
+	return vec4(ldr, hdr.a);
+}
 
 void main(void)
 {
@@ -43,6 +58,8 @@ void main(void)
 	float darkening = 1 - pow(delta, power) * attenuation;
 	color = color * vec4(vec3(darkening), 1);
 
+	// hdr tonemapping 
+	color = tonemap(color);
+	
 	gl_FragColor = color;
-	// gl_FragColor = vec4(1, 1, 0, 1);
 }

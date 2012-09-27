@@ -100,7 +100,7 @@ void Shader::destroy()
 	primed = false;
 }
 
-GLuint Shader::compile (GLenum type, const std::string &source, const std::string name)
+GLuint Shader::compile(GLenum type, const std::string &source, const std::string name)
 {
 	// Create shader object
 	const GLuint shaderHandle = glCreateShader(type);
@@ -110,12 +110,9 @@ GLuint Shader::compile (GLenum type, const std::string &source, const std::strin
 		return 0;
 	}
 
-	// Define shader source and compile
 	const char* src = source.c_str();
 	const int len = source.size();
-
 	glShaderSource(shaderHandle, 1, &src, &len);
-
 	glCompileShader(shaderHandle);
 
 	// Check for errors

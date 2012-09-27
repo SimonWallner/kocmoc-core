@@ -32,11 +32,11 @@ namespace kocmoc {
 				
 				void pollEvents();
 			
+				void getError();
+				
 			private:
 				
 				void setGLStates();
-				
-				void getError();
 				
 				GLFWwindow windowHandle;
 				util::Properties* props;
