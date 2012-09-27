@@ -10,6 +10,11 @@ namespace kocmoc
 {
 	namespace core
 	{
+		namespace resources
+		{
+			class ResourceManager;
+		}
+		
 		namespace renderer
 		{
 			class RenderMesh;
@@ -22,9 +27,11 @@ namespace kocmoc
 			{
 			public:
 				OverlayQuad(util::Properties* _props,
+							resources::ResourceManager* _resourceManager,
 							renderer::Shader* _shader = NULL,
 							GLint _texture = -1)
 					: props(_props)
+					, resourceManager(_resourceManager)
 					, shader(_shader)
 					, texture(_texture)
 					, position(glm::vec2(0.0f))
@@ -47,6 +54,7 @@ namespace kocmoc
 			private:
 				renderer::RenderMesh* renderMesh;
 				util::Properties* props;
+				resources::ResourceManager* resourceManager;
 				renderer::Shader* shader;
 				GLint texture;
 				

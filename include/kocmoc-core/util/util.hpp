@@ -5,11 +5,17 @@
 #include <string>
 
 #include <kocmoc-core/types/types.h>
+#include <kocmoc-core/exception/ParseErrorException.hpp>
 
 namespace kocmoc
 {
 	namespace core
 	{
+		namespace resources
+		{
+			class ResourceManager;
+		}
+		
 		namespace util
 		{
 			class Properties;
@@ -54,13 +60,16 @@ namespace kocmoc
 				 * #pragma include <filename.extension>
 				 * 
 				 * @param shaderName the file name of the shader
-				 * @param pathPrefix the local path to the include directory
+				 * @param resourceManager to load the files
 				 * @param includeCounter the number of the included file, used
 				 *		for the #line annotation. lineNumber:includeNumber.
 				 *		Base file should be 0.
 				 * @return a string with resolved includes and #line annotations
 				 */
-//				std::string parseShader(std::string shaderName, std::string pathPrefix, types::uint includeCounter = 0) throw(kocmoc::Exception);
+				std::string parseShader(const std::string shaderName,
+										const resources::ResourceManager* resourceManager,
+										unsigned int includeCounter = 0)
+									throw(exception::ParseErrorException);
 			}
 		}
 	}

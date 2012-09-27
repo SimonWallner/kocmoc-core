@@ -13,6 +13,11 @@ namespace kocmoc
 {
 	namespace core
 	{
+		namespace resources
+		{
+			class ResourceManager;
+		}
+		
 		namespace renderer
 		{
 			
@@ -32,7 +37,8 @@ namespace kocmoc
 				 * @param fragmentShaderFile the name of the fragment shader file
 				 */
 				Shader(const std::string &vertexShaderFileName,
-					const std::string &fragmentShaderFileName);
+					   const std::string &fragmentShaderFileName,
+					   const resources::ResourceManager* resourceManager);
 
 				~Shader();
 
@@ -105,6 +111,8 @@ namespace kocmoc
 
 				std::string vertexShaderName;
 				std::string fragmentShaderName;
+				
+				const resources::ResourceManager* resourceManager;
 
 				GLuint compile(GLenum type, const std::string &source, const std::string name);
 				void link();

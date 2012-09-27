@@ -10,6 +10,8 @@
 
 #include <kocmoc-core/types/Symbol.hpp>
 #include <kocmoc-core/util/Properties.hpp>
+#include <kocmoc-core/resources/ResourceManager.hpp>
+#include <kocmoc-core/compiler.h>
 
 #include <objectif-lune/Singleton.hpp>
 
@@ -20,7 +22,6 @@ using std::vector;
 
 using types::Symbol;
 using types::symbolize;
-
 
 bool util::file_exists(const string &filename)
 {
@@ -114,3 +115,13 @@ bool util::parser::parseConfigXMLFileIntoProperties(string path, Properties* pro
 	}
 	return true;
 }
+
+std::string util::parser::parseShader(const std::string shaderName,
+						const resources::ResourceManager* resourceManager,
+						unsigned int includeCounter)
+					throw(exception::ParseErrorException)
+{
+	UNUSED includeCounter;
+	return resourceManager->readFile(shaderName);
+}
+

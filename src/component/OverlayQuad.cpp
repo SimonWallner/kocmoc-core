@@ -3,6 +3,7 @@
 #include <glm/gtx/transform.hpp>
 
 #include <kocmoc-core/renderer/RenderMesh21.hpp>
+#include <kocmoc-core/resources/ResourceManager.hpp>
 
 
 using namespace kocmoc::core::component;
@@ -84,7 +85,7 @@ void OverlayQuad::init()
 	string mediaPath = props->getString(types::symbolize("core-media-path"));
 	
 	if (shader == NULL)
-		shader = new Shader(mediaPath + "shaders/overlay.vert", mediaPath + "shaders/overlay.frag");
+		shader = resourceManager->getShader("overlay.vert", "overlay.frag");
 	
 	renderMesh = new RenderMesh21(triMesh, shader);
 	renderMesh->prepare();

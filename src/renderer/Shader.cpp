@@ -12,11 +12,14 @@ using namespace kocmoc::core::renderer;
 
 using std::string;
 
-Shader::Shader(const std::string &_vertexShaderName, const std::string &_fragmentShaderName)
+Shader::Shader(const std::string &_vertexShaderName,
+			   const std::string &_fragmentShaderName,
+			   const resources::ResourceManager* _resourceManager)
 	: prepared(false)
 	, primed(false)
 	, vertexShaderName(_vertexShaderName)
 	, fragmentShaderName(_fragmentShaderName)
+	, resourceManager(_resourceManager)
 {}
 
 bool Shader::prepare()
@@ -24,12 +27,8 @@ bool Shader::prepare()
 	if (prepared)
 		destroy();
 
-	// Load the shader files
-	string vertexShaderSource;
-	string fragmentShaderSource;
-
-	vertexShaderSource = util::read_file(vertexShaderName);
-	fragmentShaderSource = util::read_file(fragmentShaderName);
+	string vertexShaderSource = util::parser::parseShader(vertexShaderName, resourceManager);
+	string fragmentShaderSource = util::parser::parseShader(fragmentShaderName, resourceManager);
 
 	// Compile the shaders
 	vertexShader = compile(GL_VERTEX_SHADER, vertexShaderSource, vertexShaderName);

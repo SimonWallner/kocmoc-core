@@ -40,7 +40,7 @@ string ResourceManager::getAbsolutePath(const string relativePath) const
 			return absolutePath;
 	}
 	
-	objectifLune::Singleton::Get()->warn("Resource with relative path could not be found: '"
+	objectifLune::Singleton::Get()->error("Resource with relative path could not be found: '"
 										 + relativePath + "'");
 	exception::ResourceNotFoundException e;
 	throw e;
@@ -53,10 +53,11 @@ renderer::Shader* ResourceManager::getShader(const std::string vertexShaderRelat
 	
 	// note: caching based on files is nonsensical, 'cause shaders carry a state
 	// i.e. have their uniforms set over lifetime.
+	// caching can make sense under some controlled circumstances...
 	
-	renderer::Shader* shader = new renderer::Shader(getAbsolutePath(vertexShaderRelativePath),
-													getAbsolutePath(fragmentShaderRelativePath));
-	
+	renderer::Shader* shader = new renderer::Shader(vertexShaderRelativePath,
+													fragmentShaderRelativePath,
+													this);
 	shaders.push_back(shader);
 	return shader;
 }
