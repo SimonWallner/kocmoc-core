@@ -1,5 +1,8 @@
 #include <kocmoc-core/resources/ResourceManager.hpp>
 
+#include <fstream>
+#include <sstream>
+
 #include <kocmoc-core/util/util.hpp>
 #include <objectif-lune/Singleton.hpp>
 #include <kocmoc-core/renderer/Shader.hpp>
@@ -15,20 +18,20 @@ void ResourceManager::addResourcePath(const string path)
 	objectifLune::Singleton::Get()->debug("Resource Path added: '" + path + "'");
 }
 
-bool ResourceManager::resourceExists(const string relativeResourceName) const
+bool ResourceManager::resourceExists(const string& relativeResourceName) const
 {
 	for (ResourcePathVector::const_iterator ci = resourcePaths.begin();
 		 ci != resourcePaths.end();
 		 ci++)
 	{
 		std::string absolutePath = (*ci) + relativeResourceName;
-		if (util::file_exists(absolutePath))
+		if (fileExists(absolutePath))
 			return true;
 	}
 	return false;
 }
 
-string ResourceManager::getAbsolutePath(const string relativePath) const
+string ResourceManager::getAbsolutePath(const string& relativePath) const
 	throw(exception::ResourceNotFoundException)
 {
 	for (ResourcePathVector::const_iterator ci = resourcePaths.begin();
@@ -36,7 +39,7 @@ string ResourceManager::getAbsolutePath(const string relativePath) const
 		 ci++)
 	{
 		string absolutePath = (*ci) + relativePath;
-		if (util::file_exists(absolutePath))
+		if (fileExists(absolutePath))
 			return absolutePath;
 	}
 	
@@ -71,9 +74,74 @@ void ResourceManager::reloadShaders()
 	}
 }
 
-string ResourceManager::readFile(const string relativePath) const
+string ResourceManager::readResource(const string &resourceName) const
 	throw(exception::ResourceNotFoundException)
 {
-	string absolutePath = getAbsolutePath(relativePath);
-	return util::read_file(absolutePath);
+	string absolutePath = getAbsolutePath(resourceName);
+	return readFile(absolutePath);
+}
+
+string ResourceManager::preprocessShader(const string& shaderName,
+									  unsigned int includeCounter) const
+	throw(exception::ParseErrorException, exception::ResourceNotFoundException)
+{
+	unsigned int includeDepth = includeCounter;
+	
+	std::ifstream stream;
+	getResourceStream(shaderName, stream);
+	
+	std::stringstream out;
+	
+	unsigned int lineCounter = 1;
+	unsigned int includeCnt = 0;
+	
+	if (includeDepth != 0)
+		out << "#line " << lineCounter << " " << includeDepth << std::endl;
+	
+	while (!stream.eof())
+	{
+		string line = "";
+		util::getNextLine(stream, line);
+		int pos = line.find("#pragma include ");
+		if (pos == 0)
+		{
+			string includeName = line.substr(16); // all after "#pragma include "
+			out << preprocessShader(includeName, ++includeCnt);
+			out << "#line " << lineCounter + 1 << " " << includeDepth << std::endl;
+		}
+		else
+			out << line << std::endl;
+		
+		
+		// add #line AFTER #version
+		pos = line.find("#version");
+		if (pos == 0)
+			out << "#line " << lineCounter + 1 << " " << includeDepth << std::endl;
+		
+		++lineCounter;
+	}
+	
+	return out.str();
+}
+
+bool ResourceManager::fileExists(const string &filename) const
+{
+	std::ifstream ifile(filename.c_str());
+	return ifile;
+}
+
+std::string ResourceManager::readFile(const string &path) const
+{
+	std::ifstream ifile(path.c_str());
+	
+	return std::string(std::istreambuf_iterator<char>(ifile),
+					   std::istreambuf_iterator<char>());
+}
+
+void ResourceManager::getResourceStream(const std::string& resourceName,
+										std::ifstream& stream) const
+	throw(exception::ResourceNotFoundException)
+{
+	string absolutePath = getAbsolutePath(resourceName);
+	stream.open(absolutePath.c_str());
 }

@@ -5,6 +5,7 @@
 
 #include <kocmoc-core/renderer/RenderMesh.hpp>
 #include <kocmoc-core/util/util.hpp>
+#include <kocmoc-core/resources/ResourceManager.hpp>
 
 #include <objectif-lune/Singleton.hpp>
 
@@ -27,8 +28,9 @@ bool Shader::prepare()
 	if (prepared)
 		destroy();
 
-	string vertexShaderSource = util::parser::parseShader(vertexShaderName, resourceManager);
-	string fragmentShaderSource = util::parser::parseShader(fragmentShaderName, resourceManager);
+	string vertexShaderSource = resourceManager->preprocessShader(vertexShaderName);
+	string fragmentShaderSource = resourceManager->preprocessShader(fragmentShaderName);
+
 
 	// Compile the shaders
 	vertexShader = compile(GL_VERTEX_SHADER, vertexShaderSource, vertexShaderName);
@@ -125,6 +127,7 @@ GLuint Shader::compile (GLenum type, const std::string &source, const std::strin
 		objectifLune::Singleton::Get()->warn("Shader compilation failed: '"
 											 + name + "'");
 		dumpShaderLog(shaderHandle);
+		objectifLune::Singleton::Get()->trace(source);
 	}
 
 	return shaderHandle;    

@@ -1,10 +1,5 @@
 ﻿#include <kocmoc-core/util/util.hpp>
 
-#include <fstream>
-#include <iostream>
-#include <cstdlib>
-#include <sstream>
-
 #define TIXML_USE_STL 
 #include <tinyxml.h>
 
@@ -22,20 +17,6 @@ using std::vector;
 
 using types::Symbol;
 using types::symbolize;
-
-bool util::file_exists(const string &filename)
-{
-	std::ifstream ifile(filename.c_str());
-	return ifile;
-}
-
-string util::read_file(const string &filename)
-{
-	std::ifstream ifile(filename.c_str());
-	
-	return std::string(std::istreambuf_iterator<char>(ifile),
-					   std::istreambuf_iterator<char>());
-}
 
 
 // code taken from http://www.oopweb.com/CPP/Documents/CPPHOWTO/Volume/C++Programming-HOWTO-7.html
@@ -56,6 +37,12 @@ void util::tokenize(const string& str, vector<string >& tokens, const string& de
 		pos = str.find_first_of(delimiter, lastPos);
 	}
 }
+
+void util::getNextLine(std::istream& is, std::string& line)
+{
+	getline(is, line);
+}
+
 
 string util::getFileName(string const &path)
 {
@@ -114,14 +101,5 @@ bool util::parser::parseConfigXMLFileIntoProperties(string path, Properties* pro
 			return false;
 	}
 	return true;
-}
-
-std::string util::parser::parseShader(const std::string shaderName,
-						const resources::ResourceManager* resourceManager,
-						unsigned int includeCounter)
-					throw(exception::ParseErrorException)
-{
-	UNUSED includeCounter;
-	return resourceManager->readFile(shaderName);
 }
 

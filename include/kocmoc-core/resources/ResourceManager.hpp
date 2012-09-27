@@ -6,6 +6,7 @@
 #include <map>
 
 #include <kocmoc-core/exception/ResourceNotFoundException.hpp>
+#include <kocmoc-core/exception/ParseErrorException.hpp>
 
 namespace kocmoc
 {
@@ -44,7 +45,7 @@ namespace kocmoc
 				 * @param relativeResourceName relative resource name like /textures/foo.jpg
 				 *
 				 */
-				bool resourceExists(const std::string relativeResourceName) const;
+				bool resourceExists(const std::string& relativeResourceName) const;
 				
 				/**
 				 * Try to find a given file in all the resource paths.
@@ -54,14 +55,18 @@ namespace kocmoc
 				 * @throws ResourceNotFoundException if the resource can not be
 				 *		known paths.
 				 */
-				std::string getAbsolutePath(const std::string relativePath) const
+				std::string getAbsolutePath(const std::string& relativePath) const
 					throw(exception::ResourceNotFoundException);
 				
 				
 				/**
-				 * read the given file into the string
+				 * read the given resource into the string
 				 */
-				std::string readFile(const std::string relativePath) const
+				std::string readResource(const std::string& resourceName) const
+					throw(exception::ResourceNotFoundException);
+				
+				void getResourceStream(const std::string& resourceName,
+									   std::ifstream& stream) const
 					throw(exception::ResourceNotFoundException);
 				
 				/**
@@ -71,9 +76,38 @@ namespace kocmoc
 											const std::string fragmentShaderRelativePath) const;
 				
 				void reloadShaders();
+				
+				/**
+				 * parse the shader and resolve #pragma includes
+				 * useage:
+				 * #pragma include <filename.extension>
+				 *
+				 * @param shaderName the file name of the shader
+				 * @param resourceManager to load the files
+				 * @param includeCounter the number of the included file, used
+				 *		for the #line annotation. lineNumber:includeNumber.
+				 *		Base file should be 0.
+				 * @return a string with resolved includes and #line annotations
+				 */
+				std::string preprocessShader(const std::string& shaderName,
+											 unsigned int includeCounter = 0) const
+					throw(exception::ParseErrorException,
+						  exception::ResourceNotFoundException);
 
 				
 			private:
+				
+				/**
+				 * Check if the given file exists on the file system.
+				 */
+				bool fileExists(const std::string &path) const;
+				
+				/**
+				 * Read the given file into a String
+				 */
+				std::string readFile(const std::string &path) const;
+				
+				
 				typedef std::vector<std::string > ResourcePathVector;
 				typedef std::vector<renderer::Shader* > ShaderVector;
 				

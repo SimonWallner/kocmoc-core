@@ -1,5 +1,3 @@
-// Vertex Shader – file "base.vert"
-
 #version 120
 
 attribute vec3 inPosition;

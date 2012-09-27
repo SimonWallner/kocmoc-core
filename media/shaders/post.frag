@@ -1,5 +1,3 @@
-// Fragment Shader – file "base.frag"
-
 #version 120
 
 varying vec2 uv;
