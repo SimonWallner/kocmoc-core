@@ -91,10 +91,10 @@ GLFWwindow Context::getWindowHandle()
 void Context::setGLStates()
 {
 	glEnable(GL_DEPTH_TEST);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // pitch black
 //	glClearColor(0.442047, 0.387623, 0.361867, 1.0f); // tinted gray
-//	glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // pitch black
 //	glClearColor(0.0000398107f, 0.2474041117391f, 0.562703f, 1.0f); // blue
-	glClearColor(0.470440f, 0.404541f, 0.284452f, 1.0f); // sand
+//	glClearColor(0.470440f, 0.404541f, 0.284452f, 1.0f); // sand
 	glEnable(GL_FRAMEBUFFER_SRGB_EXT);
 	
 //	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

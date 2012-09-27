@@ -25,12 +25,17 @@ namespace kocmoc
 		{
 			class ResourceManager;
 		}
-	
+		
+		namespace renderer
+		{
+			class RenderMesh;
+		}
 		
 		namespace scene
 		{
 			class Scene;
 			class ImageLoader;
+			class TriangleMesh;
 			
 			class AssetLoader
 			{
@@ -42,7 +47,11 @@ namespace kocmoc
 								
 //				component::Renderable* load(const std::string NodelName, const std::string shaderPath);
 				
-				void loadToScene(const std::string relativeScenePath, Scene* scene);
+				void loadToScene(const std::string& sceneName, Scene* scene);
+				
+				renderer::RenderMesh* loadMesh(const std::string& resourceName,
+												 const std::string& vertexShaderName,
+												 const std::string& fragmentShaderName);
 				
 			private:
 				
@@ -51,7 +60,9 @@ namespace kocmoc
 				 * Read the transform, extract the meshes with materials and 
 				 * store them in the scene
 				 */
-				void processNode(const aiScene* aiScene, const aiNode* node, aiMatrix4x4 matrix, Scene* scene);
+ 				void processNode(const aiScene* aiScene, const aiNode* node, aiMatrix4x4 matrix, Scene* scene) const;
+				
+				scene::TriangleMesh* buildTriangleMesh(aiMesh* mesh) const;
 				
 				ImageLoader* imageLoader;
 				

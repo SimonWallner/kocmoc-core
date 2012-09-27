@@ -111,10 +111,10 @@ AssetLoader::~AssetLoader()
 	delete imageLoader;
 }
 
-void AssetLoader::loadToScene(const std::string relativeScenePath, Scene* scene)
+void AssetLoader::loadToScene(const std::string& relativeScenePath, Scene* scene)
 {
 	string absolutePath = resourceManager->getAbsolutePath(relativeScenePath);
-	objectifLune::Singleton::Get()->info("trying to load asset: " + absolutePath);
+	objectifLune::Singleton::Get()->info("trying to load mesh: " + absolutePath);
 
 	// remove the normals, so that we can then generate fresh, non-smooth face
 	// normals, which the blender content pipeline does not really support.
@@ -123,7 +123,6 @@ void AssetLoader::loadToScene(const std::string relativeScenePath, Scene* scene)
 											 aiProcess_Triangulate
 //											 | aiProcess_SortByPType
 //											 | aiProcess_ImproveCacheLocality
-//											 | aiProcess_PreTransformVertices
 											 | aiProcess_RemoveComponent
 											 | aiProcess_GenNormals
 											 );
@@ -152,80 +151,30 @@ void AssetLoader::loadToScene(const std::string relativeScenePath, Scene* scene)
 }
 
 void AssetLoader::processNode(const aiScene *aiScene, const aiNode* node,
-							  aiMatrix4x4 matrix, Scene *scene)
+							  aiMatrix4x4 matrix, Scene *scene) const
 {
 	matrix = matrix * node->mTransformation;
 	
 	for (uint i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* mesh = aiScene->mMeshes[node->mMeshes[i]];
-		if (mesh->mPrimitiveTypes == aiPrimitiveType_TRIANGLE)
-		{
-			uint vertexCount = mesh->mNumVertices;
-			uint vertexIndexCount = mesh->mNumFaces * 3;
-			
-			uint* indices = new uint[vertexIndexCount];
-			for (uint j = 0; j < mesh->mNumFaces; j++)
-			{
-				indices[j*3  ] = mesh->mFaces[j].mIndices[0];
-				indices[j*3+1] = mesh->mFaces[j].mIndices[1];
-				indices[j*3+2] = mesh->mFaces[j].mIndices[2];
-			}
-			
-			float* positions = new float[vertexCount * 3];
-			for (uint j = 0; j < vertexCount; j++)
-			{
-				positions[j*3  ] = mesh->mVertices[j].x;
-				positions[j*3+1] = mesh->mVertices[j].y;
-				positions[j*3+2] = mesh->mVertices[j].z;
-			}
-			
-			float* normals = NULL;
-			if (mesh->HasNormals())
-			{
-				normals = new float[vertexCount * 3];
-				for (uint j = 0; j < vertexCount; j++)
-				{
-					normals[j*3  ] = mesh->mNormals[j].x;
-					normals[j*3+1] = mesh->mNormals[j].y;
-					normals[j*3+2] = mesh->mNormals[j].z;
-				}
-			}
-			
-			float* uvs = NULL;
-			if (mesh->HasTextureCoords(0))
-			{
-				uvs = new float[vertexCount * 2];
-				for (uint j = 0; j < vertexCount; j++)
-				{
-					uvs[j*2  ] = mesh->mTextureCoords[0][j].x;
-					uvs[j*2+1] = mesh->mTextureCoords[0][j].y;
-				}
-			}
-			
-			TriangleMesh* triangleMesh = new TriangleMesh(vertexIndexCount,
-														  indices,
-														  vertexCount,
-														  positions,
-														  normals,
-														  uvs);
-
-			aiMaterial* aiMaterial = aiScene->mMaterials[mesh->mMaterialIndex];
-			aiColor3D diffuse (0.f,0.f,0.f);
-			aiMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, diffuse);
-			Material* material = new Material(glm::vec3(diffuse.r, diffuse.g, diffuse.b));
-			
-			Shader* shader = resourceManager->getShader("base.vert", "base.frag");
-			
-			glm::mat4 transform = glm::mat4(matrix.a1, matrix.a2, matrix.a3, matrix.a4,
-											  matrix.b1, matrix.b2, matrix.b3, matrix.b4,
-											  matrix.c1, matrix.c2, matrix.c3, matrix.c4,
-											  matrix.d1, matrix.d2, matrix.d3, matrix.d4);
-			
-			RenderMesh* renderMesh = new RenderMesh21(triangleMesh, shader, material, glm::transpose(transform));
-			renderMesh->prepare();
-			scene->addMesh(renderMesh);
-		}
+		TriangleMesh* triangleMesh = buildTriangleMesh(mesh);
+		
+		aiMaterial* aiMaterial = aiScene->mMaterials[mesh->mMaterialIndex];
+		aiColor3D diffuse (0.f,0.f,0.f);
+		aiMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, diffuse);
+		Material* material = new Material(glm::vec3(diffuse.r, diffuse.g, diffuse.b));
+		
+		Shader* shader = resourceManager->getShader("base.vert", "base.frag");
+		
+		glm::mat4 transform = glm::mat4(matrix.a1, matrix.a2, matrix.a3, matrix.a4,
+										  matrix.b1, matrix.b2, matrix.b3, matrix.b4,
+										  matrix.c1, matrix.c2, matrix.c3, matrix.c4,
+										  matrix.d1, matrix.d2, matrix.d3, matrix.d4);
+		
+		RenderMesh* renderMesh = new RenderMesh21(triangleMesh, shader, material, glm::transpose(transform));
+		renderMesh->prepare();
+		scene->addMesh(renderMesh);
 	}
 	
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
@@ -234,7 +183,101 @@ void AssetLoader::processNode(const aiScene *aiScene, const aiNode* node,
 	}
 }
 
+RenderMesh* AssetLoader::loadMesh(const std::string& resourceName,
+									const std::string& vertexShaderName,
+									const std::string& fragmentShaderName)
+{
+	string absolutePath = resourceManager->getAbsolutePath(resourceName);
+	objectifLune::Singleton::Get()->info("trying to load mesh: " + absolutePath);
+	
+	const aiScene* aiScene = importer.ReadFile(absolutePath,
+											   aiProcess_ImproveCacheLocality
+											   );
+	if (!aiScene) // error
+	{
+		objectifLune::Singleton::Get()->error("Assimp mesh loading error" +
+											  std::string(importer.GetErrorString()));
+		return NULL;
+	}
+	else
+	{
+		if (aiScene->HasMeshes())
+		{
+			aiMesh* mesh = aiScene->mMeshes[0]; // only use first mesh
+			TriangleMesh* triangleMesh = buildTriangleMesh(mesh);
+			
+			aiMaterial* aiMaterial = aiScene->mMaterials[mesh->mMaterialIndex];
+			aiColor3D diffuse (0.f,0.f,0.f);
+			aiMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, diffuse);
+			Material* material = new Material(glm::vec3(diffuse.r, diffuse.g, diffuse.b));
+			
+			Shader* shader = resourceManager->getShader(vertexShaderName,
+														fragmentShaderName);
+			
+			RenderMesh* renderMesh = new RenderMesh21(triangleMesh, shader, material, glm::mat4());
+			renderMesh->prepare();
+			
+			return renderMesh;
+		} else
+		{
+			objectifLune::Singleton::Get()->warn("no meshes in scene!");
+			return NULL;
+		}
+	}
+}
 
+TriangleMesh* AssetLoader::buildTriangleMesh(aiMesh* mesh) const
+{
+	if (mesh->mPrimitiveTypes == aiPrimitiveType_TRIANGLE)
+	{
+		uint vertexCount = mesh->mNumVertices;
+		uint vertexIndexCount = mesh->mNumFaces * 3;
+		
+		uint* indices = new uint[vertexIndexCount];
+		for (uint j = 0; j < mesh->mNumFaces; j++)
+		{
+			indices[j*3  ] = mesh->mFaces[j].mIndices[0];
+			indices[j*3+1] = mesh->mFaces[j].mIndices[1];
+			indices[j*3+2] = mesh->mFaces[j].mIndices[2];
+		}
+		
+		float* positions = new float[vertexCount * 3];
+		for (uint j = 0; j < vertexCount; j++)
+		{
+			positions[j*3  ] = mesh->mVertices[j].x;
+			positions[j*3+1] = mesh->mVertices[j].y;
+			positions[j*3+2] = mesh->mVertices[j].z;
+		}
+		
+		float* normals = NULL;
+		if (mesh->HasNormals())
+		{
+			normals = new float[vertexCount * 3];
+			for (uint j = 0; j < vertexCount; j++)
+			{
+				normals[j*3  ] = mesh->mNormals[j].x;
+				normals[j*3+1] = mesh->mNormals[j].y;
+				normals[j*3+2] = mesh->mNormals[j].z;
+			}
+		}
+		
+		float* uvs = NULL;
+		if (mesh->HasTextureCoords(0))
+		{
+			uvs = new float[vertexCount * 2];
+			for (uint j = 0; j < vertexCount; j++)
+			{
+				uvs[j*2  ] = mesh->mTextureCoords[0][j].x;
+				uvs[j*2+1] = mesh->mTextureCoords[0][j].y;
+			}
+		}
+		
+		return new TriangleMesh(vertexIndexCount, indices, vertexCount,
+								positions, normals, uvs);
+	}
+	else
+		return NULL;
+}
 
 
 
