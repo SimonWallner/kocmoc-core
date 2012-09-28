@@ -50,18 +50,25 @@ string ResourceManager::getAbsolutePath(const string& relativePath) const
 }
 
 renderer::Shader* ResourceManager::getShader(const std::string vertexShaderRelativePath,
-							const std::string fragmentShaderRelativePath) const
+											 const std::string fragmentShaderRelativePath,
+											 bool cache) const
 {
 	string key = vertexShaderRelativePath + fragmentShaderRelativePath;
 	
-	// note: caching based on files is nonsensical, 'cause shaders carry a state
-	// i.e. have their uniforms set over lifetime.
-	// caching can make sense under some controlled circumstances...
+	if (cache)
+	{
+		ShaderCache::const_iterator found = shaderCache.find(key);
+		if (found != shaderCache.end())
+			return found->second;
+	}
 	
 	renderer::Shader* shader = new renderer::Shader(vertexShaderRelativePath,
 													fragmentShaderRelativePath,
 													this);
 	shaders.push_back(shader);
+	if (cache)
+		shaderCache[key] = shader;
+	
 	return shader;
 }
 

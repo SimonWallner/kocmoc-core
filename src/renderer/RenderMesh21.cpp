@@ -71,6 +71,7 @@ void RenderMesh21::prepare(void)
 		projectionMatrixLocation = shader->getUniformLocation("projectionMatrix");
 		normalMatrixLocation = shader->getUniformLocation("normalMatrix");
 		instanceLocation = shader->getUniformLocation("instance");
+		cameraPositionLocation = shader->getUniformLocation("cameraPosition");
 	}
 	shader->unbind();
 	
@@ -142,6 +143,9 @@ void RenderMesh21::drawInstanced(Camera *camera,
 			
 			if (projectionMatrixLocation >= 0)
 				glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, glm::value_ptr(camera->getProjectionMatrix()));
+
+			if (cameraPositionLocation >= 0)
+				glUniform3fv(cameraPositionLocation, 1, glm::value_ptr(camera->getPosition()));
 		}
 		
 		for (unsigned int i = 0; i < instanceCount; i++)

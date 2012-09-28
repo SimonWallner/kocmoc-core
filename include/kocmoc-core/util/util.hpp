@@ -29,6 +29,11 @@ namespace kocmoc
 			 */
 			std::string getFileName(const std::string &path);
 			
+			/**
+			 * Compute the perceived luminance from the given tristumulus.
+			 */
+			float logLuminance(float r, float g, float b);
+			
 			
 			namespace parser
 			{

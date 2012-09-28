@@ -1,5 +1,7 @@
 ﻿#include <kocmoc-core/util/util.hpp>
 
+#include <cmath>
+
 #define TIXML_USE_STL 
 #include <tinyxml.h>
 
@@ -103,3 +105,7 @@ bool util::parser::parseConfigXMLFileIntoProperties(string path, Properties* pro
 	return true;
 }
 
+float util::logLuminance(float r, float g, float b)
+{
+	return log(r * 0.2126f + g * 0.7152f + b * 0.0722f);
+}

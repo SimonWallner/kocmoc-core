@@ -73,7 +73,8 @@ namespace kocmoc
 				 * Get the shader constructed from the given shader files
 				 */
 				renderer::Shader* getShader(const std::string vertexShaderRelativePath,
-											const std::string fragmentShaderRelativePath) const;
+											const std::string fragmentShaderRelativePath,
+											bool cache = true) const;
 				
 				void reloadShaders();
 				
@@ -110,9 +111,11 @@ namespace kocmoc
 				
 				typedef std::vector<std::string > ResourcePathVector;
 				typedef std::vector<renderer::Shader* > ShaderVector;
+				typedef std::map<std::string, renderer::Shader* > ShaderCache;
 				
 				ResourcePathVector resourcePaths;
 				mutable ShaderVector shaders;
+				mutable ShaderCache shaderCache;
 			};
 		}
 	}

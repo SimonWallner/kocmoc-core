@@ -1,6 +1,5 @@
 #version 120
 
-#pragma include luminance.glsl
 varying vec2 uv;
 
 uniform sampler2D sDiffuse;
@@ -10,7 +9,7 @@ uniform float angleOfView;
 uniform float averageLuminance;
 
 const float HDRcontrast = 6.0f;
-const float HDRbias = 1.0f;
+const float HDRbias = 1.8f;
 
 vec4 tonemap(vec4 hdr)
 {
@@ -22,10 +21,25 @@ vec4 tonemap(vec4 hdr)
 	return vec4(ldr, hdr.a);
 }
 
+vec3 overblow(vec3 c)
+{
+	vec3 blow = c;
+	if (c.r > 1.0f || c.g > 1.0f || c.b > 1.0f)
+	{
+		blow.r = 1;
+		blow.g = 0;
+	}
+	if (c.r < 0.0f || c.g < 0.0f || c.b < 0.0f)
+	{
+		blow.b = 1.0;
+		blow.g = 0;
+	}
+	return blow;
+}
+
 void main(void)
 {
-//	const float barrelParam = 0.7;
-	const float barrelParam = 0.8;
+	const float barrelParam = 0.6;
 	float aspectRatio = dimension.x / dimension.y;
 
 	vec4 colour;
@@ -61,6 +75,7 @@ void main(void)
 
 	// hdr tonemapping 
 	colour = tonemap(colour);
-	
+
 	gl_FragColor = colour;
+	// gl_FragColor = vec4(overblow(colour.rgb), 1);
 }

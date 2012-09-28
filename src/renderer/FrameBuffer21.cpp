@@ -2,6 +2,7 @@
 
 #include <kocmoc-core/math/math.hpp>
 #include <kocmoc-core/renderer/Shader.hpp>
+#include <kocmoc-core/util/util.hpp>
 
 #include <kocmoc-core/resources/ResourceManager.hpp>
 
@@ -42,7 +43,7 @@ FrameBuffer21::FrameBuffer21(int _frameWidth, int _frameHeight, int _gateWidth, 
 	// create and bind colour texture
 	glGenTextures(1, &textureHandle);
 	glBindTexture(GL_TEXTURE_2D, textureHandle);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16, frameWidth, frameHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, frameWidth, frameHeight, 0, GL_RGBA, GL_FLOAT, NULL);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -134,21 +135,21 @@ void FrameBuffer21::drawFBO()
 	glBindTexture(GL_TEXTURE_2D, textureHandle);
 	glGenerateMipmap(GL_TEXTURE_2D);
 	
-	GLfloat* data = new GLfloat[averageWidth * averageHeight * 4];
+	unsigned int pixels = averageWidth * averageHeight;
+	GLfloat* data = new GLfloat[pixels * 4];
 	glGetTexImage(GL_TEXTURE_2D, maxMipLevel - 2, GL_RGBA, GL_FLOAT, data);
 	
-	GLfloat averageLuminance = 0;
-	for (int i = 0; i < (averageWidth * averageHeight); i++)
+	float logLum = 0.0f;
+	for (unsigned int i = 0; i < pixels; i++)
 	{
-		averageLuminance += data[i*4];		// r
-		averageLuminance += data[i*4 + 1];	// g
-		averageLuminance += data[i*4 + 2];	// b
+		logLum += util::logLuminance(data[i*4], data[i*4 + 1], data[i*4 + 2]);
 	}
-	averageLuminance /= (averageWidth * averageHeight);
-	objectifLune::Singleton::Get()->scalar("log lum", averageLuminance);
+	logLum /= (float) pixels;
+	
+	objectifLune::Singleton::Get()->scalar("log lum", logLum);
 	
 	// enforce hard boarders to compensate +- INF fuck-up.
-	averageLuminance = min<float>(max<float>(0.001f, averageLuminance), 10);
+	logLum = min<float>(max<float>(-10.0f, logLum), 10.0f);
 
 	
 	if (!shader->isPrimed())
@@ -172,7 +173,7 @@ void FrameBuffer21::drawFBO()
 	{
 		GLint location;
 		if ((location = shader->getUniformLocation("averageLuminance")) >= 0)
-			glUniform1f(location, averageLuminance);
+			glUniform1f(location, logLum);
 		
 		renderMesh->draw(NULL, glm::mat4(1));
 	}

@@ -158,10 +158,10 @@ void InputManager::poll(void)
 			glfwGetJoystickAxes(i, pos, numAxes);
 			
 			if (math::abs(pos[0]) > gamepadDeadZone) // left stick right
-				notifyAnalogListeners(ANALOG_EVENT_LEFT_STICK_X, AnalogEvent(pos[0]));
+				notifyAnalogListeners(ANALOG_EVENT_LEFT_STICK_X, AnalogEvent(pos[0] * 10.0f));
 			
 			if (math::abs(pos[1]) > gamepadDeadZone) // left stick up
-				notifyAnalogListeners(ANALOG_EVENT_LEFT_STICK_Y, AnalogEvent(pos[1]));
+				notifyAnalogListeners(ANALOG_EVENT_LEFT_STICK_Y, AnalogEvent(pos[1] * 10.0f));
 			
 			if (math::abs(pos[2]) > gamepadDeadZone) // right stick up
 				notifyAnalogListeners(ANALOG_EVENT_RIGHT_STICK_X, AnalogEvent(pos[2]));
@@ -170,10 +170,10 @@ void InputManager::poll(void)
 				notifyAnalogListeners(ANALOG_EVENT_RIGHT_STICK_Y, AnalogEvent(pos[3]));
 			
 			if (math::abs(pos[4]) > gamepadDeadZone) // left trigger
-				notifyAnalogListeners(ANALOG_EVENT_LEFT_TRIGGER, AnalogEvent((pos[4] / 2.0) + 0.5f));
+				notifyAnalogListeners(ANALOG_EVENT_LEFT_TRIGGER, AnalogEvent(((pos[4] / 2.0) + 0.5f) * 10.0f));
 			
 			if (math::abs(pos[5]) > gamepadDeadZone) // right stick right
-				notifyAnalogListeners(ANALOG_EVENT_RIGHT_TRIGGER, AnalogEvent((pos[5] / -2.0f) + 0.5f));
+				notifyAnalogListeners(ANALOG_EVENT_RIGHT_TRIGGER, AnalogEvent(((pos[5] / -2.0f) + 0.5f) * 10.0f));
 			
 //			for (unsigned int i = 0; i < numAxes; i++)
 //			{

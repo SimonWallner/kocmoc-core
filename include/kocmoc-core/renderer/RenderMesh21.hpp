@@ -66,6 +66,7 @@ namespace kocmoc
 				GLint projectionMatrixLocation;
 				GLint normalMatrixLocation;
 				GLint instanceLocation;
+				GLint cameraPositionLocation;
 				
 				Material* material;
 				glm::mat4 transform;
