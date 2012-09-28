@@ -62,7 +62,6 @@ namespace kocmoc
 				
 			private:
 				RenderMesh21* renderMesh;
-				GLuint logYTextureHandle;
 				unsigned int maxMipLevel;
 				GLint averageWidth, averageHeight;
 				

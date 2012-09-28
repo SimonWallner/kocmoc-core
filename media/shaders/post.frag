@@ -28,7 +28,7 @@ void main(void)
 	const float barrelParam = 0.8;
 	float aspectRatio = dimension.x / dimension.y;
 
-	vec4 color;
+	vec4 colour;
 
 
 	// === non planar projection ===
@@ -41,13 +41,14 @@ void main(void)
 	vec2 finalUV = (bentUV * vec2(1, aspectRatio)) / 2 + 0.5f;
 
 
-	// 4 tab multi sampling...
+	// 5 tap multi sampling...
 	vec2 msaaOffset = 0.5f * 1.0f/dimension;
-	vec4 c = texture2D(sDiffuse, finalUV + msaaOffset);
-	c += texture2D(sDiffuse, finalUV + msaaOffset * vec2(-1.0f, 1.0f));
+	vec4 c = texture2D(sDiffuse, finalUV);
+	c += texture2D(sDiffuse, finalUV + msaaOffset);
 	c += texture2D(sDiffuse, finalUV + msaaOffset * vec2(1.0f, -1.0f));
+	c += texture2D(sDiffuse, finalUV + msaaOffset * vec2(-1.0f, 1.0f));
 	c += texture2D(sDiffuse, finalUV + msaaOffset * vec2(-1.0f, -1.0f));
-	color = c / 4.0f;	
+	colour = c / 5.0f;	
 
 
 	// === vignetting ===
@@ -56,10 +57,10 @@ void main(void)
 
 	float delta = distance((uv - vec2(0.5, 0.5)) / vec2(1, aspectRatio), vec2(0, 0)) * 2.0f;
 	float darkening = 1 - pow(delta, power) * attenuation;
-	color = color * vec4(vec3(darkening), 1);
+	colour = colour * vec4(vec3(darkening), 1);
 
 	// hdr tonemapping 
-	color = tonemap(color);
+	colour = tonemap(colour);
 	
-	gl_FragColor = color;
+	gl_FragColor = colour;
 }
