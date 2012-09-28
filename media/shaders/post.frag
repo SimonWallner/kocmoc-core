@@ -9,7 +9,7 @@ uniform float angleOfView;
 uniform float averageLuminance;
 
 const float HDRcontrast = 6.0f;
-const float HDRbias = 1.8f;
+const float HDRbias = 1.5f;
 
 vec4 tonemap(vec4 hdr)
 {

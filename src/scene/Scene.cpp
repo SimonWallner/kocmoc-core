@@ -18,10 +18,6 @@ Scene::Scene()
 
 void Scene::render() const
 {
-	 camera->updateMatrices();
-	
-	// setup shader and load camera matrix
-	
 	// render meshes
 	for (MeshVector::const_iterator ci = meshes.begin();
 		 ci != meshes.end();

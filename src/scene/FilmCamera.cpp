@@ -26,7 +26,7 @@ using glm::translate;
 
 FilmCamera::FilmCamera(vec3 _eyePosition, vec3 _targetPosition, vec3 _upVector)	
 	: nearPlane(-0.1f)
-	, farPlane(-1000.f)
+	, farPlane(-10000.f)
 	, angleOfView(constants::pi/2.0f)
 	, horizontalMargin(0)
 	, verticalMargin(0)

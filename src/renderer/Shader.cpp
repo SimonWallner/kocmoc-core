@@ -34,17 +34,17 @@ bool Shader::prepare()
 
 	// Compile the shaders
 	vertexShader = compile(GL_VERTEX_SHADER, vertexShaderSource, vertexShaderName);
-	if (vertexShader == 0)
-		return false;
+//	if (vertexShader == 0)
+//		return false;
 
 	fragmentShader = compile(GL_FRAGMENT_SHADER, fragmentShaderSource, fragmentShaderName);
-	if (fragmentShader == 0)
-		return false;
+//	if (fragmentShader == 0)
+//		return false;
 
 	// Link the shaders into a program
 	link();
-	if (programHandle == 0)
-		return false;
+//	if (programHandle == 0)
+//		return false;
 	
 	// set texture sampler uniforms
 	bind();
