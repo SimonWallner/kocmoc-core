@@ -149,7 +149,8 @@ void FrameBuffer21::drawFBO()
 	objectifLune::Singleton::Get()->scalar("log lum", logLum);
 	
 	// enforce hard boarders to compensate +- INF fuck-up.
-	logLum = min<float>(max<float>(-10.0f, logLum), 10.0f);
+	// Also cap the low and high end.
+	logLum = min<float>(max<float>(0.0f, logLum), 10.0f);
 
 	
 	if (!shader->isPrimed())

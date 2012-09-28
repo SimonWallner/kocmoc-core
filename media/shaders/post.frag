@@ -21,20 +21,20 @@ vec4 tonemap(vec4 hdr)
 	return vec4(ldr, hdr.a);
 }
 
-vec3 overblow(vec3 c)
+vec3 colorWarn(vec3 c)
 {
-	vec3 blow = c;
+	vec3 warn = c;
 	if (c.r > 1.0f || c.g > 1.0f || c.b > 1.0f)
 	{
-		blow.r = 1;
-		blow.g = 0;
+		warn.r = 1;
+		warn.g = 0;
 	}
 	if (c.r < 0.0f || c.g < 0.0f || c.b < 0.0f)
 	{
-		blow.b = 1.0;
-		blow.g = 0;
+		warn.b = 1.0;
+		warn.g = 0;
 	}
-	return blow;
+	return warn;
 }
 
 void main(void)
@@ -77,5 +77,5 @@ void main(void)
 	colour = tonemap(colour);
 
 	gl_FragColor = colour;
-	// gl_FragColor = vec4(overblow(colour.rgb), 1);
+	// gl_FragColor = vec4(colorWarn(colour.rgb), 1);
 }
