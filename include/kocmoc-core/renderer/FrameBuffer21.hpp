@@ -36,7 +36,8 @@ namespace kocmoc
 				 */
 				FrameBuffer21(int frameWidth, int frameHeight, int gateWidth, int gateHeight,
 							  int windowWidth, int windowHeight, float angleOfView,
-							  util::Properties* props, const resources::ResourceManager* resourceManager);
+							  util::Properties* props, const resources::ResourceManager* resourceManager,
+							  float supersample = 2);
 				
 				~FrameBuffer21() {}
 				
@@ -64,6 +65,8 @@ namespace kocmoc
 				RenderMesh21* renderMesh;
 				unsigned int maxMipLevel;
 				GLint averageWidth, averageHeight;
+				
+				float supersample;
 				
 				void setFBOTexture();
 				void createQuad();

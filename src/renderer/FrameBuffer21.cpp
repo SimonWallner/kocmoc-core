@@ -17,18 +17,16 @@ using kocmoc::core::math::max;
 FrameBuffer21::FrameBuffer21(int _frameWidth, int _frameHeight, int _gateWidth, int _gateHeight,
 							 int _windowWidth, int _windowHeight,
 							 float _angleOfView,
-							 util::Properties* props, const resources::ResourceManager* _resourceManager)
-	: frameWidth(_frameWidth * 2)
-	, frameHeight(_frameHeight * 2)
-	, gateWidth(_gateWidth * 2)
-	, gateHeight(_gateHeight * 2)
-//	: frameWidth(_frameWidth)
-//	, frameHeight(_frameHeight)
-//	, gateWidth(_gateWidth)
-//	, gateHeight(_gateHeight)
+							 util::Properties* props, const resources::ResourceManager* _resourceManager,
+							 float _supersample)
+	: frameWidth(_frameWidth * _supersample)
+	, frameHeight(_frameHeight * _supersample)
+	, gateWidth(_gateWidth * _supersample)
+	, gateHeight(_gateHeight * _supersample)
 	, windowWidth(_windowWidth)
 	, windowHeight(_windowHeight)
 	, angleOfView(_angleOfView)
+	, supersample(_supersample)
 	, resourceManager(_resourceManager)
 {
 	// generate flaot fbo
@@ -93,23 +91,16 @@ void FrameBuffer21::check()
 void FrameBuffer21::createQuad()
 {
 	// TODO: migrate to renderMesh
-
-	GLfloat topX = -(float)(gateWidth / 2) / windowWidth;
-	GLfloat topY = (float)(gateHeight / 2) / windowHeight;
-	GLfloat bottomX = (float)(gateWidth / 2) / windowWidth;
-	GLfloat bottomY = -(float)(gateHeight / 2) / windowHeight;
-	
-//	GLfloat topX = -(float)(gateWidth) / windowWidth;
-//	GLfloat topY = (float)(gateHeight) / windowHeight;
-//	GLfloat bottomX = (float)(gateWidth) / windowWidth;
-//	GLfloat bottomY = -(float)(gateHeight) / windowHeight;
+	GLfloat topX = -(float)(gateWidth / supersample) / windowWidth;
+	GLfloat topY = (float)(gateHeight / supersample) / windowHeight;
+	GLfloat bottomX = (float)(gateWidth / supersample) / windowWidth;
+	GLfloat bottomY = -(float)(gateHeight / supersample) / windowHeight;
 
 	float horizontalScale = (float)gateWidth / frameWidth;
 	float horizontalOffset = (1 - horizontalScale) / 2.0f;
 	float verticalScale = (float)gateHeight / frameHeight;
 	float verticallOffset = (1 - verticalScale) / 2.0f;
 
-//	unsigned int indices[] = {0, 3, 2, 1, 0, 2};
 	unsigned int indices[] = {0, 1, 2, 0, 2, 3};
 	
 	GLfloat quadVertices[] = {bottomX,  bottomY, -0.5f,
