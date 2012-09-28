@@ -3,6 +3,7 @@
 #include <kocmoc-core/math/math.hpp>
 #include <kocmoc-core/renderer/Shader.hpp>
 #include <kocmoc-core/util/util.hpp>
+#include <kocmoc-core/scene/ImageLoader.hpp>
 
 #include <kocmoc-core/resources/ResourceManager.hpp>
 
@@ -63,6 +64,9 @@ FrameBuffer21::FrameBuffer21(int _frameWidth, int _frameHeight, int _gateWidth, 
 
 	setupShader(props);
 	createQuad();
+	
+	ImageLoader imageLoader;
+	lutHandle = imageLoader.loadImage3D(resourceManager->getAbsolutePath("LUT32-clear.png"));
 }
 
 void FrameBuffer21::check()
@@ -135,6 +139,7 @@ void FrameBuffer21::drawFBO()
 	glBindTexture(GL_TEXTURE_2D, textureHandle);
 	glGenerateMipmap(GL_TEXTURE_2D);
 	
+	// compute average luminance
 	unsigned int pixels = averageWidth * averageHeight;
 	GLfloat* data = new GLfloat[pixels * 4];
 	glGetTexImage(GL_TEXTURE_2D, maxMipLevel - 2, GL_RGBA, GL_FLOAT, data);
@@ -158,6 +163,8 @@ void FrameBuffer21::drawFBO()
 		shader->bind();
 		{
 			GLint location;
+			if ((location = shader->getUniformLocation("sColourLUT")) >= 0)
+				glUniform1i(location, 1);
 			
 			if ((location = shader->getUniformLocation("dimension")) >= 0)
 				glUniform2i(location, gateWidth, gateHeight);
@@ -186,4 +193,7 @@ void FrameBuffer21::setFBOTexture()
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureHandle);
+	
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_3D, lutHandle);
 }

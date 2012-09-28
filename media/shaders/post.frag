@@ -3,6 +3,7 @@
 varying vec2 uv;
 
 uniform sampler2D sDiffuse;
+uniform sampler3D sColourLUT;
 
 uniform ivec2 dimension;
 uniform float angleOfView;
@@ -75,6 +76,8 @@ void main(void)
 
 	// hdr tonemapping 
 	colour = tonemap(colour);
+	
+	colour = texture3D(sColourLUT, colour.rbg + 1.0f/64.0f); // need to change channels in the lookup
 
 	gl_FragColor = colour;
 	// gl_FragColor = vec4(colorWarn(colour.rgb), 1);

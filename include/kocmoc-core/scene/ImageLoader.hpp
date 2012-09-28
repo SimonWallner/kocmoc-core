@@ -40,16 +40,11 @@ namespace kocmoc
 				 * @return The texture handle. If an error occurs, \c0 is
 				 *		returned instead
 				 */
-				GLuint loadImage(std::string path);
-
-
-				/**
-				 * Take a screenshot and save it to disk
-				 * @param sequence if it is true, the screenshots are numbered in 
-				 *		a sequence.
-				 */
-				void screenShot(void);
+				GLuint loadImage(const std::string& path);
 				
+				GLuint loadImage3D(const std::string& path, bool degamma = false);
+				
+			private:
 				typedef std::map<types::Symbol, GLuint > ImageCache;
 				ImageCache cache;
 			};

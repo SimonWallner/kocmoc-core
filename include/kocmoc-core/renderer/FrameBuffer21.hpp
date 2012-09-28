@@ -73,6 +73,8 @@ namespace kocmoc
 				void check();
 				
 				const resources::ResourceManager* resourceManager;
+				
+				GLuint lutHandle;
 			};
 		}
 	}
