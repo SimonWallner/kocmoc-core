@@ -6,11 +6,16 @@
 #include <kocmoc-core/util/util.hpp>
 #include <objectif-lune/Singleton.hpp>
 #include <kocmoc-core/renderer/Shader.hpp>
+#include <kocmoc-core/scene/ImageLoader.hpp>
 
 using namespace kocmoc::core;
 using namespace resources;
 
 using std::string;
+
+ResourceManager::ResourceManager()
+	: imageLoader(new scene::ImageLoader())
+{}
 
 void ResourceManager::addResourcePath(const string path)
 {
@@ -151,4 +156,53 @@ void ResourceManager::getResourceStream(const std::string& resourceName,
 {
 	string absolutePath = getAbsolutePath(resourceName);
 	stream.open(absolutePath.c_str());
+}
+
+GLuint ResourceManager::loadImage(const std::string& resourceName, bool degamma) const
+{
+	ImageCache::const_iterator found = imageCache2D.find(resourceName);
+	if (found != imageCache2D.end())
+	{
+		return found->second.handle;
+	}
+	
+	GLuint handle = imageLoader->loadImage(getAbsolutePath(resourceName), degamma);
+
+	imageCache2D[resourceName] = ImageCacheEntry(handle, degamma);
+	return handle;
+}
+
+GLuint ResourceManager::loadImage3D(const std::string& resourceName, bool degamma) const
+{
+	ImageCache::const_iterator found = imageCache3D.find(resourceName);
+	if (found != imageCache3D.end())
+	{
+		return found->second.handle;
+	}
+	
+	GLuint handle = imageLoader->loadImage3D(getAbsolutePath(resourceName));
+	
+	imageCache3D[resourceName] = ImageCacheEntry(handle, degamma);
+	return handle;
+}
+
+void ResourceManager::reloadImages()
+{
+	objectifLune::Singleton::Get()->debug("Reloading all images ...");
+	
+	for(ImageCache::const_iterator ci = imageCache2D.begin();
+		ci != imageCache2D.end();
+		ci++)
+	{
+		imageLoader->loadImage(getAbsolutePath(ci->first), ci->second.handle,
+							   ci->second.degamma);
+	}
+	
+	for(ImageCache::const_iterator ci = imageCache3D.begin();
+		ci != imageCache3D.end();
+		ci++)
+	{
+		imageLoader->loadImage3D(getAbsolutePath(ci->first), ci->second.handle,
+								 ci->second.degamma);
+	}
 }

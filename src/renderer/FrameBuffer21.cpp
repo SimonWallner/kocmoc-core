@@ -65,8 +65,7 @@ FrameBuffer21::FrameBuffer21(int _frameWidth, int _frameHeight, int _gateWidth, 
 	setupShader(props);
 	createQuad();
 	
-	ImageLoader imageLoader;
-	lutHandle = imageLoader.loadImage3D(resourceManager->getAbsolutePath("LUT32-clear.png"));
+	lutHandle = resourceManager->loadImage3D("LUT32.png");
 }
 
 void FrameBuffer21::check()

@@ -40,13 +40,11 @@ namespace kocmoc
 				 * @return The texture handle. If an error occurs, \c0 is
 				 *		returned instead
 				 */
-				GLuint loadImage(const std::string& path);
+				GLuint loadImage(const std::string& path, bool degamma = true);
+				GLuint loadImage(const std::string& path, GLuint existingHandle, bool degamma = true);
 				
-				GLuint loadImage3D(const std::string& path, bool degamma = false);
-				
-			private:
-				typedef std::map<types::Symbol, GLuint > ImageCache;
-				ImageCache cache;
+				GLuint loadImage3D(const std::string& path, bool degamma = true);
+				GLuint loadImage3D(const std::string& path, GLuint existingHandle, bool degamma = true);
 			};
 		}
 	}

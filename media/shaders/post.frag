@@ -75,7 +75,7 @@ void main(void)
 	colour = colour * vec4(vec3(darkening), 1);
 
 	// hdr tonemapping 
-	colour = tonemap(colour);
+	// colour = tonemap(colour);
 	
 	colour = texture3D(sColourLUT, colour.rbg + 1.0f/64.0f); // need to change channels in the lookup
 

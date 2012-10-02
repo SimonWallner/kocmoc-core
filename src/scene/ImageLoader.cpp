@@ -19,18 +19,16 @@ ImageLoader::ImageLoader(void)
 	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
 }
 
-
-GLuint ImageLoader::loadImage(const std::string& filename)
+GLuint ImageLoader::loadImage(const std::string& filename, bool degamma)
 {
-	types::Symbol fileNameSymbol = types::symbolize(filename.c_str());
-	ImageCache::const_iterator ci = cache.find(fileNameSymbol);
-	if (ci != cache.end())
-	{
-		return ci->second;
-	}
-	
 	GLuint handle;
 	glGenTextures(1, &handle); /* Texture name generation */
+
+	return loadImage(filename, handle, degamma);
+}
+
+GLuint ImageLoader::loadImage(const std::string& filename, GLuint handle, bool degamma)
+{
 	std::string fullPath = filename;
 	
 	// this code is based on the code found at http://gpwiki.org/index.php/DevIL:Tutorials:Basics
@@ -50,7 +48,11 @@ GLuint ImageLoader::loadImage(const std::string& filename)
 		
 		glBindTexture(GL_TEXTURE_2D, handle); /* Binding of texture name */
 		
-		GLint internalFormat = GL_RGBA;// ilGetInteger(IL_IMAGE_FORMAT);
+		GLint internalFormat;
+		if (degamma)
+			internalFormat = GL_SRGB8_ALPHA8;
+		else
+			internalFormat = GL_RGBA;// ilGetInteger(IL_IMAGE_FORMAT);
 		
 		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, ilGetInteger(IL_IMAGE_WIDTH),
 					 ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE,
@@ -67,8 +69,7 @@ GLuint ImageLoader::loadImage(const std::string& filename)
 		// remove loaded image from memory
 		ilDeleteImages(1, &texid);
 		
-		objectifLune::Singleton::Get()->debug("texture: '" + filename + "' loaded successfully");
-		cache[fileNameSymbol] = handle;
+		objectifLune::Singleton::Get()->trace("texture loaded successfully: '" + filename + "'");
 		return handle;
 	} else
 	{
@@ -83,7 +84,11 @@ GLuint ImageLoader::loadImage3D(const std::string& filename, bool degamma)
 {
 	GLuint handle;
 	glGenTextures(1, &handle);
-	
+	return loadImage3D(filename, handle, degamma);
+}
+
+GLuint ImageLoader::loadImage3D(const std::string& filename, GLuint handle, bool degamma)
+{
 	// this code is based on the code found at http://gpwiki.org/index.php/DevIL:Tutorials:Basics
 	ILuint texid;
 	ilGenImages(1, &texid);
@@ -127,6 +132,7 @@ GLuint ImageLoader::loadImage3D(const std::string& filename, bool degamma)
 		// remove loaded image from memory
 		ilDeleteImages(1, &texid);
 		
+		objectifLune::Singleton::Get()->trace("texture 3D loaded successfully: '" + filename + "'");
 		return handle;
 	} else
 	{

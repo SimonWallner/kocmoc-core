@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 
+#include <kocmoc-core/gl.h>
 #include <kocmoc-core/exception/ResourceNotFoundException.hpp>
 #include <kocmoc-core/exception/ParseErrorException.hpp>
 
@@ -15,6 +16,11 @@ namespace kocmoc
 		namespace renderer
 		{
 			class Shader;
+		}
+		
+		namespace scene
+		{
+			class ImageLoader;
 		}
 		
 		namespace resources
@@ -29,6 +35,8 @@ namespace kocmoc
 			{
 			
 			public:
+				
+				ResourceManager();
 				
 				/**
 				 * Add a resource path.
@@ -95,6 +103,10 @@ namespace kocmoc
 					throw(exception::ParseErrorException,
 						  exception::ResourceNotFoundException);
 
+				GLuint loadImage(const std::string& resourceName, bool degamma = true) const;
+				GLuint loadImage3D(const std::string& resourceName, bool degamma = true) const;
+				
+				void reloadImages();
 				
 			private:
 				
@@ -116,6 +128,30 @@ namespace kocmoc
 				ResourcePathVector resourcePaths;
 				mutable ShaderVector shaders;
 				mutable ShaderCache shaderCache;
+				
+				scene::ImageLoader* imageLoader;
+				
+				struct ImageCacheEntry
+				{
+					GLuint handle;
+					bool degamma;
+					
+					ImageCacheEntry(GLuint _handle, bool _degamma)
+						: handle(_handle)
+						, degamma(_degamma)
+					{}
+					
+					ImageCacheEntry& operator=(ImageCacheEntry const &rhs)
+					{
+						handle = rhs.handle;
+						degamma = rhs.degamma;
+						return *this;
+					}
+				};
+				
+				typedef std::map<const std::string, const ImageCacheEntry > ImageCache;
+				mutable ImageCache imageCache2D;
+				mutable ImageCache imageCache3D;
 			};
 		}
 	}
