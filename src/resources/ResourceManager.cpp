@@ -180,7 +180,7 @@ GLuint ResourceManager::loadImage3D(const std::string& resourceName, bool degamm
 		return found->second.handle;
 	}
 	
-	GLuint handle = imageLoader->loadImage3D(getAbsolutePath(resourceName));
+	GLuint handle = imageLoader->loadImage3D(getAbsolutePath(resourceName), degamma);
 	
 	imageCache3D[resourceName] = ImageCacheEntry(handle, degamma);
 	return handle;

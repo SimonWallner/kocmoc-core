@@ -136,20 +136,15 @@ namespace kocmoc
 					GLuint handle;
 					bool degamma;
 					
+					ImageCacheEntry() {};
+					
 					ImageCacheEntry(GLuint _handle, bool _degamma)
 						: handle(_handle)
 						, degamma(_degamma)
-					{}
-					
-					ImageCacheEntry& operator=(ImageCacheEntry const &rhs)
-					{
-						handle = rhs.handle;
-						degamma = rhs.degamma;
-						return *this;
-					}
+					{} 
 				};
 				
-				typedef std::map<const std::string, const ImageCacheEntry > ImageCache;
+				typedef std::map<const std::string, ImageCacheEntry > ImageCache;
 				mutable ImageCache imageCache2D;
 				mutable ImageCache imageCache3D;
 			};
