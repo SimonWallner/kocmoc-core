@@ -65,7 +65,7 @@ void main(void)
 	c += texture2D(sDiffuse, finalUV + msaaOffset * vec2(-1.0f, 1.0f));
 	c += texture2D(sDiffuse, finalUV + msaaOffset * vec2(-1.0f, -1.0f));
 	colour = c / 5.0f;	
-	colour = texture2D(sDiffuse, uv);
+	// colour = texture2D(sDiffuse, uv);
 
 
 	// === vignetting ===
@@ -77,7 +77,7 @@ void main(void)
 	// colour = colour * vec4(vec3(darkening), 1);
 
 	// hdr tonemapping 
-	// colour = tonemap(colour);
+	colour = tonemap(colour);
 	// gl_FragColor = vec4(colorWarn(colour.rgb), 1);
 	
 	colour = texture3D(sColourLUT, colour.rgb * ((lutSize - 1.0f) / (lutSize)) + (0.5f / lutSize));
