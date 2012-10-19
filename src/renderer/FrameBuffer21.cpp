@@ -66,6 +66,7 @@ FrameBuffer21::FrameBuffer21(int _frameWidth, int _frameHeight, int _gateWidth, 
 	createQuad();
 	
 	lutHandle = resourceManager->loadImage3D("LUT32.png", false);
+	lutSize = 32;
 }
 
 void FrameBuffer21::check()
@@ -164,6 +165,9 @@ void FrameBuffer21::drawFBO()
 			GLint location;
 			if ((location = shader->getUniformLocation("sColourLUT")) >= 0)
 				glUniform1i(location, 1);
+			
+			if ((location = shader->getUniformLocation("lutSize")) >= 0)
+				glUniform1i(location, lutSize);
 			
 			if ((location = shader->getUniformLocation("dimension")) >= 0)
 				glUniform2i(location, gateWidth, gateHeight);

@@ -8,6 +8,7 @@ uniform sampler3D sColourLUT;
 uniform ivec2 dimension;
 uniform float angleOfView;
 uniform float averageLuminance;
+uniform int lutSize;
 
 const float HDRcontrast = 6.0f;
 const float HDRbias = 1.5f;
@@ -64,6 +65,7 @@ void main(void)
 	c += texture2D(sDiffuse, finalUV + msaaOffset * vec2(-1.0f, 1.0f));
 	c += texture2D(sDiffuse, finalUV + msaaOffset * vec2(-1.0f, -1.0f));
 	colour = c / 5.0f;	
+	colour = texture2D(sDiffuse, uv);
 
 
 	// === vignetting ===
@@ -72,13 +74,14 @@ void main(void)
 
 	float delta = distance((uv - vec2(0.5, 0.5)) / vec2(1, aspectRatio), vec2(0, 0)) * 2.0f;
 	float darkening = 1 - pow(delta, power) * attenuation;
-	colour = colour * vec4(vec3(darkening), 1);
+	// colour = colour * vec4(vec3(darkening), 1);
 
 	// hdr tonemapping 
 	// colour = tonemap(colour);
-	
-	colour = texture3D(sColourLUT, colour.rbg + 1.0f/64.0f); // need to change channels in the lookup
-
-	gl_FragColor = colour;
 	// gl_FragColor = vec4(colorWarn(colour.rgb), 1);
+	
+	colour = texture3D(sColourLUT, colour.rgb * ((lutSize - 1.0f) / (lutSize)) + (0.5f / lutSize));
+	
+	gl_FragColor = colour;
+
 }

@@ -75,6 +75,7 @@ namespace kocmoc
 				const resources::ResourceManager* resourceManager;
 				
 				GLuint lutHandle;
+				unsigned int lutSize;
 			};
 		}
 	}
