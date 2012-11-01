@@ -13,7 +13,6 @@
 #include <list>
 
 #include <kocmoc-core/componentSystem/Component.hpp>
-#include <kocmoc-core/component/ObjectBehaviour.hpp>
 #include <kocmoc-core/types/Symbol.hpp>
 
 namespace kocmoc
@@ -32,7 +31,8 @@ namespace kocmoc
 		
 		namespace component
 		{
-		
+			class Gizmo;
+			
 			class Renderable : public core::componentSystem::Component
 			{
 			public:
@@ -50,24 +50,13 @@ namespace kocmoc
 				/**
 				 * A a renderMesh to the list, so that it is rendered during
 				 * onRender(...)
-				 */
-				void add(renderer::RenderMesh* renderMesh)
-				{
-					renderMeshList.push_back(renderMesh);
-				}
-				
-				/**
-				 * get the first mesh in this renderable
-				 */
-				renderer::RenderMesh* getFirstMesh()
-				{
-					return (*renderMeshList.begin());
-				}
+				 */ 
+				void add(renderer::RenderMesh* renderMesh);
 				
 			private:
 				typedef std::list<renderer::RenderMesh* > RenderMeshList;
 				
-				ObjectBehaviour* objectBehaviour;
+				Gizmo* gizmo;
 				
 				RenderMeshList renderMeshList;
 			};

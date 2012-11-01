@@ -51,23 +51,22 @@ namespace kocmoc
 				 */
 				virtual void init() {}
 				
+				
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+				
 				/**
 				 * update callback.
 				 * @param deltaT time since the last update in seconds
 				 * @param current time, this can also be negative.
 				 */
-				virtual void onUpdate(float deltaT, float t)
-				{
-					UNUSED deltaT;
-					UNUSED t;
-				}
+				virtual void onUpdate(float deltaT, float t) {}
 				
-				virtual void onRender(renderer::RenderPass pass, scene::Camera* camera)
-				{
-					UNUSED pass;
-					UNUSED camera;
-				}
-								
+				virtual void onRender(renderer::RenderPass pass, scene::Camera* camera) {}
+				
+#pragma GCC diagnostic pop
+				
+				
 			protected:
 				/**
 				 * Set the parent of this component.

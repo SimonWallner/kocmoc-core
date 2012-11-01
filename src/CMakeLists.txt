@@ -42,6 +42,11 @@ if(NOT FREETYPE_FOUND)
 	message(WARNING "Freetype not found!")
 endif()
 
+find_package(Bullet REQUIRED)
+if(NOT BULLET_FOUND)
+	message(WARNING "Bullet not found!")
+endif()
+
 
 # find_package(Boost REQUIRED)
 # if(NOT Boost_FOUND)
@@ -63,7 +68,7 @@ include_directories(
 	${FREETYPE_INCLUDE_DIR_freetype2}
 	# ${Boost_INCLUDE_DIR}
 	${PROJECT_SOURCE_DIR}/external/objectif-lune/server/include
-	# ${PROJECT_SOURCE_DIR}/external/objectif-lune/server/external/websocketpp/src
+	${BULLET_INCLUDE_DIR}
 )
 
 link_directories(
@@ -97,6 +102,8 @@ set (TARGET_LINK_LIBRARIES kocmoc-core
 	${TINYXML_LIBRARIES}
 	${FREETYPE_LIBRARY}
 	objectif-lune
+	${BULLET_DYNAMICS_LIBRARY}
+	${BULLET_MATH_LIBRARY}
 )
 # link to assimp release right now, since the debug lib is not found
 # if it is present, ASSIMP_LIBRARY should work again.

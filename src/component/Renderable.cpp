@@ -19,6 +19,7 @@
 
 #include <kocmoc-core/gl.h>
 #include <kocmoc-core/renderer/RenderMesh.hpp>
+#include <kocmoc-core/component/Gizmo.hpp>
 
 using namespace kocmoc::core::component;
 
@@ -38,9 +39,9 @@ void Renderable::onRender(renderer::RenderPass pass, Camera* camera)
 {
 	if (pass == kocmoc::core::renderer::RP_NORMAL)
 	{
-		mat4 modelMatrix = translate(objectBehaviour->position)
-			* toMat4(objectBehaviour->rotation)
-			* scale(objectBehaviour->scale);
+		mat4 modelMatrix = translate(gizmo->position)
+			* toMat4(gizmo->orientation)
+			* scale(gizmo->scale);
 		
 		for (RenderMeshList::const_iterator ci = renderMeshList.begin();
 			 ci != renderMeshList.end();
@@ -53,5 +54,11 @@ void Renderable::onRender(renderer::RenderPass pass, Camera* camera)
 
 void Renderable::init()
 {
-	objectBehaviour = parent->getComponent<ObjectBehaviour>();
+	gizmo = parent->getComponent<Gizmo>();
+}
+
+
+void Renderable::add(renderer::RenderMesh* renderMesh)
+{
+	renderMeshList.push_back(renderMesh);
 }
