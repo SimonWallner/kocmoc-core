@@ -13,6 +13,9 @@ namespace kocmoc
 	{
 		namespace time
 		{
+			/**
+			 * Simple timer class. All times are in secods.
+			 */
 			class Timer
 			{
 			public:

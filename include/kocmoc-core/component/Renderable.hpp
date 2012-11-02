@@ -31,7 +31,7 @@ namespace kocmoc
 		
 		namespace component
 		{
-			class Gizmo;
+			class Transform;
 			
 			class Renderable : public core::componentSystem::Component
 			{
@@ -56,7 +56,7 @@ namespace kocmoc
 			private:
 				typedef std::list<renderer::RenderMesh* > RenderMeshList;
 				
-				Gizmo* gizmo;
+				Transform* transform;
 				
 				RenderMeshList renderMeshList;
 			};

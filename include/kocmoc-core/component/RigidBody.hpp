@@ -14,7 +14,7 @@ namespace kocmoc
 	{
 		namespace component
 		{
-			class Gizmo;
+			class Transform;
 			
 			class RigidBody : public core::componentSystem::Component
 			{
@@ -32,7 +32,7 @@ namespace kocmoc
 				virtual void onUpdate(float deltaT, float t);
 				
 			private:
-				Gizmo* gizmo;
+				Transform* transform;
 				
 				btScalar mass;
 				btCollisionShape* collisionShape;

@@ -19,7 +19,7 @@
 
 #include <kocmoc-core/gl.h>
 #include <kocmoc-core/renderer/RenderMesh.hpp>
-#include <kocmoc-core/component/Gizmo.hpp>
+#include <kocmoc-core/component/Transform.hpp>
 
 using namespace kocmoc::core::component;
 
@@ -28,7 +28,6 @@ using std::string;
 using kocmoc::core::scene::Camera;
 
 using glm::mat4;
-using glm::toMat4;
 using glm::translate;
 using glm::scale;
 
@@ -39,9 +38,7 @@ void Renderable::onRender(renderer::RenderPass pass, Camera* camera)
 {
 	if (pass == kocmoc::core::renderer::RP_NORMAL)
 	{
-		mat4 modelMatrix = translate(gizmo->position)
-			* toMat4(gizmo->orientation)
-			* scale(gizmo->scale);
+		mat4 modelMatrix = transform->matrix;
 		
 		for (RenderMeshList::const_iterator ci = renderMeshList.begin();
 			 ci != renderMeshList.end();
@@ -54,7 +51,7 @@ void Renderable::onRender(renderer::RenderPass pass, Camera* camera)
 
 void Renderable::init()
 {
-	gizmo = parent->getComponent<Gizmo>();
+	transform = parent->getComponent<Transform>();
 }
 
 

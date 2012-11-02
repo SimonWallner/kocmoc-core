@@ -1,27 +1,22 @@
 #include <kocmoc-core/component/RigidBody.hpp>
 
-#include <kocmoc-core/component/Gizmo.hpp>
+#include <kocmoc-core/component/Transform.hpp>
 
 using namespace kocmoc::core::component;
 
 void RigidBody::init()
 {
-	gizmo = parent->getComponent<Gizmo>();
+	transform = parent->getComponent<Transform>();
 	
-	btVector3 position(gizmo->position.x, gizmo->position.y, gizmo->position.z);
-	btQuaternion orientation(gizmo->orientation.x, gizmo->orientation.y, gizmo->orientation.z, gizmo->orientation.w);
-
-	btTransform transform;
-	transform.setOrigin(position);
-	transform.setRotation(orientation);
-	
+	btTransform bulletTransform;
+	bulletTransform.setFromOpenGLMatrix(transform->toGLMatrix());
 	
 	btVector3 localInertia(0, 0, 0);
 	if (mass > 0)
-		collisionShape->calculateLocalInertia(mass,localInertia);
+		collisionShape->calculateLocalInertia(mass, localInertia);
 	
 	//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-	motionState = new btDefaultMotionState(transform);
+	motionState = new btDefaultMotionState(bulletTransform);
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, collisionShape, localInertia);
 	btRigidBody* body = new btRigidBody(rbInfo);
 	
@@ -34,14 +29,15 @@ void RigidBody::onUpdate(float deltaT, float t)
 	UNUSED deltaT;
 	UNUSED t;
 	
-	btTransform transform;
-	motionState->getWorldTransform(transform);
-	gizmo->position = glm::vec3(transform.getOrigin().x(),
-								transform.getOrigin().y(),
-								transform.getOrigin().z());
+	btTransform bulletTransform;
+	motionState->getWorldTransform(bulletTransform);
 	
-	gizmo->orientation = glm::quat(transform.getRotation().x(),
-								   transform.getRotation().y(),
-								   transform.getRotation().z(),
-								   transform.getRotation().w());
+	float m[16];
+	bulletTransform.getOpenGLMatrix(m);
+	transform->matrix = glm::mat4(m[0], m[1], m[2], m[3],
+								  m[4], m[5], m[6], m[7],
+								  m[8], m[9], m[10], m[11],
+								  m[12], m[13], m[14], m[15]);
+
+
 }
