@@ -25,10 +25,9 @@ namespace kocmoc
 			{
 			public:
 				RenderMesh21(scene::TriangleMesh* triangleMesh, Shader* _shader,
-							 Material* _material = NULL, glm::mat4 _transform = glm::mat4())
+							 Material* _material = NULL)
 					: RenderMesh(triangleMesh, _shader)
 					, material(_material)
-					, transform(_transform)
 				{}
 				
 				~RenderMesh21() {}
@@ -41,8 +40,6 @@ namespace kocmoc
 				void prepare();
 				
 				void draw(scene::Camera *camera, glm::mat4 modelMatrix) const;
-				void drawInstanced(scene::Camera *camera, glm::mat4 modelMatrix,
-								   unsigned int instanceCount) const;
 				
 				void setShaderParam(std::string name, glm::vec3 value);
 				void setShaderParam(std::string name, int value);
@@ -69,7 +66,6 @@ namespace kocmoc
 				GLint cameraPositionLocation;
 				
 				Material* material;
-				glm::mat4 transform;
 			};
 		}
 	}

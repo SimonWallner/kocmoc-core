@@ -80,13 +80,6 @@ void RenderMesh21::prepare(void)
 
 void RenderMesh21::draw(Camera *camera, glm::mat4 modelMatrix) const
 {
-	drawInstanced(camera, modelMatrix, 1);
-}
-
-void RenderMesh21::drawInstanced(Camera *camera,
-								 glm::mat4 modelMatrix,
-								 unsigned int instanceCount) const
-{
 	if (!prepared)
 	{
 		objectifLune::Singleton::Get()->warn("The mesh you try to render is not ready yet! Prepare it first.");
@@ -130,11 +123,11 @@ void RenderMesh21::drawInstanced(Camera *camera,
 		// update shader
 		
 		if (modelMatrixLocation >= 0)
-			glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix * transform));
+			glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 		
 		if (normalMatrixLocation >= 0)
 			glUniformMatrix4fv(normalMatrixLocation, 1, GL_FALSE,
-							   glm::value_ptr(glm::inverseTranspose(modelMatrix * transform)));
+							   glm::value_ptr(glm::inverseTranspose(modelMatrix)));
 		
 		if (camera != NULL)
 		{
@@ -147,18 +140,12 @@ void RenderMesh21::drawInstanced(Camera *camera,
 			if (cameraPositionLocation >= 0)
 				glUniform3fv(cameraPositionLocation, 1, glm::value_ptr(camera->getPosition()));
 		}
-		
-		for (unsigned int i = 0; i < instanceCount; i++)
-		{
-			if (instanceLocation >= 0)
-				glUniform1i(instanceLocation, i);
 			
-			
-			glDrawElements(GL_TRIANGLES,
-						   triangleMesh->vertexIndexCount,
-						   GL_UNSIGNED_INT,
-						   NULL);
-		}
+		glDrawElements(GL_TRIANGLES,
+					   triangleMesh->vertexIndexCount,
+					   GL_UNSIGNED_INT,
+					   NULL);
+
 	}
 	shader->unbind();
 	

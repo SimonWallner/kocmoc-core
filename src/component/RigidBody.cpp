@@ -18,7 +18,8 @@ void RigidBody::init()
 	//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
 	motionState = new btDefaultMotionState(bulletTransform);
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, collisionShape, localInertia);
-	btRigidBody* body = new btRigidBody(rbInfo);
+	body = new btRigidBody(rbInfo);
+	body->setDamping(0.1, 0.1);
 	
 	//add the body to the dynamics world
 	dynamicsWorld->addRigidBody(body);
@@ -40,4 +41,9 @@ void RigidBody::onUpdate(float deltaT, float t)
 								  m[12], m[13], m[14], m[15]);
 
 
+}
+
+void RigidBody::applyCentralImpulse(glm::vec3 impulse)
+{
+	body->applyCentralImpulse(btVector3(impulse.x, impulse.y, impulse.z));
 }

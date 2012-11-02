@@ -109,6 +109,8 @@ namespace kocmoc
 				 * |/______________ +X
 				 */
 				void dolly(glm::vec3 direction);
+				
+				glm::mat4 getTransformation() const;
 
 			private:
 				/** The position of the camera/eye */

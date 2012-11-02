@@ -161,3 +161,8 @@ int FilmCamera::getGateWidth() const {
 int FilmCamera::getGateHeight() const {
 	return height;
 }
+
+glm::mat4 FilmCamera::getTransformation() const
+{
+	return translate(glm::mat4(), position);
+}

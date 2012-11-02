@@ -15,6 +15,7 @@ namespace kocmoc
 			{
 			public:
 				Transform();
+				Transform(glm::mat4 matrix);
 				
 				float* toGLMatrix();
 

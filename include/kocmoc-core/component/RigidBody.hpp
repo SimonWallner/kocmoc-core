@@ -1,6 +1,8 @@
 #ifndef KOCMOC_CORE_COMPONENT_RIGID_BODY_HPP_
 #define KOCMOC_CORE_COMPONENT_RIGID_BODY_HPP_
 
+#include <glm/glm.hpp>
+
 #include <kocmoc-core/componentSystem/Component.hpp>
 
 #pragma GCC diagnostic push
@@ -31,6 +33,8 @@ namespace kocmoc
 				
 				virtual void onUpdate(float deltaT, float t);
 				
+				void applyCentralImpulse(glm::vec3 impulse);
+				
 			private:
 				Transform* transform;
 				
@@ -38,6 +42,7 @@ namespace kocmoc
 				btCollisionShape* collisionShape;
 				btDiscreteDynamicsWorld* dynamicsWorld;
 				btDefaultMotionState* motionState;
+				btRigidBody* body;
 			};
 		}
 	}

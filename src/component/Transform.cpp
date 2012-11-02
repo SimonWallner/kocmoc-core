@@ -7,6 +7,10 @@ Transform::Transform()
 	: matrix(glm::mat4())
 {}
 
+Transform::Transform(glm::mat4 _matrix)
+	: matrix(_matrix)
+{}
+
 float* Transform::toGLMatrix()
 {
 	return glm::value_ptr(matrix);
