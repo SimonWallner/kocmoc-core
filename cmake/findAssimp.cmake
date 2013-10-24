@@ -29,7 +29,7 @@
 #  ASSIMP_LIBRARIES
 
 
-find_path (ASSIMP_INCLUDE_DIR NAMES assimp/assimp.h
+find_path (ASSIMP_INCLUDE_DIR NAMES assimp/ai_assert.h
   PATHS ENV{CPATH} $ENV{ASSIMP_DIR} $ENV{ASSIMP_DIR}/include $ENV{INCLUDE} $ENV{INCLUDE}
   /usr/include /usr/local/include /opt/local/include ENV INCLUDE/assimp
   ${ASSIMP_ROOT}/include
