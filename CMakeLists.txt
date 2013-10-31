@@ -66,7 +66,8 @@ endif()
 set(KOCMOC_CORE_MEDIA_PATH ${PROJECT_SOURCE_DIR}/media/)
 configure_file(media/kocmoc-core-config.xml.in ${KOCMOC_CORE_CONFIG_TARGET_LOCATION})
 
-
+set(GLFW_BUILD_EXAMPLES 'OFF')
+set(GLFW_BUILD_TESTS 'OFF')
 add_subdirectory(external/glfw)
 add_subdirectory(external/objectif-lune/server)
 add_subdirectory(src)

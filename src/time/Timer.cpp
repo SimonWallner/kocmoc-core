@@ -21,6 +21,9 @@ Timer::Timer(GLFWwindow _windowHandle, std::string _name)
 	{
 		frameTimes[i] = 0.0f;
 	}
+	
+	UNUSED windowHandle;
+	UNUSED _windowHandle;
 }
 
 void Timer::tick()
