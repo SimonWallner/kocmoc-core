@@ -7,3 +7,6 @@
 [submodule "external/objectif-lune"]
 	path = external/objectif-lune
 	url = git@github.com:SimonWallner/objectif-lune.git
+[submodule "external/tinyxml2"]
+	path = external/tinyxml2
+	url = https://github.com/leethomason/tinyxml2.git

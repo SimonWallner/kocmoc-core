@@ -3,15 +3,15 @@
 # set compiler flags
 add_definitions(-Wall -Wextra -pedantic -Werror -Winit-self -Wno-long-long)
 add_definitions(-g -O0 -fstack-protector-all)
-
 # later add  -Weffc++ -Wdouble-promotion -Wshadow -Wc++0x-compat -Wfloat-equal -Wmissing-include-dirs
 
 
 # ----------------- find stuff -------------------------
 # find mac related frameworks
-find_library(COCOA_FRAMEWORK Cocoa)
-find_library(IOKIT NAMES IOKit)
-
+if (APPLE)
+	find_library(COCOA_FRAMEWORK Cocoa)
+	find_library(IOKIT NAMES IOKit)
+endif()
 
 find_package(OpenGL REQUIRED)
 if(NOT OPENGL_FOUND)
@@ -33,19 +33,14 @@ if(NOT ASSIMP_FOUND)
 	message(WARNING "Assimp not found! Install assimp as well as the debug lib.")
 endif()
 
-find_package(TinyXML REQUIRED)
-if(NOT TINYXML_FOUND)
-	message(WARNING "TinyXML not found!")
-endif()
+# find_package(TinyXML REQUIRED)
+# if(NOT TINYXML_FOUND)
+#	message(WARNING "TinyXML not found!")
+# endif()
 
 find_package(Freetype REQUIRED)
 if(NOT FREETYPE_FOUND)
 	message(WARNING "Freetype not found!")
-endif()
-
-find_package(Bullet REQUIRED)
-if(NOT BULLET_FOUND)
-	message(WARNING "Bullet not found!")
 endif()
 
 
@@ -64,12 +59,13 @@ include_directories(
 	${GLEW_INCLUDE_PATH}
 	${IL_INCLUDE_DIR}
 	${ASSIMP_INCLUDE_DIR}
-	${TINYXML_INCLUDE_DIR}
+	# ${TINYXML_INCLUDE_DIR}
+	${PROJECT_SOURCE_DIR}/external/tinyxml2
 	${FREETYPE_INCLUDE_DIR_ft2build}
 	${FREETYPE_INCLUDE_DIR_freetype2}
 	# ${Boost_INCLUDE_DIR}
 	${PROJECT_SOURCE_DIR}/external/objectif-lune/server/include
-	${BULLET_INCLUDE_DIR}
+	# ${PROJECT_SOURCE_DIR}/external/objectif-lune/server/external/websocketpp/src
 )
 
 link_directories(
@@ -90,22 +86,27 @@ list(APPEND INCLUDE_HEADER_FILES "${PROJECT_BINARY_DIR}/include/kocmoc-core/vers
 
 add_library(kocmoc-core ${SOURCE_FILES} ${HEADER_FILES} ${INCLUDE_C_HEADER_FILES} ${INCLUDE_HEADER_FILES})
 
-set (TARGET_LINK_LIBRARIES kocmoc-core
+set(TARGET_LINK_LIBRARIES kocmoc-core
 	glfw
-	${COCOA_FRAMEWORK}
-	${IOKIT}
 	${OPENGL_gl_LIBRARY}
 	${GLEW_LIBRARY}
 	${IL_LIBRARIES}
 	${ILU_LIBRARIES}
 	${ILUT_LIBRARIES}
 	${ASSIMP_LIBRARY_RELEASE}
-	${TINYXML_LIBRARIES}
+	# ${TINYXML_LIBRARIES}
+	tinyxml2
 	${FREETYPE_LIBRARY}
 	objectif-lune
-	${BULLET_DYNAMICS_LIBRARY}
-	${BULLET_MATH_LIBRARY}
 )
+
+if (APPLE)
+	set(TARGET_LINK_LIBRARIES ${TARGET_LINK_LIBRARIES}
+		${COCOA_FRAMEWORK}
+		${IOKIT}
+	)
+endif()
+
 # link to assimp release right now, since the debug lib is not found
 # if it is present, ASSIMP_LIBRARY should work again.
 
