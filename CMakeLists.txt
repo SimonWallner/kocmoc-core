@@ -73,4 +73,5 @@ configure_file(media/kocmoc-core-config.xml.in ${KOCMOC_CORE_CONFIG_TARGET_LOCAT
 add_subdirectory(external/glfw)
 add_subdirectory(external/objectif-lune/server)
 add_subdirectory(external/tinyxml2)
+add_subdirectory(external/assimp)
 add_subdirectory(src)

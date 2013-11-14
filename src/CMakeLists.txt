@@ -18,30 +18,44 @@ if(NOT OPENGL_FOUND)
 	message(WARNING "OpenGL not found!")
 endif()
 
-find_package(GLEW REQUIRED)
-if(NOT GLEW_FOUND)
-	message(WARNING "GLEW not found!")
+# -- glew --
+if (WIN32)
+	set(GLEW_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/external/windows/glew/include)
+	if(CMAKE_SIZEOF_VOID_P EQUAL 8) # i.e. 64 bit
+		set(GLEW_LIBRARY ${PROJECT_SOURCE_DIR}/external/windows/glew/lib/Release/x64/glew32s.lib)
+	else() # 32 bit
+		set(GLEW_LIBRARY ${PROJECT_SOURCE_DIR}/external/windows/glew/lib/Release/Win32/glew32s.lib)
+	endif()
+else(WIN32)
+	find_package(GLEW REQUIRED)
+	if(NOT GLEW_FOUND)
+		message(WARNING "GLEW not found!")
+	endif()
 endif()
 
-find_package(DevIL REQUIRED)
-if(NOT IL_FOUND)
-	message(WARNING "DevIL not found!")
-endif()
+# -- devil --
+if (WIN32)
+	set(IL_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/external/windows/devil/include)
+	set(IL_LIBRARIES ${PROJECT_SOURCE_DIR}/external/windows/devil/DevIL.lib)
+	set(ILU_LIBRARIES ${PROJECT_SOURCE_DIR}/external/windows/devil/ILU.lib)
+	set(ILUT_LIBRARIES ${PROJECT_SOURCE_DIR}/external/windows/devil/ILUT.lib)
+else()
+	find_package(DevIL REQUIRED)
+	if(NOT IL_FOUND)
+		message(WARNING "DevIL not found!")
+	endif()
+endif(WIN32)
 
-find_package(Assimp REQUIRED)
-if(NOT ASSIMP_FOUND)
-	message(WARNING "Assimp not found! Install assimp as well as the debug lib.")
-endif()
-
-# find_package(TinyXML REQUIRED)
-# if(NOT TINYXML_FOUND)
-#	message(WARNING "TinyXML not found!")
-# endif()
-
-find_package(Freetype REQUIRED)
-if(NOT FREETYPE_FOUND)
-	message(WARNING "Freetype not found!")
-endif()
+# -- freetype --
+if (WIN32)
+	set(FREETYPE_INCLUDE_DIR_freetype2 ${PROJECT_SOURCE_DIR}/external/windows/freetype/include)
+	set(FREETYPE_LIBRARY ${PROJECT_SOURCE_DIR}/external/windows/freetype/lib/freetype2412_D.lib)
+else()
+	find_package(Freetype REQUIRED)
+	if(NOT FREETYPE_FOUND)
+		message(WARNING "Freetype not found!")
+	endif()
+endif(WIN32)
 
 
 # find_package(Boost REQUIRED)
@@ -56,10 +70,9 @@ include_directories(
 	${PROJECT_BINARY_DIR}/include
 	${PROJECT_SOURCE_DIR}/external/glfw/include
 	${PROJECT_SOURCE_DIR}/external/glm
+	${PROJECT_SOURCE_DIR}/external/assimp/include
 	${GLEW_INCLUDE_PATH}
 	${IL_INCLUDE_DIR}
-	${ASSIMP_INCLUDE_DIR}
-	# ${TINYXML_INCLUDE_DIR}
 	${PROJECT_SOURCE_DIR}/external/tinyxml2
 	${FREETYPE_INCLUDE_DIR_ft2build}
 	${FREETYPE_INCLUDE_DIR_freetype2}
