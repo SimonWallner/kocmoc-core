@@ -71,7 +71,7 @@ include_directories(
 	${PROJECT_SOURCE_DIR}/external/glfw/include
 	${PROJECT_SOURCE_DIR}/external/glm
 	${PROJECT_SOURCE_DIR}/external/assimp/include
-	${GLEW_INCLUDE_PATH}
+	${GLEW_INCLUDE_DIR}
 	${IL_INCLUDE_DIR}
 	${PROJECT_SOURCE_DIR}/external/tinyxml2
 	${FREETYPE_INCLUDE_DIR_ft2build}
