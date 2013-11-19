@@ -79,6 +79,7 @@ include_directories(
 	# ${Boost_INCLUDE_DIR}
 	${PROJECT_SOURCE_DIR}/external/objectif-lune/server/include
 	# ${PROJECT_SOURCE_DIR}/external/objectif-lune/server/external/websocketpp/src
+	${PROJECT_SOURCE_DIR}/external/bullet/src
 )
 
 link_directories(
@@ -111,6 +112,9 @@ set(TARGET_LINK_LIBRARIES kocmoc-core
 	tinyxml2
 	${FREETYPE_LIBRARY}
 	objectif-lune
+	BulletDynamics
+	LinearMath
+	BulletCollision
 )
 
 if (APPLE)
