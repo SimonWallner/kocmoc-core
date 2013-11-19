@@ -57,11 +57,12 @@ else()
 	endif()
 endif(WIN32)
 
+# -- tinyxml2 --
+find_package(TinyXML REQUIRED)
+if(NOT TINYXML_FOUND)
+	message(WARNING "TinyXML not found!")
+endif()
 
-# find_package(Boost REQUIRED)
-# if(NOT Boost_FOUND)
-# 	message(WARNING "Boost not found!")
-# endif()
 
 
 include_directories(
@@ -73,12 +74,11 @@ include_directories(
 	${PROJECT_SOURCE_DIR}/external/assimp/include
 	${GLEW_INCLUDE_DIR}
 	${IL_INCLUDE_DIR}
-	${PROJECT_SOURCE_DIR}/external/tinyxml2
+	# ${PROJECT_SOURCE_DIR}/external/tinyxml2
+	${TINYXML_INCLUDE_DIR}
 	${FREETYPE_INCLUDE_DIR_ft2build}
 	${FREETYPE_INCLUDE_DIR_freetype2}
-	# ${Boost_INCLUDE_DIR}
 	${PROJECT_SOURCE_DIR}/external/objectif-lune/server/include
-	# ${PROJECT_SOURCE_DIR}/external/objectif-lune/server/external/websocketpp/src
 	${PROJECT_SOURCE_DIR}/external/bullet/src
 )
 
@@ -108,8 +108,8 @@ set(TARGET_LINK_LIBRARIES kocmoc-core
 	${ILU_LIBRARIES}
 	${ILUT_LIBRARIES}
 	${ASSIMP_LIBRARY_RELEASE}
-	# ${TINYXML_LIBRARIES}
-	tinyxml2
+	${TINYXML_LIBRARIES}
+	# tinyxml2
 	${FREETYPE_LIBRARY}
 	objectif-lune
 	BulletDynamics
