@@ -441,7 +441,7 @@ configure_file ( ${PROJECT_SOURCE_DIR}/BulletConfig.cmake.in
                  ${CMAKE_CURRENT_BINARY_DIR}/BulletConfig.cmake
                  @ONLY ESCAPE_QUOTES
                )
-install ( FILES ${CMAKE_SOURCE_DIR}/UseBullet.cmake
+install ( FILES ${PROJECT_SOURCE_DIR}/UseBullet.cmake
                 ${CMAKE_CURRENT_BINARY_DIR}/BulletConfig.cmake
           DESTINATION ${BULLET_CONFIG_CMAKE_PATH}
         )

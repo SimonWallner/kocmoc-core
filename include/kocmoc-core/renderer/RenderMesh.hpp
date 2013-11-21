@@ -23,26 +23,6 @@ namespace kocmoc
 
 		namespace renderer
 		{
-			
-			// vertex attribute constants
-			static const char* const vertexAttributePositionName = "inPosition";
-			static const types::uint vertexAttributePositionIndex = 0;
-			
-			static const char* const vertexAttributeNormalName = "inNormal";
-			static const types::uint vertexAttributeNormalIndex = 1;
-			
-			static const char* const vertexAttributeUVName = "inUv";
-			static const types::uint vertexAttributeUVIndex = 2;
-			
-			static const char* const vertexAttributeTangentName = "inTangent";
-			static const types::uint vertexAttributeTangentIndex = 3;
-			
-			// texture units
-			static const int textureUnitDiffuse		= 0;
-			static const int textureUnitSpecular	= 1;
-			static const int textureUnitGloss		= 2;
-			static const int textureUnitNormal		= 3;
-			
 			class Shader;
 
 			/**

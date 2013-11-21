@@ -9,7 +9,7 @@
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 #pragma GCC diagnostic ignored "-Woverloaded-virtual"
 #pragma GCC diagnostic ignored "-Wignored-qualifiers"
-#include "btBulletDynamicsCommon.h"
+#include <btBulletDynamicsCommon.h>
 #pragma GCC diagnostic pop
 
 namespace kocmoc

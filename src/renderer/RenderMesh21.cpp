@@ -9,8 +9,10 @@
 
 #include <kocmoc-core/scene/Camera.hpp>
 #include <kocmoc-core/renderer/Material.hpp>
+#include <kocmoc-core/renderer/constants.hpp>
 
 #include <objectif-lune/Singleton.hpp>
+
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 

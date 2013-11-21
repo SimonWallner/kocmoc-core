@@ -99,7 +99,7 @@ void Context::setGLStates()
 	
 //	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 //	glPointSize(2.0f);
-//	glLineWidth(2.0f);
+	glLineWidth(2.0f);
 	
 //	glEnable(GL_CULL_FACE);
 //	glCullFace(GL_BACK);

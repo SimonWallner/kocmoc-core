@@ -4,10 +4,12 @@
 #include <cassert>
 
 #include <kocmoc-core/renderer/RenderMesh.hpp>
+#include <kocmoc-core/renderer/constants.hpp>
 #include <kocmoc-core/util/util.hpp>
 #include <kocmoc-core/resources/ResourceManager.hpp>
 
 #include <objectif-lune/Singleton.hpp>
+
 
 using namespace kocmoc::core::renderer;
 
@@ -133,6 +135,7 @@ void Shader::link(void)
 	glBindAttribLocation(programHandle, vertexAttributeNormalIndex, vertexAttributeNormalName);
 	glBindAttribLocation(programHandle, vertexAttributeUVIndex, vertexAttributeUVName);
 	glBindAttribLocation(programHandle, vertexAttributeTangentIndex, vertexAttributeTangentName);
+	glBindAttribLocation(programHandle, vertexAttributeColorIndex, vertexAttributeColorName);
 		
 	glLinkProgram(programHandle);
 
