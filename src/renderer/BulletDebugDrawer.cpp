@@ -36,6 +36,7 @@ void BulletDebugDrawer::drawLine(const btVector3 &from, const btVector3 &to,
 							 const btVector3 &fromColor, const btVector3 &toColor)
 {
 	cnt++;
+
 	interleavedLineData.push_back(from.getX());
 	interleavedLineData.push_back(from.getY());
 	interleavedLineData.push_back(from.getZ());
@@ -52,26 +53,21 @@ void BulletDebugDrawer::drawLine(const btVector3 &from, const btVector3 &to,
 
 void BulletDebugDrawer::draw(scene::Camera* camera)
 {
+	glBindBuffer(GL_ARRAY_BUFFER, vboHandle);
+	
 	// reallocate GPU buffer if we need to draw more lines than last frame
 	if (interleavedLineData.size() > vboAllocatedSize)
 	{
-		glDeleteBuffers(1, &vboHandle);
-		glGenBuffers(1, &vboHandle);
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboHandle);
-		
 		unsigned int newVboAllocatedSize = interleavedLineData.size() * 1.5; // *1.5 is for extra padding to avoid ongoing reallocation
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+		glBufferData(GL_ARRAY_BUFFER,
 					 sizeof(float) * newVboAllocatedSize,
 					 NULL,
 					 GL_DYNAMIC_DRAW);
 		vboAllocatedSize = newVboAllocatedSize;
 	}
 	
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboHandle);
-	
 	// copy data
-	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER,
+	glBufferSubData(GL_ARRAY_BUFFER,
 					0, // offset
 					sizeof(float) * interleavedLineData.size(),
 					interleavedLineData.data());
@@ -85,10 +81,14 @@ void BulletDebugDrawer::draw(scene::Camera* camera)
 	
 	shader->bind();
 	if (viewMatrixLocation >= 0)
+	{
 		glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, glm::value_ptr(camera->getViewMatrix()));
+	}
 	
 	if (projectionMatrixLocation >= 0)
+	{
 		glUniformMatrix4fv(projectionMatrixLocation, 1, GL_FALSE, glm::value_ptr(camera->getProjectionMatrix()));
+	}
 	
 	
 	glEnableVertexAttribArray(vertexAttributePositionIndex);
@@ -96,15 +96,16 @@ void BulletDebugDrawer::draw(scene::Camera* camera)
 						  sizeof(float) * 3, 0);
 	
 	glEnableVertexAttribArray(vertexAttributeColorIndex);
-	glVertexAttribPointer(vertexAttributeNormalIndex, 3, GL_FLOAT, false,
+	glVertexAttribPointer(vertexAttributeColorIndex, 3, GL_FLOAT, false,
 						  sizeof(float) * 3, BUFFER_OFFSET(sizeof(float) * 3));
 	
-	glDrawArrays(GL_LINES, 0, 10);
+	
+	glDrawArrays(GL_LINES, 0, interleavedLineData.size() / 12);
 	
 	// cleanup
 	glDisableVertexAttribArray(vertexAttributePositionIndex);
 	glDisableVertexAttribArray(vertexAttributeColorIndex);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void BulletDebugDrawer::clear()
