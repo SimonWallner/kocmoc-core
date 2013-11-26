@@ -4,12 +4,11 @@ using namespace kocmoc::core::scene;
 
 using kocmoc::core::types::symbolize;
 using kocmoc::core::types::Symbol;
-using kocmoc::core::types::uint;
 
 
-TriangleMesh::TriangleMesh(uint _vertexIndexCount,
-						   uint* _indices,
-						   uint _vertexCount,
+TriangleMesh::TriangleMesh(unsigned int _vertexIndexCount,
+						   unsigned int* _indices,
+						   unsigned int _vertexCount,
 						   float* _vertexPositions,
 						   float* _vertexNormals,
 						   float* _vertexUVs,

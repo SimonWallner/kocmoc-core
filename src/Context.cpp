@@ -109,6 +109,9 @@ void Context::setGLStates()
 	
 //	glClampColor(GL_CLAMP_READ_COLOR, GL_FIXED_ONLY);
 	
+	// make the bullet line drawing prettier
+	glEnable(GL_POLYGON_OFFSET_LINE);
+	
 	if (props->getBool(types::symbolize("vsync")))
 		glfwSwapInterval(1);
 	else

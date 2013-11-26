@@ -227,11 +227,9 @@ void InputManager::poll(void)
 //			for (unsigned int i = 0; i < numButtons; i++)
 //			{
 //				if (buttons[i] == GLFW_PRESS)
-//					objectifLune::Singleton::Get()->scalar("button " + i, 1.0f);
-//				else
-//					objectifLune::Singleton::Get()->scalar("button " + i, 0.0f);
+//					objectifLune::Singleton::Get()->scalar("button ", i);
+//
 //			}
-
 			
 			delete [] buttons;
 		}

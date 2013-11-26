@@ -122,6 +122,6 @@ void BulletDebugDrawer::reportErrorWarning (const char* warningString)
 
 int BulletDebugDrawer::getDebugMode() const
 {
-	return DBG_DrawWireframe;
+	return DBG_DrawWireframe | DBG_DrawAabb;
 }
 

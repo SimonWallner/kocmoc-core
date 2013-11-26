@@ -5,7 +5,6 @@
 #include <string>
 
 #include <kocmoc-core/types/Symbol.hpp>
-#include <kocmoc-core/types/types.h>
 
 
 namespace kocmoc
@@ -84,7 +83,7 @@ namespace kocmoc
 				 * @note	the \c vertexIndexCount defines the length of the vertex index
 				 *			arrays and it is constant.
 				 */
-				const types::uint vertexIndexCount;
+				const unsigned int vertexIndexCount;
 				
 				/**
 				 * The index array.
@@ -93,7 +92,7 @@ namespace kocmoc
 				 * are indexed with the same indices, since hardware does not
 				 * allow multiple indices per vertex.
 				 */
-				const types::uint* indices;
+				const unsigned int* indices;
 				
 				/**
 				 * The number of unique vertices in this mesh.
@@ -102,7 +101,7 @@ namespace kocmoc
 				 * array the number of vertices in all vertex attributes is
 				 * the same.
 				 */
-				const types::uint vertexCount;
+				const unsigned int vertexCount;
 				
 				/**
 				 * The vertex positions. Stride = 3
@@ -139,9 +138,9 @@ namespace kocmoc
 				 * @param	vertexUVs			optional, can be \c NULL
 				 * @param	vertexTangents		optional, can be \c NULL
 				 */
-				TriangleMesh(types::uint vertexIndexCount,
-							 types::uint* indices,
-							 types::uint vertexCount,
+				TriangleMesh(unsigned int vertexIndexCount,
+							 unsigned int* indices,
+							 unsigned int vertexCount,
 							 float* vertexPositions,
 							 float* vertexNormals = NULL,
 							 float* vertexUVs = NULL,
