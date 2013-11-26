@@ -14,5 +14,5 @@ varying vec3 color;
 void main(void)
 {
 	gl_Position = projectionMatrix * viewMatrix * inPosition;
-	color = inColor;
+	color = inColor * 1000;
 }

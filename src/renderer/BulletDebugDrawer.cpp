@@ -93,14 +93,14 @@ void BulletDebugDrawer::draw(scene::Camera* camera)
 	
 	glEnableVertexAttribArray(vertexAttributePositionIndex);
 	glVertexAttribPointer(vertexAttributePositionIndex, 3, GL_FLOAT, false,
-						  sizeof(float) * 3, 0);
+						  sizeof(float) * 6, 0);
 	
 	glEnableVertexAttribArray(vertexAttributeColorIndex);
 	glVertexAttribPointer(vertexAttributeColorIndex, 3, GL_FLOAT, false,
-						  sizeof(float) * 3, BUFFER_OFFSET(sizeof(float) * 3));
+						  sizeof(float) * 6, BUFFER_OFFSET(sizeof(float) * 3));
 	
 	
-	glDrawArrays(GL_LINES, 0, interleavedLineData.size() / 12);
+	glDrawArrays(GL_LINES, 0, interleavedLineData.size() / 6);
 	
 	// cleanup
 	glDisableVertexAttribArray(vertexAttributePositionIndex);
