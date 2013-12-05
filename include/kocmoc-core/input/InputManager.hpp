@@ -130,6 +130,9 @@ namespace kocmoc
 				
 				void notifyAnalogListeners(int analogEventSymbolicConstant, const AnalogEvent& event);
 				void notifyButtonListeners(int buttonEventSymbolicConstant, const ButtonEvent& event) const;
+				
+				bool buttonWasPressed[16];
+				void handleButtonState(unsigned char buttonState, bool& wasPressed, int buttonSymbolicConstant);
 			};
 		}
 	}

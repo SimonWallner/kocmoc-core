@@ -24,6 +24,10 @@ InputManager::InputManager(GLFWwindow _windowHandle)
 {
 	glfwSetInputMode(windowHandle, GLFW_STICKY_KEYS, GL_TRUE);
 	glfwSetInputMode(windowHandle, GLFW_CURSOR_MODE, GLFW_CURSOR_HIDDEN);
+	
+	for (unsigned int i = 0; i < 16; i++) {
+		buttonWasPressed[i] = false;
+	}
 }
 
 
@@ -206,8 +210,16 @@ void InputManager::poll(void)
 			unsigned char *buttons = new unsigned char[numButtons];
 			glfwGetJoystickButtons(i, buttons, numButtons);
 			
-			if (buttons[11] == GLFW_PRESS)
-				notifyButtonListeners(BUTTON_EVENT_XBOX_A, ButtonEvent(ButtonEvent::HELD));
+			
+			handleButtonState(buttons[11], buttonWasPressed[11], BUTTON_EVENT_XBOX_A);
+			handleButtonState(buttons[12], buttonWasPressed[12], BUTTON_EVENT_XBOX_B);
+			handleButtonState(buttons[13], buttonWasPressed[13], BUTTON_EVENT_XBOX_X);
+			handleButtonState(buttons[14], buttonWasPressed[14], BUTTON_EVENT_XBOX_Y);
+			handleButtonState(buttons[4], buttonWasPressed[4], BUTTON_EVENT_XBOX_START);
+			handleButtonState(buttons[5], buttonWasPressed[5], BUTTON_EVENT_XBOX_BACK);
+			
+//			if (buttons[11] == GLFW_PRESS)
+//				notifyButtonListeners(BUTTON_EVENT_XBOX_A, ButtonEvent(ButtonEvent::HELD));
 			
 			if (buttons[12] == GLFW_PRESS)
 				notifyButtonListeners(BUTTON_EVENT_XBOX_B, ButtonEvent(ButtonEvent::HELD));
@@ -233,6 +245,25 @@ void InputManager::poll(void)
 			
 			delete [] buttons;
 		}
+	}
+}
+
+void InputManager::handleButtonState(unsigned char buttonState, bool& wasPressed, int buttonSymbolicConstant)
+{
+	if (buttonState == GLFW_PRESS && !wasPressed) // button pressed
+	{
+		notifyButtonListeners(buttonSymbolicConstant, ButtonEvent(ButtonEvent::PRESSED));
+		wasPressed = true;
+	}
+	else if (buttonState == GLFW_RELEASE && wasPressed) // button released
+	{
+		notifyButtonListeners(buttonSymbolicConstant, ButtonEvent(ButtonEvent::RELEASED));
+		wasPressed = false;
+	}
+	
+	if (buttonState == GLFW_PRESS) // button held
+	{
+		notifyButtonListeners(buttonSymbolicConstant, ButtonEvent(ButtonEvent::HELD));
 	}
 }
 
