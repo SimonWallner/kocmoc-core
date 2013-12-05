@@ -161,23 +161,29 @@ void InputManager::poll(void)
 			GLfloat *pos = new GLfloat[numAxes];
 			glfwGetJoystickAxes(i, pos, numAxes);
 			
-			if (math::abs(pos[0]) > gamepadDeadZone) // left stick right
-				notifyAnalogListeners(ANALOG_EVENT_LEFT_STICK_X, AnalogEvent(pos[0] * 10.0f));
+			// left stick right
+			notifyAnalogListeners(ANALOG_EVENT_LEFT_STICK_X,
+								  AnalogEvent(math::deadZone(gamepadDeadZone, pos[0])));
 			
-			if (math::abs(pos[1]) > gamepadDeadZone) // left stick up
-				notifyAnalogListeners(ANALOG_EVENT_LEFT_STICK_Y, AnalogEvent(pos[1] * 10.0f));
+			// left stick up
+			notifyAnalogListeners(ANALOG_EVENT_LEFT_STICK_Y,
+								  AnalogEvent(math::deadZone(gamepadDeadZone, pos[1])));
 			
-			if (math::abs(pos[2]) > gamepadDeadZone) // right stick up
-				notifyAnalogListeners(ANALOG_EVENT_RIGHT_STICK_X, AnalogEvent(pos[2]));
+			// right stick up
+			notifyAnalogListeners(ANALOG_EVENT_RIGHT_STICK_X,
+								  AnalogEvent(math::deadZone(gamepadDeadZone, pos[2])));
 			
-			if (math::abs(pos[3]) > gamepadDeadZone) // right stick right
-				notifyAnalogListeners(ANALOG_EVENT_RIGHT_STICK_Y, AnalogEvent(pos[3]));
+			// right stick right
+			notifyAnalogListeners(ANALOG_EVENT_RIGHT_STICK_Y,
+								  AnalogEvent(math::deadZone(gamepadDeadZone, pos[3])));
 			
-			if (math::abs(pos[4]) > gamepadDeadZone) // left trigger
-				notifyAnalogListeners(ANALOG_EVENT_LEFT_TRIGGER, AnalogEvent(((pos[4] / 2.0) + 0.5f) * 10.0f));
+			// left trigger
+			notifyAnalogListeners(ANALOG_EVENT_LEFT_TRIGGER,
+								  AnalogEvent(math::deadZone(gamepadDeadZone, (pos[4] / 2.0f) + 0.5f)));
 			
-			if (math::abs(pos[5]) > gamepadDeadZone) // right stick right
-				notifyAnalogListeners(ANALOG_EVENT_RIGHT_TRIGGER, AnalogEvent(((pos[5] / -2.0f) + 0.5f) * 10.0f));
+			// right stick right
+			notifyAnalogListeners(ANALOG_EVENT_RIGHT_TRIGGER,
+								  AnalogEvent(math::deadZone(gamepadDeadZone, (pos[5] / -2.0f) + 0.5f)));
 			
 //			for (unsigned int i = 0; i < numAxes; i++)
 //			{
@@ -217,30 +223,17 @@ void InputManager::poll(void)
 			handleButtonState(buttons[14], buttonWasPressed[14], BUTTON_EVENT_XBOX_Y);
 			handleButtonState(buttons[4], buttonWasPressed[4], BUTTON_EVENT_XBOX_START);
 			handleButtonState(buttons[5], buttonWasPressed[5], BUTTON_EVENT_XBOX_BACK);
-			
-//			if (buttons[11] == GLFW_PRESS)
-//				notifyButtonListeners(BUTTON_EVENT_XBOX_A, ButtonEvent(ButtonEvent::HELD));
-			
-			if (buttons[12] == GLFW_PRESS)
-				notifyButtonListeners(BUTTON_EVENT_XBOX_B, ButtonEvent(ButtonEvent::HELD));
-			
-			if (buttons[13] == GLFW_PRESS)
-				notifyButtonListeners(BUTTON_EVENT_XBOX_X, ButtonEvent(ButtonEvent::HELD));
-			
-			if (buttons[14] == GLFW_PRESS)
-				notifyButtonListeners(BUTTON_EVENT_XBOX_Y, ButtonEvent(ButtonEvent::HELD));
-			
-			if (buttons[4] == GLFW_PRESS)
-				notifyButtonListeners(BUTTON_EVENT_XBOX_START, ButtonEvent(ButtonEvent::HELD));
-			
-			if (buttons[5] == GLFW_PRESS)
-				notifyButtonListeners(BUTTON_EVENT_XBOX_BACK, ButtonEvent(ButtonEvent::HELD));
-			
+
+			handleButtonState(buttons[0], buttonWasPressed[0], BUTTON_EVENT_XBOX_DPAD_UP);
+			handleButtonState(buttons[1], buttonWasPressed[1], BUTTON_EVENT_XBOX_DPAD_DOWN);
+			handleButtonState(buttons[2], buttonWasPressed[2], BUTTON_EVENT_XBOX_DPAD_LEFT);
+			handleButtonState(buttons[3], buttonWasPressed[3], BUTTON_EVENT_XBOX_DPAD_RIGHT);
+
+		
 //			for (unsigned int i = 0; i < numButtons; i++)
 //			{
 //				if (buttons[i] == GLFW_PRESS)
 //					objectifLune::Singleton::Get()->scalar("button ", i);
-//
 //			}
 			
 			delete [] buttons;

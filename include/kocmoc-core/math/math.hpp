@@ -139,6 +139,24 @@ namespace kocmoc
 				float t = -glm::dot(n, (r0 - x0)) / glm::dot(n, v);
 				return r0 + v * t;
 			}
+			
+			 /**
+			  * Inverted box that is 0 inside [-domain, +domain] and 1 else
+			  */
+			template <typename T>
+			inline T invertedBox(T domain, T value)
+			{
+				return (T)(value < -domain || value > domain);
+			}
+			
+			/**
+			 * Returns 0 inside [-deadZone, +deadZone], value else
+			 */
+			template <typename T>
+			inline T deadZone(T deadZone, T value)
+			{
+				return value * invertedBox(deadZone, value);
+			}
 		}		
 	}
 }
