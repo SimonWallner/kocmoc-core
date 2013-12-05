@@ -39,7 +39,7 @@ Context::Context(util::Properties* _props)
         exit(EXIT_FAILURE);
     }
 	glfwMakeContextCurrent(windowHandle);
-	glfwSetWindowPos(windowHandle, 0, 0);
+	glfwSetWindowPos(windowHandle, 280, 0);
 	
 	GLenum err = glewInit();
 	if (err != GLEW_OK)
@@ -101,8 +101,8 @@ void Context::setGLStates()
 //	glPointSize(2.0f);
 	glLineWidth(2.0f);
 	
-//	glEnable(GL_CULL_FACE);
-//	glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 	
 //	glEnable(GL_BLEND);
 //	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
