@@ -25,7 +25,9 @@ using glm::mat3;
 using glm::translate;
 
 FilmCamera::FilmCamera(vec3 _eyePosition, vec3 _targetPosition, vec3 _upVector)	
-	: nearPlane(-0.1f)
+	: phi(0.0f)
+	, theta(0.0f)
+	, nearPlane(-0.1f)
 	, farPlane(-10000.f)
 	, angleOfView(constants::pi/2.0f)
 	, horizontalMargin(0)
@@ -48,6 +50,11 @@ void FilmCamera::setPosition(vec3 _position)
 	position = _position;
 }
 
+void FilmCamera::setOrientation(float phi, float theta)
+{
+	this->phi = phi;
+	this->theta = theta;
+}
 
 void FilmCamera::lookAt(vec3 target)
 {

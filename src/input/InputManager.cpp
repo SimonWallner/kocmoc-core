@@ -6,6 +6,7 @@
 #include <kocmoc-core/input/ButtonEventListener.hpp>
 #include <kocmoc-core/input/AnalogEventListener.hpp>
 #include <kocmoc-core/compiler.h>
+#include <kocmoc-core/util/util.hpp>
 
 #include <kocmoc-core/math/math.hpp>
 
@@ -262,6 +263,10 @@ void InputManager::handleButtonState(unsigned char buttonState, bool& wasPressed
 
 void InputManager::notifyAnalogListeners(int analogEventSymbolicConstant, const AnalogEvent& event)
 {
+//	static unsigned int cnt = 0;
+//	objectifLune::Singleton::Get()->data(cnt++, util::toString(analogEventSymbolicConstant),
+//										   event.value);
+	
 	// constant --> symbol
 	std::pair<AnalogEventBindings::const_iterator, AnalogEventBindings::const_iterator> bounds = 
 		analogEventBindigs.equal_range(analogEventSymbolicConstant);

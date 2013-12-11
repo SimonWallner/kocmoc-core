@@ -35,6 +35,7 @@ namespace kocmoc
 				virtual ~FilmCamera();
 
 				void setPosition(glm::vec3 position);
+				void setOrientation(float phi, float theta);
 				void setUpVector(glm::vec3 up);
 				void lookAt(glm::vec3 target);
 
@@ -87,6 +88,8 @@ namespace kocmoc
 
 				const glm::vec3 getPosition() const { return position; }
 				const glm::quat getOrientation() const;
+				float getPhi() const { return phi; }
+				float getTheta() const { return theta; }
 
 
 				/**

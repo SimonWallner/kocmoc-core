@@ -109,3 +109,11 @@ float util::logLuminance(float r, float g, float b)
 {
 	return log(r * 0.2126f + g * 0.7152f + b * 0.0722f);
 }
+
+
+std::string util::toString(int value)
+{
+	std::stringstream sstr;
+	sstr << value;
+	return sstr.str();
+}

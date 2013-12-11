@@ -1,9 +1,9 @@
-#ifndef KOCMOC_UTIL_UTIL_HPP
-#define KOCMOC_UTIL_UTIL_HPP
+#pragma once
 
 #include <vector>
 #include <string>
 #include <istream>
+#include <sstream>
 
 #include <kocmoc-core/types/types.h>
 
@@ -48,8 +48,8 @@ namespace kocmoc
 				 */
 				bool parseConfigXMLFileIntoProperties(std::string path, Properties* props);
 			}
+			
+			std::string toString(int value);
 		}
 	}
 }
-
-#endif
